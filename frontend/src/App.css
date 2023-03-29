@@ -1,38 +1,65 @@
-.App {
-  text-align: center;
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Playball&family=Rubik&family=Tapestry&family=Trade+Winds&family=Work+Sans&display=swap");
+
+:root {
+  --body-bg-color: #e3e3e3;
+  --scroll-color: rgba(0, 0, 0, 0.296);
+  --scroll--hover-color: #666;
+  --scroll-track-color: rgba(255, 255, 255, 0.251);
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  text-decoration: none;
+  font-family: "Rubik", sans-serif !important;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+body {
+  /* background: whitesmoke; */
+  /* background: linear-gradient(
+    132deg,
+    rgb(251, 251, 255) 0%,
+    rgb(215, 223, 252) 100%
+  ); */
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.obitron {
+  font-family: "Orbitron", sans-serif !important;
+  font-weight: bolder;
 }
 
-.App-link {
-  color: #61dafb;
+.rubik {
+  font-family: "Rubik", sans-serif !important;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.mx-2 {
+  margin: 0 20px;
+}
+
+.Nav-main h6 {
+  font-weight: 600;
+}
+
+*::-webkit-scrollbar-track {
+  background: linear-gradient(
+    to right,
+    var(--scroll-track-color) 0%,
+    var(--scroll-track-color) 30%,
+    var(--scroll-color) 60%,
+    var(--body-bg-color) 61%,
+    var(--body-bg-color) 100%
+  );
+}
+
+*::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+  display: none;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--scroll-color);
+  border-radius: 4px;
 }
