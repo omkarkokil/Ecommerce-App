@@ -125,6 +125,7 @@ const Trends = (props) => {
         height={"max-content"}
         zIndex={1}
         ref={ref}
+        className="trend"
       >
         <Stack direction={"row"} alignItems={"center"} mx="40px">
           <ProductCard product={product} />

@@ -26,7 +26,7 @@ const Register = () => {
               <TextField
                 id=""
                 margin="dense"
-                sx={{ backgroundColor: "#fff", mr: "20px" }}
+                sx={{ backgroundColor: "#fff", width: "400px", mr: "20px" }}
                 placeholder="Enter your name"
                 InputProps={{
                   startAdornment: (
@@ -42,7 +42,8 @@ const Register = () => {
               <TextField
                 id=""
                 margin="dense"
-                sx={{ backgroundColor: "#fff" }}
+                type={"email"}
+                sx={{ backgroundColor: "#fff", width: "400px" }}
                 placeholder="Enter your Email"
                 InputProps={{
                   startAdornment: (
@@ -59,7 +60,12 @@ const Register = () => {
               <TextField
                 id=""
                 size="medium"
-                sx={{ backgroundColor: "#fff", mr: "20px" }}
+                sx={{
+                  backgroundColor: "#fff",
+                  width: "400px",
+                  width: "400px",
+                  mr: "20px",
+                }}
                 placeholder={"Enter your contact number"}
                 margin="dense"
                 InputProps={{
@@ -76,7 +82,7 @@ const Register = () => {
               <TextField
                 id=""
                 size="medium"
-                sx={{ backgroundColor: "#fff" }}
+                sx={{ backgroundColor: "#fff", width: "400px" }}
                 placeholder={"Enter your address"}
                 margin="dense"
                 InputProps={{
@@ -95,9 +101,10 @@ const Register = () => {
               <TextField
                 id=""
                 size="medium"
-                sx={{ backgroundColor: "#fff", mr: "20px" }}
+                sx={{ backgroundColor: "#fff", width: "400px", mr: "20px" }}
                 placeholder={"Enter your Password"}
                 margin="dense"
+                type={"password"}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -111,9 +118,10 @@ const Register = () => {
               <TextField
                 id=""
                 size="medium"
-                sx={{ backgroundColor: "#fff" }}
+                sx={{ backgroundColor: "#fff", width: "400px" }}
                 placeholder={"confirm your Password"}
                 margin="dense"
+                type={"password"}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -132,34 +140,12 @@ const Register = () => {
             <Button
               variant="contained"
               size="medium"
-              sx={{ width: "50%" }}
+              sx={{ width: "40%" }}
               color="primary"
             >
               Register
             </Button>
           </FormControl>
-
-          {/* <Box my={"10px"} width={"100%"}>
-            <Divider />
-          </Box>
-          <Stack direction={"row"} justifyContent="space-around">
-            <Button
-              variant="contained"
-              color="error"
-              sx={{ mr: "20px", width: "45%" }}
-              startIcon={<Google />}
-            >
-              Google
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              sx={{ width: "45%" }}
-              startIcon={<Facebook />}
-            >
-              Facebook
-            </Button>
-          </Stack> */}
         </Stack>
       </Stack>
     </>

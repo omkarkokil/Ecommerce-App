@@ -17,17 +17,17 @@ import ProductCard from "./ProductCard";
 
 const newProduct = [
   {
-    img: laptop,
-    img1: hat,
-    img2: jeans,
-    name: "Hp pavallion 250",
+    img: "https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T2/images/I/71bpEcUHVqL._UX695_.jpg",
+    img1: "https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T2/images/I/71xag1DrOZL._UY695_.jpg",
+    img2: "https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T2/images/I/61odaun1giL._UY695_.jpg",
+    name: "Nike 1000",
     price: "35000",
   },
   {
-    img: hat,
-    img1: jeans,
-    img2: laptop,
-    name: "hats for men",
+    img: "https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T2/images/I/71AToeJUPBL._SX679_.jpg",
+    img1: "https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T2/images/I/61E8h9hRG4L._SX679_.jpg",
+    img2: "https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T2/images/I/818n3x-j4zS._SX679_.jpg",
+    name: "Hp victus",
     price: "0002",
   },
 
@@ -117,7 +117,7 @@ const GridLayout = () => {
           <Box
             sx={{
               display: "flex",
-              justifyContent: "center",
+              // justifyContent: "center",
               flexWrap: "wrap",
               "& > :not(style)": {
                 m: 3,

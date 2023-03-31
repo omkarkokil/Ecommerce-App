@@ -52,7 +52,7 @@ const Navbar = () => {
           className="rubik "
           width={"33%"}
         >
-          <Link className="mx-2">
+          <Link to={"/"} className="mx-2">
             <Typography fontSize={".75em"} variant="subtitle2" color="initial">
               HOME
             </Typography>

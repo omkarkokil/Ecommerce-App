@@ -24,8 +24,9 @@ const Login = () => {
           <FormControl margin="dense">
             <TextField
               id=""
+              type={"email"}
               margin="dense"
-              sx={{ backgroundColor: "#fff" }}
+              sx={{ backgroundColor: "#fff", width: "400px" }}
               placeholder="Email"
               InputProps={{
                 startAdornment: (
@@ -40,7 +41,8 @@ const Login = () => {
             <TextField
               id=""
               size="medium"
-              sx={{ backgroundColor: "#fff" }}
+              type={"password"}
+              sx={{ backgroundColor: "#fff", width: "400px" }}
               placeholder={"Password"}
               margin="dense"
               InputProps={{
@@ -55,7 +57,7 @@ const Login = () => {
           <Typography variant="body2" my={"10px"}>
             Don't have an account? <Link to={"/register"}>Register</Link>
           </Typography>
-          <FormControl margin="dense">
+          <FormControl margin="dense" width="50%">
             <Button variant="contained" size="medium" color="info">
               Login
             </Button>
@@ -64,11 +66,11 @@ const Login = () => {
           <Box my={"10px"} width={"100%"}>
             <Divider />
           </Box>
-          <Stack direction={"row"} justifyContent="space-around">
+          <Stack direction={"row"} width="400px" justifyContent="space-around">
             <Button
               variant="contained"
               color="error"
-              sx={{ mr: "20px" }}
+              sx={{ mr: "20px", width: "200px" }}
               startIcon={<Google />}
             >
               Google
@@ -76,6 +78,7 @@ const Login = () => {
             <Button
               variant="contained"
               color="primary"
+              sx={{ width: "200px" }}
               startIcon={<Facebook />}
             >
               Facebook
