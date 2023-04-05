@@ -1,13 +1,16 @@
 import { Box, Stack } from "@mui/system";
-import React from "react";
+import React, { useContext } from "react";
 import TextField from "@mui/material/TextField";
 import {
+  Category,
+  Description,
   Email,
   Facebook,
   Google,
   Key,
   Person,
-  Person2,
+  PriceChange,
+  Storage,
 } from "@mui/icons-material";
 import BusinessIcon from "@mui/icons-material/Business";
 import PhoneIcon from "@mui/icons-material/Phone";
@@ -17,27 +20,41 @@ import {
   Button,
   Typography,
   Divider,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import StateContext from "../../Context/hooks/StateContext";
+import FunctionContext from "../../Context/Function/FunctionContext";
 
-const Register = () => {
+const AdminProduct = () => {
+  const { category } = useContext(StateContext);
+  const { handleCategory } = useContext(FunctionContext);
+  const Items = [
+    "Top",
+    "Bottom",
+    "attire",
+    "Appliances",
+    "electronics",
+    "Laptop & tech",
+  ];
   return (
     <>
       <Stack height={"100vh"} alignItems="center" justifyContent={"center"}>
         <Typography variant="h5" textAlign={"center"} className="obitron">
-          REGISTER
+          ADD PRODUCT
         </Typography>
         <Stack>
           <FormControl margin="dense">
             <TextField
-              id=""
+              id="product"
               margin="dense"
               sx={{ backgroundColor: "#fff", width: "400px", mr: "20px" }}
-              placeholder="Enter your name"
+              placeholder="Product Name"
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <Person />
+                    <Category />
                   </InputAdornment>
                 ),
               }}
@@ -46,15 +63,75 @@ const Register = () => {
 
           <FormControl margin="dense">
             <TextField
-              id=""
+              id="price"
+              type="number"
               margin="dense"
-              type={"email"}
               sx={{ backgroundColor: "#fff", width: "400px" }}
-              placeholder="Enter your Email"
+              placeholder="Price"
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <Email />
+                    <PriceChange />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </FormControl>
+
+          <FormControl margin="dense">
+            <TextField
+              id="decs"
+              size="medium"
+              sx={{
+                backgroundColor: "#fff",
+                width: "400px",
+                width: "400px",
+                mr: "20px",
+              }}
+              placeholder={"Product Description"}
+              margin="dense"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Description />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </FormControl>
+
+          <Box width={"400px"} my={"10px"}>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Category</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={category}
+                label="Age"
+                onChange={handleCategory}
+              >
+                {Items.map((ele, id) => {
+                  return (
+                    <MenuItem key={id} value={ele}>
+                      {ele}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+          </Box>
+
+          <FormControl margin="dense">
+            <TextField
+              id=""
+              size="medium"
+              sx={{ backgroundColor: "#fff", width: "400px", mr: "20px" }}
+              placeholder={"In Stocks"}
+              margin="dense"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Storage />
                   </InputAdornment>
                 ),
               }}
@@ -65,59 +142,20 @@ const Register = () => {
             <TextField
               id=""
               size="medium"
-              sx={{ backgroundColor: "#fff", width: "400px", mr: "20px" }}
-              placeholder={"Enter your Password"}
-              margin="dense"
-              type={"password"}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Key />
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </FormControl>
-
-          <FormControl margin="dense">
-            <TextField
-              id=""
-              size="medium"
-              sx={{ backgroundColor: "#fff", width: "400px" }}
-              placeholder={"confirm your Password"}
-              margin="dense"
-              type={"password"}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Key />
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </FormControl>
-
-          <FormControl margin="dense">
-            <TextField
-              id=""
               type="file"
-              size="medium"
               sx={{ backgroundColor: "#fff", width: "400px", mr: "20px" }}
-              placeholder={"Enter your Password"}
+              placeholder={"In Stocks"}
               margin="dense"
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <Person2 />
+                    <Storage />
                   </InputAdornment>
                 ),
               }}
             />
           </FormControl>
 
-          <Typography variant="body2" my={"10px"}>
-            Don't have an account? <Link to={"/login"}>Login</Link>
-          </Typography>
           <FormControl margin="dense">
             <Button
               variant="contained"
@@ -134,4 +172,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default AdminProduct;

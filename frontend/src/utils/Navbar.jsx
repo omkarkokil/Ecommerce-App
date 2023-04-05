@@ -58,15 +58,15 @@ const Navbar = () => {
             </Typography>
           </Link>
 
-          <Link className="mx-2 ">
+          <Link className="mx-2 " to={"/products"}>
             <Typography fontSize={".75em"} variant="subtitle2" color="initial">
-              ABOUT
+              ALL PRODUCTS
             </Typography>
           </Link>
 
           <Link className="mx-2 ">
             <Typography fontSize={".75em"} variant="subtitle2" color="initial">
-              PAGES
+              ABOUT
             </Typography>
           </Link>
         </Stack>
@@ -140,8 +140,19 @@ const Navbar = () => {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  <MenuItem onClick={handleClose}>Profile</MenuItem>
-                  <MenuItem onClick={handleClose}>My account</MenuItem>
+                  <MenuItem sx={{ px: "30px" }} onClick={handleClose}>
+                    Profile
+                  </MenuItem>
+                  <Link to={"/orders"} style={{ color: "#000" }}>
+                    <MenuItem sx={{ px: "30px" }} onClick={handleClose}>
+                      Orders
+                    </MenuItem>
+                  </Link>
+                  <Link to={"/orders"} style={{ color: "#000" }}>
+                    <MenuItem sx={{ px: "30px" }} onClick={handleClose}>
+                      Log Out
+                    </MenuItem>
+                  </Link>
                 </Menu>
               </div>
             </>

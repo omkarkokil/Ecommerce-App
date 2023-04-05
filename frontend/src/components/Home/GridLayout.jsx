@@ -87,21 +87,6 @@ const newProduct = [
     name: "hats for men",
     price: "0002",
   },
-
-  {
-    img: jeans,
-    img1: laptop,
-    img2: hat,
-    name: "jeans for men",
-    price: "1000",
-  },
-  {
-    img: bjackets,
-    img1: boat,
-    img2: hat,
-    name: "Exclusive black jackets for men",
-    price: "2500",
-  },
 ];
 
 const GridLayout = () => {
@@ -113,7 +98,7 @@ const GridLayout = () => {
         rowSpacing={1}
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
       >
-        <Grid item md={12}>
+        <Grid item md={10}>
           <Box
             sx={{
               display: "flex",

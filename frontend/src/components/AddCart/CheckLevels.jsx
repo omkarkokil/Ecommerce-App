@@ -17,6 +17,8 @@ import boat from "../../img/boat.jpg";
 import laptop from "../../img/hp laptop.jpg";
 import Phone from "@mui/icons-material/Phone";
 import StateContext from "../../Context/hooks/StateContext";
+import swal from "sweetalert";
+import { useNavigate } from "react-router-dom";
 
 const CheckLevels = () => {
   const { skipped, setSkipped, activeStep, setActiveStep } =
@@ -51,6 +53,8 @@ const CheckLevels = () => {
     return skipped.has(step);
   };
 
+  const navigate = useNavigate();
+
   const handleNext = () => {
     let newSkipped = skipped;
     if (isStepSkipped(activeStep)) {
@@ -58,9 +62,15 @@ const CheckLevels = () => {
       newSkipped.delete(activeStep);
     }
 
+    if (activeStep === 2) {
+      swal("Congratulation", "Your order has been placed", "success");
+      setActiveStep(-1);
+      navigate("/");
+    }
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setSkipped(newSkipped);
   };
+
   return (
     <>
       {activeStep === 0 ? (

@@ -1,10 +1,11 @@
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, IconButton, Typography, Button } from "@mui/material";
 import { Stack } from "@mui/system";
 import React from "react";
 import Carosoul from "../components/Home/Carosoul";
 import Trends from "../components/Home/Trends";
 
 import GridLayout from "../components/Home/GridLayout";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
@@ -26,11 +27,18 @@ const Home = () => {
 
       <Box margin={"20px"} mt={"50px"}>
         <Typography variant="h4" fontWeight={"bold"} color="initial">
-          All products
+          Featured Products
         </Typography>
       </Box>
       <Stack my="20">
         <GridLayout />
+      </Stack>
+      <Stack my={2} justifyContent={"center"} alignItems={"center"}>
+        <Link to={"/products"}>
+          <Button variant="contained" color="primary">
+            See All products
+          </Button>
+        </Link>
       </Stack>
     </>
   );

@@ -8,6 +8,7 @@ import { Box, Divider, Rating, IconButton, Button } from "@mui/material";
 import { Add, Remove } from "@mui/icons-material";
 import Comment from "../components/productpage/Comment";
 import ReviewModal from "../components/productpage/ReviewModal";
+import GridComment from "../components/productpage/GridComment";
 
 const ProductPage = () => {
   return (
@@ -19,7 +20,7 @@ const ProductPage = () => {
               <img width={"250px"} src={jacket} alt="none" />
             </Stack>
             <Stack alignItems={"center"} justifyContent="center">
-              <img width={"250px"} src={bjackets} alt="none" />
+              <img height={"250px"} src={bjackets} alt="none" />
             </Stack>
           </Carousel>
         </Stack>
@@ -50,14 +51,14 @@ const ProductPage = () => {
           </Box>
           <Stack direction="row" alignItems={"center"} width={"60%"}>
             <Stack direction="row" alignItems={"center"} mr="10px">
-              <IconButton color="success">
-                <Add />
+              <IconButton color="error">
+                <Remove />
               </IconButton>
               <Typography variant="body1" mx={"10px"} color="initial">
                 2
               </Typography>
-              <IconButton color="error">
-                <Remove />
+              <IconButton color="success">
+                <Add />
               </IconButton>
             </Stack>
             <Button variant="contained" color="primary">
@@ -91,7 +92,7 @@ const ProductPage = () => {
           </Box>
         </Stack>
       </Stack>
-      <Comment />
+      <GridComment />
     </>
   );
 };

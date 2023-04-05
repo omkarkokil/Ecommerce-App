@@ -54,7 +54,7 @@ const Carosoul = () => {
               <Typography variant="body2" color="#fff">
                 {ele.description}
               </Typography>
-              <Button variant="contained" color="secondary" sx={{ my: "10px" }}>
+              <Button variant="contained" color="primary" sx={{ my: "10px" }}>
                 Get Now
               </Button>
             </Paper>
