@@ -7,6 +7,11 @@ const UserSchema = mongoose.Schema({
   google_id: {
     type: String,
   },
+  isAdmin: {
+    type: Number,
+    enum: [0, 1],
+    default: 0,
+  },
   email: {
     type: String,
     unique: true,
@@ -16,6 +21,8 @@ const UserSchema = mongoose.Schema({
   },
   userPic: {
     type: String,
+    default:
+      "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
   },
 });
 

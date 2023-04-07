@@ -14,10 +14,13 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import StateContext from "../Context/hooks/StateContext";
 import FunctionContext from "../Context/Function/FunctionContext";
+import ApiContext from "../Context/Api/ApiContext";
 
 const Navbar = () => {
-  const { isLogin, setIsLogin } = useContext(StateContext);
+  const { isLogin, setIsLogin, currentUser } = useContext(StateContext);
+  const { logOut } = useContext(ApiContext);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  // console.log(currentUser);
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -108,22 +111,23 @@ const Navbar = () => {
                   <ShoppingCartRounded sx={{ color: "#000" }} />
                 </Badge>
               </Link>
+
               <div>
-                <IconButton
-                  size="large"
-                  aria-label="account of current user"
+                <Avatar
                   aria-controls="menu-appbar"
                   aria-haspopup="true"
-                  onClick={handleMenu}
                   color="inherit"
-                >
-                  <Avatar
-                    variant="circular"
-                    src=""
-                    alt=""
-                    sx={{ width: "30px", height: "30px" }}
-                  />
-                </IconButton>
+                  variant="circular"
+                  alt="none"
+                  onClick={handleMenu}
+                  src={currentUser.userpic}
+                  sx={{
+                    width: "30px",
+                    height: "30px",
+                    mx: "10px",
+                    cursor: "pointer",
+                  }}
+                />
 
                 <Menu
                   id="menu-appbar"
@@ -148,7 +152,7 @@ const Navbar = () => {
                       Orders
                     </MenuItem>
                   </Link>
-                  <Link to={"/orders"} style={{ color: "#000" }}>
+                  <Link onClick={logOut} style={{ color: "#000" }}>
                     <MenuItem sx={{ px: "30px" }} onClick={handleClose}>
                       Log Out
                     </MenuItem>

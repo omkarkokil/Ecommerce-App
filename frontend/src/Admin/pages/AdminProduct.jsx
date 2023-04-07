@@ -143,6 +143,8 @@ const AdminProduct = () => {
               id=""
               size="medium"
               type="file"
+              enctype="multipart/form-data"
+              multiple
               sx={{ backgroundColor: "#fff", width: "400px", mr: "20px" }}
               placeholder={"In Stocks"}
               margin="dense"

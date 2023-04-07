@@ -20,6 +20,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import StateContext from "../Context/hooks/StateContext";
 import FunctionContext from "../Context/Function/FunctionContext";
+import Navbar from "../utils/Navbar";
 const Products = () => {
   const [state, setState] = React.useState(false);
   const { category, setCategory, value, setValue } =
@@ -137,6 +138,7 @@ const Products = () => {
   );
   return (
     <>
+      <Navbar />
       <div>
         {["top"].map((anchor) => (
           <React.Fragment key={anchor}>

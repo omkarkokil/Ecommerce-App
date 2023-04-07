@@ -1,5 +1,5 @@
 import { Box, Stack } from "@mui/system";
-import React from "react";
+import React, { useContext } from "react";
 import TextField from "@mui/material/TextField";
 import {
   Email,
@@ -17,12 +17,22 @@ import {
   Button,
   Typography,
   Divider,
+  FormHelperText,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import StateContext from "../Context/hooks/StateContext";
+import ApiContext from "../Context/Api/ApiContext";
+import FunctionContext from "../Context/Function/FunctionContext";
+import Navbar from "../utils/Navbar";
 
 const Register = () => {
+  const { user, isLoading } = useContext(StateContext);
+  const { handleUser, postDetailes } = useContext(FunctionContext);
+  const { RegisterHandler } = useContext(ApiContext);
+
   return (
     <>
+      <Navbar />
       <Stack height={"100vh"} alignItems="center" justifyContent={"center"}>
         <Typography variant="h5" textAlign={"center"} className="obitron">
           REGISTER
@@ -34,6 +44,9 @@ const Register = () => {
               margin="dense"
               sx={{ backgroundColor: "#fff", width: "400px", mr: "20px" }}
               placeholder="Enter your name"
+              name="name"
+              value={user.name}
+              onChange={handleUser}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -51,6 +64,9 @@ const Register = () => {
               type={"email"}
               sx={{ backgroundColor: "#fff", width: "400px" }}
               placeholder="Enter your Email"
+              name="email"
+              value={user.email}
+              onChange={handleUser}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -69,6 +85,9 @@ const Register = () => {
               placeholder={"Enter your Password"}
               margin="dense"
               type={"password"}
+              name="password"
+              value={user.password}
+              onChange={handleUser}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -87,6 +106,9 @@ const Register = () => {
               placeholder={"confirm your Password"}
               margin="dense"
               type={"password"}
+              name="Cpassword"
+              value={user.Cpassword}
+              onChange={handleUser}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -101,6 +123,9 @@ const Register = () => {
             <TextField
               id=""
               type="file"
+              accept="image/*"
+              name="userPic"
+              onChange={(e) => postDetailes(e.target.files[0])}
               size="medium"
               sx={{ backgroundColor: "#fff", width: "400px", mr: "20px" }}
               placeholder={"Enter your Password"}
@@ -113,21 +138,29 @@ const Register = () => {
                 ),
               }}
             />
+            <FormHelperText sx={{ color: "red" }} id="component-helper-text">
+              * Not Required
+            </FormHelperText>
           </FormControl>
+          {/* <Box width={"200px"} marginY={"10px"}>
+            <Button variant="text" fullWidth>
+              Upload Profile Image
+            </Button>
+          </Box> */}
 
           <Typography variant="body2" my={"10px"}>
             Don't have an account? <Link to={"/login"}>Login</Link>
           </Typography>
-          <FormControl margin="dense">
-            <Button
-              variant="contained"
-              size="medium"
-              sx={{ width: "40%" }}
-              color="primary"
-            >
-              Register
-            </Button>
-          </FormControl>
+          <Button
+            variant="contained"
+            disabled={isLoading ? "disabled" : ""}
+            size="medium"
+            onClick={RegisterHandler}
+            sx={{ width: "40%" }}
+            color="primary"
+          >
+            Register
+          </Button>
         </Stack>
       </Stack>
     </>

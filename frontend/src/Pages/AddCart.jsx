@@ -14,6 +14,7 @@ import boat from "../img/boat.jpg";
 import laptop from "../img/hp laptop.jpg";
 import { Link } from "react-router-dom";
 import { Add, Delete, Remove } from "@mui/icons-material";
+import Navbar from "../utils/Navbar";
 
 const AddCart = () => {
   let menuItems = [];
@@ -53,6 +54,7 @@ const AddCart = () => {
 
   return (
     <>
+      <Navbar />
       <Stack direction={"row"}>
         <Stack my={"10vh"} width={"70%"} sx={{ alignItems: "center" }}>
           <Box

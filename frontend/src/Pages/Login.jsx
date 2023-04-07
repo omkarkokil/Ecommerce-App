@@ -1,5 +1,5 @@
 import { Box, Stack } from "@mui/system";
-import React from "react";
+import React, { useContext } from "react";
 import TextField from "@mui/material/TextField";
 import { Facebook, Google, Key, Person } from "@mui/icons-material";
 import {
@@ -11,11 +11,23 @@ import {
   Divider,
   Typography,
 } from "@mui/material";
+import jwt_decode from "jwt-decode";
 import { Link } from "react-router-dom";
+import StateContext from "../Context/hooks/StateContext";
+import FunctionContext from "../Context/Function/FunctionContext";
+import ApiContext from "../Context/Api/ApiContext";
+import Navbar from "../utils/Navbar";
+import { GoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
+  const { user, setUser } = useContext(StateContext);
+  const { handleUser } = useContext(FunctionContext);
+  const { loginhandler, googleLogin } = useContext(ApiContext);
+  // console.log(user);
+
   return (
     <>
+      <Navbar />
       <Stack height={"100vh"} alignItems="center" justifyContent={"center"}>
         <Stack>
           <Typography variant="h5" textAlign={"center"} className="obitron">
@@ -28,6 +40,9 @@ const Login = () => {
               margin="dense"
               sx={{ backgroundColor: "#fff", width: "400px" }}
               placeholder="Email"
+              name="email"
+              value={user.email}
+              onChange={handleUser}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -42,6 +57,9 @@ const Login = () => {
               id=""
               size="medium"
               type={"password"}
+              name="password"
+              value={user.password}
+              onChange={handleUser}
               sx={{ backgroundColor: "#fff", width: "400px" }}
               placeholder={"Password"}
               margin="dense"
@@ -58,7 +76,12 @@ const Login = () => {
             Don't have an account? <Link to={"/register"}>Register</Link>
           </Typography>
           <FormControl margin="dense" width="50%">
-            <Button variant="contained" size="medium" color="info">
+            <Button
+              variant="contained"
+              size="medium"
+              onClick={loginhandler}
+              color="info"
+            >
               Login
             </Button>
           </FormControl>
@@ -72,9 +95,26 @@ const Login = () => {
               color="error"
               sx={{ mr: "20px", width: "200px" }}
               startIcon={<Google />}
+              onClick={googleLogin}
             >
               Google
             </Button>
+            {/* <GoogleLogin
+              onSuccess={(credentialResponse) => {
+                console.log(credentialResponse.credential);
+                let decode = jwt_decode(credentialResponse.credential);
+                // console.log(decode);
+                setUser({
+                  name: decode.name,
+                  email: decode.email,
+                  userPic: decode.picture,
+                });
+              }}
+              onError={() => {
+                console.log("Login Failed");
+              }}
+            /> */}
+
             <Button
               variant="contained"
               color="primary"

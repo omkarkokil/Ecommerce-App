@@ -1,19 +1,33 @@
-import React from "react";
+import React, { useContext } from "react";
 
-import { Stack, Typography } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import DataCard from "../Components/DataCard";
 import PaymentChart from "../Components/PaymentChart";
+import ApiContext from "../../Context/Api/ApiContext";
 
 const DashBoard = () => {
+  const { logOut } = useContext(ApiContext);
   return (
     <>
-      <Stack ml={"100px"} my={"30px"}>
-        <Typography variant="h4" fontWeight={"bold"} color="initial">
-          DashBoard
-        </Typography>
-        <Typography variant="h6" color="initial">
-          Welcome admin
-        </Typography>
+      <Stack
+        my={"30px"}
+        direction={"row"}
+        justifyContent={"space-between"}
+        alignItems={"center"}
+      >
+        <Stack mx={"10%"}>
+          <Typography variant="h4" fontWeight={"bold"} color="initial">
+            DashBoard
+          </Typography>
+          <Typography variant="h6" color="initial">
+            Welcome admin
+          </Typography>
+        </Stack>
+        <Stack mx={"10%"}>
+          <Button variant="contained" color="error" onClick={logOut}>
+            Log Out
+          </Button>
+        </Stack>
       </Stack>
       <DataCard />
       <PaymentChart />

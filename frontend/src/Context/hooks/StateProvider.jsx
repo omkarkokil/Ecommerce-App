@@ -10,6 +10,28 @@ const StateProvider = ({ children }) => {
   const [value, setValue] = React.useState([0, 100000]);
   const [isAdmin, setIsAdmin] = useState(false);
 
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [currentUser, setCurrentUser] = useState({
+    name: "",
+    email: "",
+    id: "",
+    userpic: "",
+    isAdmin: 0,
+  });
+
+  // Register States
+  const [user, setUser] = useState({
+    name: "",
+    password: "",
+    Cpassword: "",
+    email: "",
+  });
+
+  const [googleUser, setGoogleUser] = useState({});
+
+  const [userPic, setUserPic] = useState();
+
   return (
     <StateContext.Provider
       value={{
@@ -26,6 +48,17 @@ const StateProvider = ({ children }) => {
         value,
         setValue,
         isAdmin,
+        setIsAdmin,
+        user,
+        setUser,
+        userPic,
+        setUserPic,
+        currentUser,
+        setCurrentUser,
+        isLoading,
+        setIsLoading,
+        googleUser,
+        setGoogleUser,
       }}
     >
       {children}

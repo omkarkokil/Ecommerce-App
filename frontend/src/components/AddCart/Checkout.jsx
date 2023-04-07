@@ -9,6 +9,7 @@ import { Stack } from "@mui/system";
 
 import StateContext from "../../Context/hooks/StateContext";
 import CheckLevels from "./CheckLevels";
+import Navbar from "../../utils/Navbar";
 
 const steps = [
   "Select delivery address",
@@ -29,36 +30,44 @@ export default function HorizontalLinearStepper() {
   };
 
   return (
-    <Stack width={"100%"} mt="5%" justifyContent="center" alignItems={"center"}>
-      <Box sx={{ width: "80%" }}>
-        <Stepper activeStep={activeStep}>
-          {steps.map((label, index) => {
-            const stepProps = {};
-            const labelProps = {};
+    <>
+      <Navbar />
+      <Stack
+        width={"100%"}
+        mt="5%"
+        justifyContent="center"
+        alignItems={"center"}
+      >
+        <Box sx={{ width: "80%" }}>
+          <Stepper activeStep={activeStep}>
+            {steps.map((label, index) => {
+              const stepProps = {};
+              const labelProps = {};
 
-            return (
-              <Step key={label} {...stepProps}>
-                <StepLabel {...labelProps}>{label}</StepLabel>
-              </Step>
-            );
-          })}
-        </Stepper>
+              return (
+                <Step key={label} {...stepProps}>
+                  <StepLabel {...labelProps}>{label}</StepLabel>
+                </Step>
+              );
+            })}
+          </Stepper>
 
-        <React.Fragment>
-          <CheckLevels />
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            <Button
-              color="inherit"
-              disabled={activeStep === 0}
-              onClick={handleBack}
-              sx={{ mr: 1 }}
-            >
-              Back
-            </Button>
-            <Box sx={{ flex: "1 1 auto" }} />
-          </Box>
-        </React.Fragment>
-      </Box>
-    </Stack>
+          <React.Fragment>
+            <CheckLevels />
+            <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+              <Button
+                color="inherit"
+                disabled={activeStep === 0}
+                onClick={handleBack}
+                sx={{ mr: 1 }}
+              >
+                Back
+              </Button>
+              <Box sx={{ flex: "1 1 auto" }} />
+            </Box>
+          </React.Fragment>
+        </Box>
+      </Stack>
+    </>
   );
 }

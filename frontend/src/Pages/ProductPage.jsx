@@ -9,10 +9,12 @@ import { Add, Remove } from "@mui/icons-material";
 import Comment from "../components/productpage/Comment";
 import ReviewModal from "../components/productpage/ReviewModal";
 import GridComment from "../components/productpage/GridComment";
+import Navbar from "../utils/Navbar";
 
 const ProductPage = () => {
   return (
     <>
+      <Navbar />
       <Stack mt="5%" direction={"row"}>
         <Stack width={"40%"} height="80vh" justifyContent={"center"}>
           <Carousel interval={3000} navButtonsAlwaysInvisible>

@@ -6,10 +6,12 @@ import Trends from "../components/Home/Trends";
 
 import GridLayout from "../components/Home/GridLayout";
 import { Link } from "react-router-dom";
+import Navbar from "../utils/Navbar";
 
 const Home = () => {
   return (
     <>
+      <Navbar />
       <Carosoul />
       <Box margin={"20px"}>
         <Typography variant="h4" fontWeight={"bold"} color="initial">
