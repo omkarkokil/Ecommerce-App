@@ -28,9 +28,15 @@ const StateProvider = ({ children }) => {
     email: "",
   });
 
+  // all users
+  const [AllUserData, setAllUserData] = useState([]);
+  const [userCount, setUserCount] = useState();
+
   const [googleUser, setGoogleUser] = useState({});
 
   const [userPic, setUserPic] = useState();
+  const [activePage, setActivePage] = useState(1);
+  // all users
 
   return (
     <StateContext.Provider
@@ -59,6 +65,12 @@ const StateProvider = ({ children }) => {
         setIsLoading,
         googleUser,
         setGoogleUser,
+        AllUserData,
+        setAllUserData,
+        userCount,
+        setUserCount,
+        activePage,
+        setActivePage,
       }}
     >
       {children}

@@ -14,9 +14,12 @@ const ApiProvider = ({ children }) => {
     currentUser,
     setCurrentUser,
     setIsLogin,
-    isLogin,
-    isAdmin,
-    setIsAdmin,
+    AllUserData,
+    setAllUserData,
+    setUserCount,
+    setIsLoading,
+    activePage,
+    setActivePage,
   } = useContext(StateContext);
 
   const loc = window.location.pathname;
@@ -63,9 +66,11 @@ const ApiProvider = ({ children }) => {
 
   const RegisterHandler = async () => {
     try {
+      setIsLoading(true);
       const { name, email, password, Cpassword } = user;
 
       if (password !== Cpassword) {
+        setIsLoading(false);
         toast.error(
           "password and confirmpassword are not matching",
           toastoption
@@ -87,10 +92,12 @@ const ApiProvider = ({ children }) => {
       );
 
       if (data.status === false) {
+        setIsLoading(false);
         toast.error(data.msg, toastoption);
         return false;
       }
       if (data.status) {
+        setIsLoading(false);
         toast.success(data.msg, toastoption);
         localStorage.setItem("user", data.token);
         navigate("/");
@@ -102,9 +109,11 @@ const ApiProvider = ({ children }) => {
 
   const loginhandler = async () => {
     try {
+      setIsLoading(true);
       const { email, password } = user;
 
       if ((!email, !password)) {
+        setIsLoading(false);
         toast.error("All fields are mandatory", toastoption);
         return false;
       }
@@ -114,11 +123,13 @@ const ApiProvider = ({ children }) => {
       });
 
       if (!data.status) {
+        setIsLoading(false);
         toast.error(data.msg, toastoption);
         return false;
       }
 
       if (data.status) {
+        setIsLoading(false);
         toast.success(data.msg, toastoption);
         localStorage.setItem("user", data.token);
 
@@ -139,6 +150,7 @@ const ApiProvider = ({ children }) => {
   const googleLogin = useGoogleLogin({
     onSuccess: async (res) => {
       try {
+        setIsLoading(true);
         await axios
           .get("https://www.googleapis.com/oauth2/v3/userinfo", {
             headers: {
@@ -157,6 +169,7 @@ const ApiProvider = ({ children }) => {
             if (data.status) {
               toast.success(data.msg, toastoption);
               localStorage.setItem("user", data.token);
+              setIsLoading(false);
 
               if (data.isAdminStatus) {
                 localStorage.setItem("isAdmin", data.isAuth);
@@ -177,9 +190,57 @@ const ApiProvider = ({ children }) => {
     },
   });
 
+  const AllUsersData = async () => {
+    try {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_GET_ALL_USERS_URL}`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("user"),
+          },
+          params: {
+            page: activePage,
+            size: process.env.REACT_APP_LIMIT,
+          },
+        }
+      );
+
+      if (data.status) {
+        setAllUserData(data.users);
+        setUserCount(data.total);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const DeleteUser = async (id) => {
+    try {
+      const config = {
+        headers: {
+          Authorization: localStorage.getItem("user"),
+        },
+      };
+      const { data } = await axios.delete(
+        `${process.env.REACT_APP_DELETE_USER_URL}/${id}`,
+        config
+      );
+
+      if (data.status) {
+        toast.success(data.msg);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    AllUsersData();
+  }, [activePage]);
+
   return (
     <ApiContext.Provider
-      value={{ RegisterHandler, logOut, loginhandler, googleLogin }}
+      value={{ RegisterHandler, logOut, loginhandler, googleLogin, DeleteUser }}
     >
       {children}
     </ApiContext.Provider>

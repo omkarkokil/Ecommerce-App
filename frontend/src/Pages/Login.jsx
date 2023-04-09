@@ -18,15 +18,17 @@ import FunctionContext from "../Context/Function/FunctionContext";
 import ApiContext from "../Context/Api/ApiContext";
 import Navbar from "../utils/Navbar";
 import { GoogleLogin } from "@react-oauth/google";
+import LoginLoader from "../utils/LoginLoader";
 
 const Login = () => {
-  const { user, setUser } = useContext(StateContext);
+  const { user, setUser, isLoading } = useContext(StateContext);
   const { handleUser } = useContext(FunctionContext);
   const { loginhandler, googleLogin } = useContext(ApiContext);
   // console.log(user);
 
   return (
     <>
+      {isLoading ? <LoginLoader /> : ""}
       <Navbar />
       <Stack height={"100vh"} alignItems="center" justifyContent={"center"}>
         <Stack>

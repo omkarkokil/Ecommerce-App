@@ -16,15 +16,11 @@ const RegisterUser = async (req, res) => {
     const UserExists = await User.findOne({ email });
 
     if (UserExists) {
-      return res
-        .status(400)
-        .json({ msg: "User already exists", status: false });
+      return res.json({ msg: "User already exists", status: false });
     }
 
     if ((!name, !password, !email)) {
-      return res
-        .status(400)
-        .json({ msg: "Name , email & password are mandatory", status: false });
+      return res.json({ msg: "Name , email & password are mandatory", status: false });
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -41,7 +37,7 @@ const RegisterUser = async (req, res) => {
 
     const Jsontoken = await User.findOne({ email }).select(["-password"]);
 
-    res.status(200).json({
+    res.status(202).json({
       user,
       msg: "Account created Successfully",
       status: true,
@@ -58,17 +54,13 @@ const LoginUser = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res
-        .status(402)
-        .json({ msg: "Invalid credentails", status: false });
+      return res.json({ msg: "Invalid credentails", status: false });
     }
 
     const matchPass = await bcrypt.compare(password, user.password);
 
     if (!matchPass) {
-      return res
-        .status(400)
-        .json({ msg: "Invalid credentails", status: false });
+      return res.json({ msg: "Invalid credentails", status: false });
     }
 
     const afterAuth = await User.findOne({ email }).select("-password");
@@ -128,4 +120,42 @@ const googleUser = async (req, res) => {
   }
 };
 
-module.exports = { RegisterUser, LoginUser, googleUser };
+
+const getAllUser = async (req, res) => {
+  try {
+    const page = req.query.page ? parseInt(req.query.page) : 1;
+    const size = req.query.size ? parseInt(req.query.size) : 5;
+
+    const skip = (page - 1) * size;
+
+    const total = await User.countDocuments();
+    const users = await User.find({ _id: { $nin: req.user.id._id } }).select(["-password"]).skip(skip).limit(size);
+    return res.json({
+      users,
+      total,
+      page,
+      size,
+      status: true
+    })
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleteuser = await User.findByIdAndDelete({ _id: id });
+
+    return res.json({
+      msg: "User deleted successfully",
+      status: true,
+      deleteuser
+    })
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+module.exports = { RegisterUser, LoginUser, googleUser, getAllUser, deleteUser };

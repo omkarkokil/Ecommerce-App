@@ -34,8 +34,6 @@ const FunctionProvider = ({ children }) => {
         [name]: value,
       };
     });
-
-    // console.log(user);
   };
 
   const postDetailes = (pic) => {
@@ -72,17 +70,15 @@ const FunctionProvider = ({ children }) => {
     }
   };
 
-  const navigate = useNavigate("/");
+  const totalPagesCalculator = (total, limit) => {
+    const pages = [];
+    for (let x = 0; x < (parseInt(total) - 1) / limit; x++) {
+      pages.push(x);
+    }
+    console.log(pages, parseInt(total));
 
-  // useEffect(() => {
-  //   if (loc.includes("/admin") && currentUser.isAdmin === 0) {
-  //     navigate("/");
-  //   }
-
-  //   if (currentUser.isAdmin === 1) {
-  //     navigate("/admin/dashboard");
-  //   }
-  // }, [loc]);
+    return pages;
+  };
 
   return (
     <>
@@ -94,6 +90,7 @@ const FunctionProvider = ({ children }) => {
           handleValue,
           handleUser,
           postDetailes,
+          totalPagesCalculator,
         }}
       >
         {children}

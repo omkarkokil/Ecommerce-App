@@ -24,6 +24,7 @@ import StateContext from "../Context/hooks/StateContext";
 import ApiContext from "../Context/Api/ApiContext";
 import FunctionContext from "../Context/Function/FunctionContext";
 import Navbar from "../utils/Navbar";
+import LoginLoader from "../utils/LoginLoader";
 
 const Register = () => {
   const { user, isLoading } = useContext(StateContext);
@@ -32,6 +33,7 @@ const Register = () => {
 
   return (
     <>
+      {isLoading ? <LoginLoader /> : ""}
       <Navbar />
       <Stack height={"100vh"} alignItems="center" justifyContent={"center"}>
         <Typography variant="h5" textAlign={"center"} className="obitron">
@@ -40,7 +42,7 @@ const Register = () => {
         <Stack>
           <FormControl margin="dense">
             <TextField
-              id=""
+              id="name"
               margin="dense"
               sx={{ backgroundColor: "#fff", width: "400px", mr: "20px" }}
               placeholder="Enter your name"
@@ -59,7 +61,7 @@ const Register = () => {
 
           <FormControl margin="dense">
             <TextField
-              id=""
+              id="email"
               margin="dense"
               type={"email"}
               sx={{ backgroundColor: "#fff", width: "400px" }}
@@ -79,7 +81,7 @@ const Register = () => {
 
           <FormControl margin="dense">
             <TextField
-              id=""
+              id="pass"
               size="medium"
               sx={{ backgroundColor: "#fff", width: "400px", mr: "20px" }}
               placeholder={"Enter your Password"}
@@ -100,7 +102,7 @@ const Register = () => {
 
           <FormControl margin="dense">
             <TextField
-              id=""
+              id="cpass"
               size="medium"
               sx={{ backgroundColor: "#fff", width: "400px" }}
               placeholder={"confirm your Password"}
@@ -121,14 +123,13 @@ const Register = () => {
 
           <FormControl margin="dense">
             <TextField
-              id=""
+              id="userPic"
               type="file"
               accept="image/*"
               name="userPic"
               onChange={(e) => postDetailes(e.target.files[0])}
               size="medium"
               sx={{ backgroundColor: "#fff", width: "400px", mr: "20px" }}
-              placeholder={"Enter your Password"}
               margin="dense"
               InputProps={{
                 startAdornment: (
@@ -153,7 +154,6 @@ const Register = () => {
           </Typography>
           <Button
             variant="contained"
-            disabled={isLoading ? "disabled" : ""}
             size="medium"
             onClick={RegisterHandler}
             sx={{ width: "40%" }}
