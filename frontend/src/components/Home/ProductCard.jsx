@@ -10,17 +10,19 @@ import {
 } from "@mui/material";
 import Carousel from "react-material-ui-carousel";
 
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Stack } from "@mui/system";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { Link } from "react-router-dom";
+import ApiContext from "../../Context/Api/ApiContext";
+import StateContext from "../../Context/hooks/StateContext";
 
 const ProductCard = (props) => {
   return (
     <>
-      {props.product.map((ele, id) => {
+      {props.product.map((items, id) => {
         return (
-          <Link key={id} to={"/productpage/1"}>
+          <Link key={id} to={`/productpage/${items._id}`}>
             <Card
               sx={{
                 width: "250px",
@@ -44,63 +46,27 @@ const ProductCard = (props) => {
                   navButtonsAlwaysInvisible
                   indicators={false}
                 >
-                  <Stack
-                    width={"100%"}
-                    height="200px"
-                    justifyContent="center"
-                    alignItems={"center"}
-                  >
-                    <img src={`${ele.img}`} width="70%" alt="none" />
-                  </Stack>
-                  <Stack
-                    width={"100%"}
-                    height="200px"
-                    justifyContent="center"
-                    alignItems={"center"}
-                  >
-                    <img src={`${ele.img1}`} width="70%" alt="none" />
-                  </Stack>
-                  <Stack
-                    width={"100%"}
-                    height="200px"
-                    justifyContent="center"
-                    alignItems={"center"}
-                  >
-                    <img src={`${ele.img2}`} width="70%" alt="none" />
-                  </Stack>
+                  {items.img.map((element, id) => {
+                    return (
+                      <Stack
+                        key={id}
+                        alignItems={"center"}
+                        justifyContent={"center"}
+                      >
+                        <img src={element} width={"200px"} alt="" />
+                      </Stack>
+                    );
+                  })}
                 </Carousel>
               </Stack>
               <CardContent>
                 <Typography variant="body1" color="#666">
-                  {ele.name.slice(0, 20)}...
+                  {items.name.slice(0, 20)}...
                 </Typography>
                 <Rating size="small" sx={{ mt: "10px" }} readOnly value={3} />
                 <Typography variant="body1" color={"error"}>
-                  &#8377;{ele.price}
+                  &#8377;{items.price}
                 </Typography>
-
-                {/* <Stack
-                  direction={"row"}
-                  justifyContent="space-between"
-                  alignItems={"center"}
-                  mt="10px"
-                >
-                  <Button
-                    variant="outlined"
-                    sx={{
-                      ":hover": {
-                        background: "#9c27b0",
-                        color: "#fff",
-                      },
-                    }}
-                    color="secondary"
-                  >
-                    Add to cart
-                  </Button>
-                  <IconButton>
-                    <FavoriteBorderIcon />
-                  </IconButton>
-                </Stack> */}
               </CardContent>
             </Card>
           </Link>

@@ -34,10 +34,33 @@ const StateProvider = ({ children }) => {
 
   const [googleUser, setGoogleUser] = useState({});
 
-  const [userPic, setUserPic] = useState();
+  const [imageArr, setImageArr] = useState([]);
   const [activePage, setActivePage] = useState(1);
   // all users
 
+  // products
+
+  const [product, setProduct] = useState({
+    name: "",
+    desc: "",
+    price: "",
+    stock: "",
+  });
+
+  const [allProducts, setAllProducts] = useState([]);
+  const [getProduct, setGetProduct] = useState([]);
+  const [productImg, setproductImg] = useState([]);
+  const [productPage, setProductPage] = useState(1);
+  const [productCount, setProductCount] = useState();
+
+  // products
+
+  // comments
+
+  const [comment, setComment] = useState("");
+  const [rating, setRating] = useState(5);
+  const [comments, setComments] = useState([]);
+  // comments
   return (
     <StateContext.Provider
       value={{
@@ -57,8 +80,8 @@ const StateProvider = ({ children }) => {
         setIsAdmin,
         user,
         setUser,
-        userPic,
-        setUserPic,
+        imageArr,
+        setImageArr,
         currentUser,
         setCurrentUser,
         isLoading,
@@ -71,6 +94,29 @@ const StateProvider = ({ children }) => {
         setUserCount,
         activePage,
         setActivePage,
+        product,
+        setProduct,
+        allProducts,
+        setAllProducts,
+        getProduct,
+        productImg,
+        setproductImg,
+        setGetProduct,
+        productPage,
+        setProductPage,
+        productCount,
+        setProductCount,
+
+        // comments
+
+        comment,
+        setComment,
+        rating,
+        setRating,
+        comments,
+        setComments,
+
+        // comments
       }}
     >
       {children}

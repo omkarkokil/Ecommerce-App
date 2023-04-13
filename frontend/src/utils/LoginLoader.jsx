@@ -1,6 +1,5 @@
 import { CircularProgress, Stack } from "@mui/material";
 import React from "react";
-
 const LoginLoader = () => {
   return (
     <>

@@ -2,8 +2,10 @@ import React, { useContext, useEffect } from "react";
 import StateContext from "../hooks/StateContext";
 import FunctionContext from "./FunctionContext";
 import { useNavigate } from "react-router-dom";
-
-import axios from "axios";
+import { styled } from "@mui/material/styles";
+import { blue } from "@mui/material/colors";
+import { TableRow } from "@mui/material";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 
 const FunctionProvider = ({ children }) => {
   const {
@@ -12,10 +14,12 @@ const FunctionProvider = ({ children }) => {
     setValue,
     user,
     setUser,
-    userPic,
-    setUserPic,
+    imageArr,
+    setImageArr,
     currentUser,
     setIsLoading,
+    product,
+    setProduct,
   } = useContext(StateContext);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -36,18 +40,28 @@ const FunctionProvider = ({ children }) => {
     });
   };
 
+  const handleProducts = (e) => {
+    const { name, value } = e.target;
+    setProduct(() => {
+      return {
+        ...product,
+        [name]: value,
+      };
+    });
+    console.log(product);
+  };
   const postDetailes = (pic) => {
+    const imageArray = [];
     setIsLoading(true);
     if (pic === undefined) {
       console.log("select img");
     }
-    if (
-      pic.type === "image/jpg" ||
-      pic.type === "image/jpeg" ||
-      pic.type === "image/png"
-    ) {
-      const data = new FormData();
-      data.append("file", pic);
+    console.log(imageArray);
+
+    const data = new FormData();
+
+    for (let u = 0; u < pic.length; u++) {
+      data.append("file", pic[u]);
       data.append("upload_preset", "collage-app");
       data.append("cloud_name", "dfxyr6c40");
 
@@ -57,17 +71,16 @@ const FunctionProvider = ({ children }) => {
       })
         .then((res) => res.json())
         .then((data) => {
-          setUserPic(data.url.toString());
+          imageArray.push(data.url.toString());
           setIsLoading(false);
-
-          console.log(data);
         })
         .catch((error) => {
           console.log(error);
         });
-    } else {
-      console.log("err");
     }
+
+    setImageArr(imageArray);
+    console.log(imageArray);
   };
 
   const totalPagesCalculator = (total, limit) => {
@@ -75,10 +88,40 @@ const FunctionProvider = ({ children }) => {
     for (let x = 0; x < (parseInt(total) - 1) / limit; x++) {
       pages.push(x);
     }
-    console.log(pages, parseInt(total));
 
     return pages;
   };
+
+  const color = blue["A400"];
+  const shade1 = blue[50];
+
+  const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: color,
+      color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+      fontSize: 14,
+    },
+  }));
+
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    "&:nth-of-type(odd)": {
+      backgroundColor: shade1,
+    },
+    // hide last border
+    "&:last-child td, &:last-child th": {
+      border: 0,
+    },
+  }));
+
+  // comment model hanlders
+
+  const [openModal, setOpenModal] = React.useState(false);
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
+
+  // comment model hanlders
 
   return (
     <>
@@ -89,8 +132,18 @@ const FunctionProvider = ({ children }) => {
           handleCategory,
           handleValue,
           handleUser,
+          handleProducts,
           postDetailes,
           totalPagesCalculator,
+          StyledTableCell,
+          StyledTableRow,
+
+          // comment
+          openModal,
+          setOpenModal,
+          handleCloseModal,
+          handleOpenModal,
+          // comment
         }}
       >
         {children}

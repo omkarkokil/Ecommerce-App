@@ -32,9 +32,9 @@ const Home = () => {
           Featured Products
         </Typography>
       </Box>
-      <Stack my="20">
+      {/* <Stack my="20">
         <GridLayout />
-      </Stack>
+      </Stack> */}
       <Stack my={2} justifyContent={"center"} alignItems={"center"}>
         <Link to={"/products"}>
           <Button variant="contained" color="primary">

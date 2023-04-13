@@ -9,7 +9,10 @@ import {
   Card,
   IconButton,
 } from "@mui/material";
-import React from "react";
+import React, { useContext, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import ApiContext from "../../Context/Api/ApiContext";
+import StateContext from "../../Context/hooks/StateContext";
 
 const arr = [
   {
@@ -50,33 +53,44 @@ const arr = [
 ];
 
 const Comment = () => {
+  const { id } = useParams("");
+  const { comments } = useContext(StateContext);
+  const { GetComments } = useContext(ApiContext);
+
+  useEffect(() => {
+    GetComments(id);
+    console.log(comments);
+  }, []);
+
   return (
     <>
-      {arr.map((ele, id) => {
-        return (
-          <Card key={id} elevation={2} sx={{ p: "10px" }}>
-            <Stack direction={"row"} alignItems={"center"}>
-              <Stack mx={"10px"}>
-                <Typography variant="h6" color="initial">
-                  Legend the one
+      {comments != null
+        ? comments.map((ele, id) => {
+            return (
+              <Card key={id} elevation={2} sx={{ p: "10px" }}>
+                <Stack direction={"row"} alignItems={"center"}>
+                  <Stack mx={"10px"}>
+                    <Typography variant="h6" color="initial">
+                      {ele.name}
+                    </Typography>
+                    <Typography variant="body1" color="initial">
+                      March 21, 2022
+                    </Typography>
+                  </Stack>
+                </Stack>
+                <Rating
+                  readOnly
+                  precision={0.5}
+                  sx={{ my: "10px" }}
+                  value={ele.rating}
+                />
+                <Typography variant="body2" color="initial">
+                  {ele.comment}
                 </Typography>
-                <Typography variant="body1" color="initial">
-                  {ele.time}
-                </Typography>
-              </Stack>
-            </Stack>
-            <Rating
-              readOnly
-              precision={0.5}
-              sx={{ my: "10px" }}
-              value={ele.star}
-            />
-            <Typography variant="body2" color="initial">
-              {ele.msg}
-            </Typography>
-          </Card>
-        );
-      })}
+              </Card>
+            );
+          })
+        : ""}
     </>
   );
 };

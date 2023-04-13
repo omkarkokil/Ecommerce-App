@@ -6,11 +6,12 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
+import FunctionContext from "../Function/FunctionContext";
 
 const ApiProvider = ({ children }) => {
   const {
     user,
-    userPic,
+    imageArr,
     currentUser,
     setCurrentUser,
     setIsLogin,
@@ -20,9 +21,29 @@ const ApiProvider = ({ children }) => {
     setIsLoading,
     activePage,
     setActivePage,
+    product,
+    category,
+    setAllProducts,
+    getProduct,
+    productImg,
+    setproductImg,
+    setGetProduct,
+    setProductPage,
+    productPage,
+    productCount,
+    setProductCount,
+
+    // comment
+    comment,
+    rating,
+    comments,
+    setComments,
+    // comment
   } = useContext(StateContext);
 
-  const loc = window.location.pathname;
+  const { totalPagesCalculator, handleCloseModal } =
+    useContext(FunctionContext);
+  let loc = window.location.pathname;
   const navigate = useNavigate();
 
   const toastoption = {
@@ -87,7 +108,7 @@ const ApiProvider = ({ children }) => {
 
       const { data } = await axios.post(
         "/api/auth/registeruser",
-        { name, email, password, userPic },
+        { name, email, password, userPic: imageArr[0] },
         config
       );
 
@@ -192,6 +213,7 @@ const ApiProvider = ({ children }) => {
 
   const AllUsersData = async () => {
     try {
+      setIsLoading(true);
       const { data } = await axios.get(
         `${process.env.REACT_APP_GET_ALL_USERS_URL}`,
         {
@@ -209,6 +231,7 @@ const ApiProvider = ({ children }) => {
         setAllUserData(data.users);
         setUserCount(data.total);
       }
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -228,6 +251,7 @@ const ApiProvider = ({ children }) => {
 
       if (data.status) {
         toast.success(data.msg);
+        AllUsersData();
       }
     } catch (error) {
       console.log(error);
@@ -235,12 +259,129 @@ const ApiProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    AllUsersData();
-  }, [activePage]);
+    if (loc === "/admin/users") {
+      AllUsersData();
+    }
+  }, [activePage, loc]);
 
+  const CreateProduct = async () => {
+    try {
+      const { name, desc, stock, price } = product;
+
+      const { data } = await axios.post(
+        process.env.REACT_APP_CREATE_PRODUCT_URL,
+        { name, desc, stock, price, img: imageArr, category }
+      );
+
+      if (data.status) {
+        toast.success(data.msg, toastoption);
+      }
+
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const GetAllProducts = async () => {
+    try {
+      setIsLoading(true);
+
+      const { data } = await axios.get(
+        process.env.REACT_APP_GET_ALL_PRODUCT_URL,
+        {
+          params: {
+            page: productPage,
+            size: process.env.REACT_APP_PRODUCT_LIMIT,
+          },
+        }
+      );
+
+      let total = totalPagesCalculator(
+        productCount,
+        process.env.REACT_APP_PRODUCT_LIMIT
+      ).length;
+
+      if (productPage <= total) {
+        setProductPage(productPage + 1);
+      }
+
+      setAllProducts((prev) => [...prev, ...data.products]);
+
+      setProductCount(data.total);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const GetProduct = async (id) => {
+    try {
+      setIsLoading(true);
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_GET_PRODUCT_URL}/${id}`
+      );
+      setGetProduct(data);
+      setproductImg(data.img);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const makeComment = async (id) => {
+    try {
+      if (!localStorage.getItem("user")) {
+        navigate("/login");
+        return false;
+      }
+      const { data } = await axios.put(
+        process.env.REACT_APP_CREATE_COMMENT_URL,
+        {
+          comment,
+          rating,
+          productid: id,
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem("user"),
+          },
+        }
+      );
+      if (data.status) {
+        toast.success(data.msg);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    handleCloseModal();
+  };
+
+  const GetComments = async (id) => {
+    try {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_GET_COMMENT_URL}/${id}`
+      );
+      setComments(data.product);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <ApiContext.Provider
-      value={{ RegisterHandler, logOut, loginhandler, googleLogin, DeleteUser }}
+      value={{
+        RegisterHandler,
+        logOut,
+        loginhandler,
+        googleLogin,
+        DeleteUser,
+        AllUsersData,
+        CreateProduct,
+        GetAllProducts,
+        GetProduct,
+        makeComment,
+        GetComments,
+      }}
     >
       {children}
     </ApiContext.Provider>

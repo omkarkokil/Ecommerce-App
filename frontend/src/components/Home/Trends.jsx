@@ -35,59 +35,50 @@ const Trends = (props) => {
 
   const product = [
     {
-      img: boat,
-      img1: laptop,
-      img2: jacket,
+      img: [boat, laptop, jacket],
+
       name: "Boat headphone",
       price: "1090",
     },
     {
-      img: sofa,
-      img1: hat,
-      img2: jeans,
+      img: [sofa, hat, jeans],
+
       name: "Sofaset",
       price: "9900",
     },
     {
-      img: jacket,
-      img2: hat,
-      img1: shoe,
+      img: [jacket, hat, shoe],
+
       name: "Exclusive Red jackets for men",
       price: "2900",
     },
     {
-      img: shoe,
-      img1: boat,
-      img2: laptop,
+      img: [shoe, boat, laptop],
+
       name: "Red and white sneaker for men",
       price: "500",
     },
     {
-      img: laptop,
-      img1: hat,
-      img2: jeans,
+      img: [laptop, hat, jeans],
+
       name: "Hp pavallion 250",
       price: "35000",
     },
     {
-      img: hat,
-      img1: jeans,
-      img2: laptop,
+      img: [hat, jeans, laptop],
+
       name: "hats for men",
       price: "0002",
     },
 
     {
-      img: jeans,
-      img1: laptop,
-      img2: hat,
+      img: [jeans, laptop, hat],
+
       name: "jeans for men",
       price: "1000",
     },
     {
-      img: bjackets,
-      img1: boat,
-      img2: hat,
+      img: [bjackets, boat, hat],
       name: "Exclusive black jackets for men",
       price: "2500",
     },

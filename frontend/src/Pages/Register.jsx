@@ -27,7 +27,7 @@ import Navbar from "../utils/Navbar";
 import LoginLoader from "../utils/LoginLoader";
 
 const Register = () => {
-  const { user, isLoading } = useContext(StateContext);
+  const { user, isLoading, imageArr } = useContext(StateContext);
   const { handleUser, postDetailes } = useContext(FunctionContext);
   const { RegisterHandler } = useContext(ApiContext);
 
@@ -123,11 +123,10 @@ const Register = () => {
 
           <FormControl margin="dense">
             <TextField
-              id="userPic"
+              id="imageArr"
               type="file"
               accept="image/*"
-              name="userPic"
-              onChange={(e) => postDetailes(e.target.files[0])}
+              onChange={(e) => postDetailes(e.target.files)}
               size="medium"
               sx={{ backgroundColor: "#fff", width: "400px", mr: "20px" }}
               margin="dense"

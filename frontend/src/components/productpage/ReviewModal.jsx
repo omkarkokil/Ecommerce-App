@@ -1,13 +1,14 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
-import FormHelperText from "@mui/material/FormHelperText";
 import TextField from "@mui/material/TextField";
 import { Rating, Stack } from "@mui/material";
+import StateContext from "../../Context/hooks/StateContext";
+import FunctionContext from "../../Context/Function/FunctionContext";
+import { useParams } from "react-router-dom";
+import ApiContext from "../../Context/Api/ApiContext";
 
 const style = {
   position: "absolute",
@@ -20,23 +21,26 @@ const style = {
 };
 
 export default function ReviewModal() {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const { id } = useParams("");
 
+  const { comment, setComment, rating, setRating } =
+    React.useContext(StateContext);
+  const { handleCloseModal, handleOpenModal, openModal } =
+    React.useContext(FunctionContext);
+  const { makeComment } = React.useContext(ApiContext);
   return (
     <div>
       <Button
         variant="contained"
         fullWidth
         color="primary"
-        onClick={handleOpen}
+        onClick={handleOpenModal}
       >
         Submit Review
       </Button>
       <Modal
-        open={open}
-        onClose={handleClose}
+        open={openModal}
+        onClose={handleCloseModal}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -44,10 +48,18 @@ export default function ReviewModal() {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Submit Review
           </Typography>
-          <Rating precision={0.5} name="half-rating" />
+          <Rating
+            precision={0.5}
+            value={rating}
+            onChange={(event, newValue) => setRating(newValue)}
+            name="half-rating"
+          />
           <FormControl>
             <TextField
-              id=""
+              id="comment"
+              name="comment"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
               label=""
               multiline
               sx={{ my: 2 }}
@@ -55,7 +67,11 @@ export default function ReviewModal() {
               placeholder="Enter desc"
             />
           </FormControl>
-          <Button variant="contained" onClick={handleClose} color="primary">
+          <Button
+            variant="contained"
+            onClick={() => makeComment(id)}
+            color="primary"
+          >
             Submit
           </Button>
         </Stack>

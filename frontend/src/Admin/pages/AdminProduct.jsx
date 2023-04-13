@@ -23,13 +23,18 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  CircularProgress,
+  LinearProgress,
 } from "@mui/material";
 import StateContext from "../../Context/hooks/StateContext";
 import FunctionContext from "../../Context/Function/FunctionContext";
+import ApiContext from "../../Context/Api/ApiContext";
 
 const AdminProduct = () => {
-  const { category } = useContext(StateContext);
-  const { handleCategory } = useContext(FunctionContext);
+  const { category, product, setProduct, isLoading } = useContext(StateContext);
+  const { handleCategory, postDetailes, handleProducts } =
+    useContext(FunctionContext);
+  const { CreateProduct } = useContext(ApiContext);
   const Items = [
     "Top",
     "Bottom",
@@ -51,6 +56,9 @@ const AdminProduct = () => {
               margin="dense"
               sx={{ backgroundColor: "#fff", width: "400px", mr: "20px" }}
               placeholder="Product Name"
+              name="name"
+              value={product.name}
+              onChange={handleProducts}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -68,6 +76,9 @@ const AdminProduct = () => {
               margin="dense"
               sx={{ backgroundColor: "#fff", width: "400px" }}
               placeholder="Price"
+              name="price"
+              value={product.price}
+              onChange={handleProducts}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -89,6 +100,9 @@ const AdminProduct = () => {
                 mr: "20px",
               }}
               placeholder={"Product Description"}
+              name="desc"
+              value={product.desc}
+              onChange={handleProducts}
               margin="dense"
               InputProps={{
                 startAdornment: (
@@ -127,6 +141,10 @@ const AdminProduct = () => {
               size="medium"
               sx={{ backgroundColor: "#fff", width: "400px", mr: "20px" }}
               placeholder={"In Stocks"}
+              name="stock"
+              type="number"
+              value={product.stock}
+              onChange={handleProducts}
               margin="dense"
               InputProps={{
                 startAdornment: (
@@ -140,14 +158,17 @@ const AdminProduct = () => {
 
           <FormControl margin="dense">
             <TextField
-              id=""
               size="medium"
+              id="imageArr"
               type="file"
-              enctype="multipart/form-data"
-              multiple
+              accept="image/*"
+              onChange={(e) => postDetailes(e.target.files)}
               sx={{ backgroundColor: "#fff", width: "400px", mr: "20px" }}
               placeholder={"In Stocks"}
               margin="dense"
+              inputProps={{
+                multiple: true,
+              }}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -162,10 +183,12 @@ const AdminProduct = () => {
             <Button
               variant="contained"
               size="medium"
+              disabled={isLoading ? true : false}
+              onClick={CreateProduct}
               sx={{ width: "40%" }}
               color="primary"
             >
-              Register
+              {isLoading ? "Loading..." : "Add Product"}
             </Button>
           </FormControl>
         </Stack>
