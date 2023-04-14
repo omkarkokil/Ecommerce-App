@@ -43,10 +43,8 @@ const GridLayout = () => {
             },
           }
         );
-        setProductPage((productPage) => productPage + 1);
-        if (data.total !== allProducts.length) {
-          setAllProducts(data.products);
-        }
+
+        setAllProducts(data.products);
         setIsLoading(false);
       } catch (error) {
         console.log(error);
@@ -57,73 +55,59 @@ const GridLayout = () => {
   }, []);
 
   console.log(productPage);
-  // const fetchProducts = async () => {
-  //   try {
-  //     const { data } = await axios.get(
-  //       process.env.REACT_APP_GET_ALL_PRODUCT_URL,
-  //       {
-  //         params: {
-  //           page: productPage,
-  //           size: process.env.REACT_APP_PRODUCT_LIMIT,
-  //         },
-  //       }
-  //     );
-  //
-  //     return data.products;
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  const fetchData = async () => {
-    // const products = await fetchProducts();
-    //
-    const data = {};
-    const config = { headers: { "Content-Type": "application/json" } };
-    axios
-      .get(process.env.REACT_APP_GET_ALL_PRODUCT_URL, {
-        params: {
-          page: productPage,
-          size: process.env.REACT_APP_PRODUCT_LIMIT,
-        },
-      })
-      .catch((errors) => {
-        console.log(errors);
-      })
-      .then((response) => {
-        setProductPage((productPage) => productPage + 1);
-        setAllProducts([...allProducts, ...response.data.products]);
-        if (
-          response.data.products.length === 0 ||
-          response.data.products.length < 15
-        ) {
-          setHasMore(false);
+  const fetchProducts = async () => {
+    try {
+      const { data } = await axios.get(
+        process.env.REACT_APP_GET_ALL_PRODUCT_URL,
+        {
+          params: {
+            page: productPage,
+            size: process.env.REACT_APP_PRODUCT_LIMIT,
+          },
         }
-        // console.log("ffl", response);
-      });
+      );
+      return data.products;
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  // console.log(allProducts);
+  const fetchData = async () => {
+    const products = await fetchProducts();
+    setAllProducts([...allProducts, ...products]);
+
+    if (products.length === 0 || products.length < 15) {
+      setHasMore(false);
+    }
+
+    setProductPage(productPage + 1);
+
+    if (loc.includes("/products")) {
+      setProductPage(productPage);
+    }
+  };
+
+  console.log(allProducts);
+  // useEffect(() => {
+  //   if (productPage <= total) {
+  //     GetAllProducts();
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   if (total === productPage) {
+  //     setHasMore(false);
+  //   }
+  // }, [productPage]);
 
   return (
     <>
-      {/* <InfiniteScroll
+      <InfiniteScroll
         dataLength={allProducts.length}
         next={fetchData}
         hasMore={hasMore}
         loader={<SkeletonLoader />}
         endMessage={<h1>end</h1>}
-      > */}
-      <InfiniteScroll
-        dataLength={allProducts.length}
-        next={fetchData}
-        hasMore={hasMore}
-        loader={<h4>Loading...</h4>}
-        endMessage={
-          <p style={{ textAlign: "center" }}>
-            <b>Yay! You have seen it all</b>
-          </p>
-        }
       >
         <Grid
           container

@@ -58,9 +58,9 @@ const FunctionProvider = ({ children }) => {
     }
     console.log(imageArray);
 
-    const data = new FormData();
-
     for (let u = 0; u < pic.length; u++) {
+      const data = new FormData();
+      setIsLoading(true);
       data.append("file", pic[u]);
       data.append("upload_preset", "collage-app");
       data.append("cloud_name", "dfxyr6c40");
@@ -72,7 +72,6 @@ const FunctionProvider = ({ children }) => {
         .then((res) => res.json())
         .then((data) => {
           imageArray.push(data.url.toString());
-          setIsLoading(false);
         })
         .catch((error) => {
           console.log(error);
@@ -80,7 +79,7 @@ const FunctionProvider = ({ children }) => {
     }
 
     setImageArr(imageArray);
-    console.log(imageArray);
+    setIsLoading(false);
   };
 
   const totalPagesCalculator = (total, limit) => {

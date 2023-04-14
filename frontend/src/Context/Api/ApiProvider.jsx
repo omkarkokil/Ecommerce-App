@@ -28,10 +28,6 @@ const ApiProvider = ({ children }) => {
     productImg,
     setproductImg,
     setGetProduct,
-    setProductPage,
-    productPage,
-    productCount,
-    setProductCount,
 
     // comment
     comment,
@@ -283,38 +279,6 @@ const ApiProvider = ({ children }) => {
     }
   };
 
-  const GetAllProducts = async () => {
-    try {
-      setIsLoading(true);
-
-      const { data } = await axios.get(
-        process.env.REACT_APP_GET_ALL_PRODUCT_URL,
-        {
-          params: {
-            page: productPage,
-            size: process.env.REACT_APP_PRODUCT_LIMIT,
-          },
-        }
-      );
-
-      let total = totalPagesCalculator(
-        productCount,
-        process.env.REACT_APP_PRODUCT_LIMIT
-      ).length;
-
-      if (productPage <= total) {
-        setProductPage(productPage + 1);
-      }
-
-      setAllProducts((prev) => [...prev, ...data.products]);
-
-      setProductCount(data.total);
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const GetProduct = async (id) => {
     try {
       setIsLoading(true);
@@ -324,6 +288,18 @@ const ApiProvider = ({ children }) => {
       setGetProduct(data);
       setproductImg(data.img);
       setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const GetComments = async (id) => {
+    try {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_GET_COMMENT_URL}/${id}`
+      );
+
+      setComments(data.product);
     } catch (error) {
       console.log(error);
     }
@@ -348,24 +324,19 @@ const ApiProvider = ({ children }) => {
           },
         }
       );
+
+      console.log(data.data.reviews);
       if (data.status) {
-        toast.success(data.msg);
+        const arr = data.data.reviews;
+        setComments(arr);
+        console.log(comments);
+
+        toast.success(data.msg, toastoption);
       }
     } catch (error) {
       console.log(error);
     }
     handleCloseModal();
-  };
-
-  const GetComments = async (id) => {
-    try {
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_GET_COMMENT_URL}/${id}`
-      );
-      setComments(data.product);
-    } catch (error) {
-      console.log(error);
-    }
   };
   return (
     <ApiContext.Provider
@@ -377,7 +348,6 @@ const ApiProvider = ({ children }) => {
         DeleteUser,
         AllUsersData,
         CreateProduct,
-        GetAllProducts,
         GetProduct,
         makeComment,
         GetComments,

@@ -67,13 +67,22 @@ export default function ReviewModal() {
               placeholder="Enter desc"
             />
           </FormControl>
-          <Button
-            variant="contained"
-            onClick={() => makeComment(id)}
-            color="primary"
+          <Stack
+            direction={"row"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
           >
-            Submit
-          </Button>
+            <Button variant="text" onClick={handleCloseModal} color="error">
+              cancel
+            </Button>
+            <Button
+              variant="contained"
+              onClick={() => makeComment(id)}
+              color="primary"
+            >
+              Submit
+            </Button>
+          </Stack>
         </Stack>
       </Modal>
     </div>

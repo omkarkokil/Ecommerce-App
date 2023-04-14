@@ -50,7 +50,7 @@ const StateProvider = ({ children }) => {
   const [allProducts, setAllProducts] = useState([]);
   const [getProduct, setGetProduct] = useState([]);
   const [productImg, setproductImg] = useState([]);
-  const [productPage, setProductPage] = useState(1);
+  const [productPage, setProductPage] = useState(0);
   const [productCount, setProductCount] = useState();
 
   // products

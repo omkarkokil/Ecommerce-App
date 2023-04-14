@@ -15,7 +15,8 @@ import { useParams } from "react-router-dom";
 import LoginLoader from "../utils/LoginLoader";
 
 const ProductPage = () => {
-  const { getProduct, isLoading, productImg } = useContext(StateContext);
+  const { getProduct, isLoading, productImg, comments } =
+    useContext(StateContext);
   const { GetProduct } = useContext(ApiContext);
   const { id } = useParams("");
   const loc = window.location.pathname;
@@ -58,7 +59,7 @@ const ProductPage = () => {
               <Stack direction={"row"} mb="10px" alignItems="flex-end">
                 <Rating size="medium" sx={{ mt: "10px" }} readOnly value={3} />
                 <Typography variant="body1" color="initial" ml={"10px"}>
-                  2 reviews
+                  {comments.length} reviews
                 </Typography>
               </Stack>
               <Typography variant="h5" color="initial">

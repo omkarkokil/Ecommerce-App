@@ -14,43 +14,7 @@ import { useParams } from "react-router-dom";
 import ApiContext from "../../Context/Api/ApiContext";
 import StateContext from "../../Context/hooks/StateContext";
 
-const arr = [
-  {
-    star: 5,
-    time: "March 21, 2022",
-    msg: "This is a very nice product",
-  },
-  {
-    star: 4,
-    time: "March 21, 2022",
-    msg: "This is a very nice product",
-  },
-  {
-    star: 3.5,
-    time: "March 21, 2022",
-    msg: "This is a very nice productThis is a very nice productThis is a very nice productThis is a very nice product",
-  },
-  {
-    star: 4,
-    time: "March 21, 2022",
-    msg: "This is a very nice product",
-  },
-  {
-    star: 2.5,
-    time: "March 21, 2022",
-    msg: "This is a very nice product",
-  },
-  {
-    star: 5,
-    time: "March 21, 2022",
-    msg: "This is a very nice productThis is a very nice productThis is a very nice productThis is a very nice product",
-  },
-  {
-    star: 2.5,
-    time: "March 21, 2022",
-    msg: "This is a very nice product",
-  },
-];
+import Timestamp from "react-timestamp";
 
 const Comment = () => {
   const { id } = useParams("");
@@ -59,9 +23,8 @@ const Comment = () => {
 
   useEffect(() => {
     GetComments(id);
-    console.log(comments);
   }, []);
-
+  // console.log(comments);
   return (
     <>
       {comments != null
@@ -74,7 +37,7 @@ const Comment = () => {
                       {ele.name}
                     </Typography>
                     <Typography variant="body1" color="initial">
-                      March 21, 2022
+                      <Timestamp date={ele.createdAt} />
                     </Typography>
                   </Stack>
                 </Stack>

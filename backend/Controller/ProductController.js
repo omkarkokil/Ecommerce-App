@@ -31,7 +31,7 @@ const getAllProducts = async (req, res) => {
 
         const skip = (page - 1) * size;
         const total = await Product.countDocuments();
-        const products = await Product.find().limit(size).skip(skip).sort({ _id: -1 });
+        const products = await Product.find().sort({ createdAt: -1 }).skip(skip).limit(15)
         return res.json({ products, page, size, total })
 
     } catch (error) {
@@ -81,6 +81,15 @@ const createReviews = async (req, res) => {
             product.reviews.push(review)
         }
 
+        let avg = 0
+        product.reviews.forEach((element) => {
+            avg += element.rating
+        })
+
+        let getRate = avg / product.reviews.length;
+
+        console.log(getRate);
+
         const data = await product.save({ validateBeforeSave: false });
 
 
@@ -99,10 +108,14 @@ const createReviews = async (req, res) => {
 const getComments = async (req, res, next) => {
     try {
         const product = await Product.findById(req.params.id)
+        // const reviewsRate = product.reviews.find((ele) => { return ele.rating })
+
+
 
         return res.json({
             status: true,
-            product: product.reviews
+            product: product.reviews,
+
         })
     } catch (error) {
         console.log(error);
