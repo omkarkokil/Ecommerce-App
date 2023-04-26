@@ -7,17 +7,19 @@ import { Box, Divider, Rating, IconButton, Button } from "@mui/material";
 import { Add, Remove } from "@mui/icons-material";
 import ReviewModal from "../components/productpage/ReviewModal";
 import GridComment from "../components/productpage/GridComment";
-import Navbar from "../utils/Navbar";
+import Navbar from "../../utils/Navbar";
 import { useContext } from "react";
-import ApiContext from "../Context/Api/ApiContext";
-import StateContext from "../Context/hooks/StateContext";
+import ApiContext from "../../Context/Api/ApiContext";
+import StateContext from "../../Context/hooks/StateContext";
 import { useParams } from "react-router-dom";
-import LoginLoader from "../utils/LoginLoader";
+import LoginLoader from "../../utils/LoginLoader";
+import FunctionContext from "../../Context/Function/FunctionContext";
 
 const ProductPage = () => {
-  const { getProduct, isLoading, productImg, comments } =
+  const { getProduct, isLoading, productImg, comments, qty } =
     useContext(StateContext);
-  const { GetProduct } = useContext(ApiContext);
+  const { decreaseQty, IncreaseQty } = useContext(FunctionContext);
+  const { GetProduct, AddToCart } = useContext(ApiContext);
   const { id } = useParams("");
   const loc = window.location.pathname;
   useEffect(() => {
@@ -47,7 +49,7 @@ const ProductPage = () => {
                 })}
               </Carousel>
             </Stack>
-            <Stack mt={"5%"} width={"60%"}>
+            <Stack my={"5%"} width={"60%"}>
               <Typography
                 variant="h5"
                 fontSize={"1.9em"}
@@ -57,11 +59,18 @@ const ProductPage = () => {
                 {getProduct.name}
               </Typography>
               <Stack direction={"row"} mb="10px" alignItems="flex-end">
-                <Rating size="medium" sx={{ mt: "10px" }} readOnly value={3} />
+                <Rating
+                  size="medium"
+                  sx={{ mt: "10px" }}
+                  readOnly
+                  precision={0.1}
+                  value={getProduct.avgrate}
+                />
                 <Typography variant="body1" color="initial" ml={"10px"}>
-                  {comments.length} reviews
+                  {comments.length === 0 ? "No" : comments.length} reviews
                 </Typography>
               </Stack>
+
               <Typography variant="h5" color="initial">
                 {" "}
                 &#8377;{getProduct.price}
@@ -80,17 +89,21 @@ const ProductPage = () => {
               </Box>
               <Stack direction="row" alignItems={"center"} width={"60%"}>
                 <Stack direction="row" alignItems={"center"} mr="10px">
-                  <IconButton color="error">
+                  <IconButton onClick={decreaseQty} color="error">
                     <Remove />
                   </IconButton>
                   <Typography variant="body1" mx={"10px"} color="initial">
-                    2
+                    {qty}
                   </Typography>
-                  <IconButton color="success">
+                  <IconButton onClick={IncreaseQty} color="success">
                     <Add />
                   </IconButton>
                 </Stack>
-                <Button variant="contained" color="primary">
+                <Button
+                  variant="contained"
+                  onClick={() => AddToCart(getProduct._id)}
+                  color="primary"
+                >
                   Add to cart
                 </Button>
               </Stack>

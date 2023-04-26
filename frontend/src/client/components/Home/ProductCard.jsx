@@ -12,10 +12,7 @@ import Carousel from "react-material-ui-carousel";
 
 import React, { useContext, useEffect, useState } from "react";
 import { Stack } from "@mui/system";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { Link } from "react-router-dom";
-import ApiContext from "../../Context/Api/ApiContext";
-import StateContext from "../../Context/hooks/StateContext";
 
 const ProductCard = (props) => {
   return (
@@ -63,7 +60,12 @@ const ProductCard = (props) => {
                 <Typography variant="body1" color="#666">
                   {items.name.slice(0, 20)}...
                 </Typography>
-                <Rating size="small" sx={{ mt: "10px" }} readOnly value={3} />
+                <Rating
+                  size="small"
+                  sx={{ mt: "10px" }}
+                  readOnly
+                  value={items.avgrate}
+                />
                 <Typography variant="body1" color={"error"}>
                   &#8377;{items.price}
                 </Typography>

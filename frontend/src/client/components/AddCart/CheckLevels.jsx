@@ -12,11 +12,11 @@ import {
   LocationCity,
   Pin,
 } from "@mui/icons-material";
-import jacket from "../../img/jakets.jpg";
-import boat from "../../img/boat.jpg";
-import laptop from "../../img/hp laptop.jpg";
+import jacket from "../../../img/jakets.jpg";
+import boat from "../../../img/boat.jpg";
+import laptop from "../../../img/hp laptop.jpg";
 import Phone from "@mui/icons-material/Phone";
-import StateContext from "../../Context/hooks/StateContext";
+import StateContext from "../../../Context/hooks/StateContext";
 import swal from "sweetalert";
 import { useNavigate } from "react-router-dom";
 

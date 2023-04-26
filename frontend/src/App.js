@@ -1,15 +1,15 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "./Pages/Home";
+import Home from "./client/Pages/Home";
 import StateProvider from "./Context/hooks/StateProvider";
-import SearchModal from "./components/Navbar/SearchModal";
-import Login from "./Pages/Login";
-import Register from "./Pages/Register";
-import AddCart from "./Pages/AddCart";
-import Checkout from "./components/AddCart/Checkout";
-import ProductPage from "./Pages/ProductPage";
-import Products from "./Pages/Products";
-import ClientOrders from "./Pages/ClientOrders";
+import SearchModal from "./client/components/Navbar/SearchModal";
+import Login from "./client/Pages/Login";
+import Register from "./client/Pages/Register";
+import AddCart from "./client/Pages/AddCart";
+import Checkout from "./client/components/AddCart/Checkout";
+import ProductPage from "./client/Pages/ProductPage";
+import Products from "./client/Pages/Products";
+import ClientOrders from "./client/Pages/ClientOrders";
 import AdminNav from "./Admin/AdminNav";
 import ApiProvider from "./Context/Api/ApiProvider";
 import { ToastContainer, toast } from "react-toastify";
@@ -35,6 +35,7 @@ function App() {
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/productpage/:id" element={<ProductPage />} />
                 <Route path="/products" element={<Products />} />
+                <Route path="/products/:id" element={<Products />} />
                 <Route path="/orders" element={<ClientOrders />} />
 
                 {/* Admin Panel */}

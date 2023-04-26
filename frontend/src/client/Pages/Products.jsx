@@ -18,15 +18,16 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import StateContext from "../Context/hooks/StateContext";
-import FunctionContext from "../Context/Function/FunctionContext";
-import Navbar from "../utils/Navbar";
+import StateContext from "../../Context/hooks/StateContext";
+import FunctionContext from "../../Context/Function/FunctionContext";
+import Navbar from "../../utils/Navbar";
 const Products = () => {
   const [state, setState] = React.useState(false);
-  const { category, setCategory, value, setValue } =
+  const { category, setCategory, value, setValue, allProducts, productCount } =
     React.useContext(StateContext);
   const { handleCategory, handleValue } = React.useContext(FunctionContext);
 
+  const loc = window.location.pathname;
   const toggleDrawer = (anchor, open) => (event) => {
     if (
       event.type === "keydown" &&
@@ -52,8 +53,6 @@ const Products = () => {
       alignItems={"center"}
       sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 250 }}
       role="presentation"
-      // onClick={toggleDrawer(anchor, false)}
-      // onKeyDown={toggleDrawer(anchor, false)}
     >
       <Stack width={"50%"}>
         <Stack
@@ -139,6 +138,7 @@ const Products = () => {
   return (
     <>
       <Navbar />
+
       <div>
         {["top"].map((anchor) => (
           <React.Fragment key={anchor}>
@@ -169,11 +169,15 @@ const Products = () => {
       <Box sx={{ my: "7%" }}>
         <Stack mx={"40px"} mb={"40px"}>
           <Typography variant="h4" fontWeight={"bold"} color="initial">
-            ALL PRODUCTS
+            {loc === "/products"
+              ? ""
+              : allProducts.length !== 0
+              ? `${productCount} results found`
+              : "No result found"}
           </Typography>
-          <Box width={"15%"}>
+          {/* <Box width={"15%"}>
             <Divider />
-          </Box>
+          </Box> */}
         </Stack>
         <GridLayout />
       </Box>

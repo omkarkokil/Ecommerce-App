@@ -2,15 +2,25 @@ import React, { useState } from "react";
 import StateContext from "./StateContext";
 
 const StateProvider = ({ children }) => {
-  const [isLogin, setIsLogin] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
   const [category, setCategory] = React.useState("");
   const [value, setValue] = React.useState([0, 100000]);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [search, setSearch] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
+
+  // * Login & Register
+
+  const [isLogin, setIsLogin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [user, setUser] = useState({
+    name: "",
+    password: "",
+    Cpassword: "",
+    email: "",
+  });
 
   const [currentUser, setCurrentUser] = useState({
     name: "",
@@ -20,52 +30,60 @@ const StateProvider = ({ children }) => {
     isAdmin: 0,
   });
 
-  // Register States
-  const [user, setUser] = useState({
-    name: "",
-    password: "",
-    Cpassword: "",
-    email: "",
-  });
+  // ! Login & Register
 
-  // all users
+  //  * all users
   const [AllUserData, setAllUserData] = useState([]);
   const [userCount, setUserCount] = useState();
-
   const [googleUser, setGoogleUser] = useState({});
-
   const [imageArr, setImageArr] = useState([]);
   const [activePage, setActivePage] = useState(1);
-  // all users
 
-  // products
+  // ! all users
 
+  /* -------------------------------------------------------------------------- */
+  /*                                // ? products                               */
+  /* -------------------------------------------------------------------------- */
   const [product, setProduct] = useState({
     name: "",
     desc: "",
     price: "",
     stock: "",
   });
-
   const [allProducts, setAllProducts] = useState([]);
   const [getProduct, setGetProduct] = useState([]);
   const [productImg, setproductImg] = useState([]);
   const [productPage, setProductPage] = useState(0);
   const [productCount, setProductCount] = useState();
+  const [hasMore, setHasMore] = useState(true);
 
-  // products
+  /* -------------------------------------------------------------------------- */
+  /*                                // ! products                               */
+  /* -------------------------------------------------------------------------- */
 
-  // comments
+  /* -------------------------------------------------------------------------- */
+  /*                                // ? comments                               */
+  /* -------------------------------------------------------------------------- */
 
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(5);
   const [comments, setComments] = useState([]);
-  // comments
+
+  /* -------------------------------------------------------------------------- */
+  /*                                // ! comments                               */
+  /* -------------------------------------------------------------------------- */
+
+  /* -------------------------------------------------------------------------- */
+  /*                              //TODO Cart items                             */
+  /* -------------------------------------------------------------------------- */
+  const [qty, setQty] = useState(1);
+  const [cartItem, setCartItem] = useState([]);
+  const [cartCount, setCartCount] = useState();
+  // ? Cart items
+
   return (
     <StateContext.Provider
       value={{
-        isLogin,
-        setIsLogin,
         open,
         setOpen,
         activeStep,
@@ -76,6 +94,12 @@ const StateProvider = ({ children }) => {
         setCategory,
         value,
         setValue,
+        search,
+        setSearch,
+
+        // ?Login Register
+        isLogin,
+        setIsLogin,
         isAdmin,
         setIsAdmin,
         user,
@@ -94,6 +118,9 @@ const StateProvider = ({ children }) => {
         setUserCount,
         activePage,
         setActivePage,
+        // ! Login Register
+
+        //? products
         product,
         setProduct,
         allProducts,
@@ -106,17 +133,28 @@ const StateProvider = ({ children }) => {
         setProductPage,
         productCount,
         setProductCount,
+        hasMore,
+        setHasMore,
+        //! products
 
-        // comments
-
+        // ?comments
         comment,
         setComment,
         rating,
         setRating,
         comments,
         setComments,
+        cartCount,
+        setCartCount,
+        // !comments
 
-        // comments
+        //TODO cart
+        qty,
+        setQty,
+        cartItem,
+        setCartItem,
+
+        //? cart
       }}
     >
       {children}

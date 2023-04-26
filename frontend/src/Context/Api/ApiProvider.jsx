@@ -3,10 +3,11 @@ import ApiContext from "./ApiContext";
 import StateContext from "../hooks/StateContext";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
 import FunctionContext from "../Function/FunctionContext";
+import { Try } from "@mui/icons-material";
 
 const ApiProvider = ({ children }) => {
   const {
@@ -24,21 +25,34 @@ const ApiProvider = ({ children }) => {
     product,
     category,
     setAllProducts,
+    setProductCount,
+    search,
+    setSearch,
     getProduct,
     productImg,
+    productPage,
     setproductImg,
     setGetProduct,
-
+    setProductPage,
+    allProducts,
+    isLogin,
     // comment
     comment,
     rating,
     comments,
     setComments,
     // comment
+
+    //TODO cart
+    qty,
+    cartItem,
+    setCartItem,
+    cartCount,
+    setCartCount,
+    //? cart
   } = useContext(StateContext);
 
-  const { totalPagesCalculator, handleCloseModal } =
-    useContext(FunctionContext);
+  const { handleCloseModal } = useContext(FunctionContext);
   let loc = window.location.pathname;
   const navigate = useNavigate();
 
@@ -279,6 +293,31 @@ const ApiProvider = ({ children }) => {
     }
   };
 
+  const getProducts = async (id) => {
+    try {
+      setIsLoading(true);
+      const { data } = await axios.get(
+        process.env.REACT_APP_GET_ALL_PRODUCT_URL,
+        {
+          params: {
+            page: 1,
+            size: process.env.REACT_APP_PRODUCT_LIMIT,
+            search: id,
+          },
+        }
+      );
+      setProductPage((productPage) => productPage + 1);
+      if (data.total !== allProducts.length) {
+        setAllProducts(data.products);
+        setProductCount(data.total);
+        console.log(data.total);
+      }
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const GetProduct = async (id) => {
     try {
       setIsLoading(true);
@@ -325,12 +364,9 @@ const ApiProvider = ({ children }) => {
         }
       );
 
-      console.log(data.data.reviews);
       if (data.status) {
         const arr = data.data.reviews;
         setComments(arr);
-        console.log(comments);
-
         toast.success(data.msg, toastoption);
       }
     } catch (error) {
@@ -338,6 +374,90 @@ const ApiProvider = ({ children }) => {
     }
     handleCloseModal();
   };
+
+  /* -------------------------------------------------------------------------- */
+  /*// ?                                 cart items                             */
+  /* -------------------------------------------------------------------------- */
+
+  const AddToCart = async (id) => {
+    try {
+      const { data } = await axios.post(
+        process.env.REACT_APP_Add_TO_CART,
+        {
+          productid: id,
+          qty,
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem("user"),
+          },
+        }
+      );
+
+      if (data.status) {
+        toast.success(data.msg, toastoption);
+        GetCart();
+        setCartCount(cartCount + 1);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const GetCart = async () => {
+    try {
+      setIsLoading(true);
+      const { data } = await axios.get(process.env.REACT_APP_GET_CART, {
+        headers: {
+          Authorization: localStorage.getItem("user"),
+        },
+      });
+      if (data.status) {
+        setCartItem(data.cartProduct);
+        setCartCount(data.cartProduct.length);
+      }
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const RemoveCart = async (id) => {
+    try {
+      const { data } = await axios.put(
+        process.env.REACT_APP_REMOVE_FROM_CART,
+        { id },
+        {
+          headers: {
+            Authorization: localStorage.getItem("user"),
+          },
+        }
+      );
+
+      if (data.status) {
+        toast.success(data.msg, toastoption);
+        const newData = cartItem.filter((item) => {
+          return item.productid._id !== id;
+        });
+
+        setCartItem(newData);
+        setCartCount(cartCount - 1);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem("user")) {
+      GetCart();
+    }
+  }, [localStorage.getItem("user")]);
+
+  /* -------------------------------------------------------------------------- */
+  /* //?                                 cart items                            */
+  /* -------------------------------------------------------------------------- */
+
   return (
     <ApiContext.Provider
       value={{
@@ -351,6 +471,10 @@ const ApiProvider = ({ children }) => {
         GetProduct,
         makeComment,
         GetComments,
+        getProducts,
+        AddToCart,
+        GetCart,
+        RemoveCart,
       }}
     >
       {children}

@@ -26,18 +26,38 @@ const createProduct = async (req, res) => {
 
 const getAllProducts = async (req, res) => {
     try {
+        const search = req.query.search ? req.query.search : ""
         const page = req.query.page ? parseInt(req.query.page) : 1;
         const size = req.query.size ? parseInt(req.query.size) : 15;
 
         const skip = (page - 1) * size;
-        const total = await Product.countDocuments();
         const products = await Product.find().sort({ createdAt: -1 }).skip(skip).limit(15)
-        return res.json({ products, page, size, total })
+
+        const searchproduct = products.filter((item) => {
+            return item.name.toLowerCase().includes(search) || item.category.toLowerCase().includes(search)
+        })
+
+        const total = await Product.find();
+        const searchTotal = total.filter((item) => {
+            if (item.name.toLowerCase().includes(search) || item.category.toLowerCase().includes(search)) {
+                return item
+            }
+        })
+
+        if (!search || search !== null) {
+            return res.json({ products: searchproduct, page, size, total: searchTotal.length })
+        } else {
+            return res.json({ products, page, size, total: total.length })
+        }
 
     } catch (error) {
+        console.log(error);
         return res.json({ msg: error, status: false });
     }
 }
+
+
+
 
 const getProduct = async (req, res) => {
     try {
@@ -62,10 +82,9 @@ const createReviews = async (req, res) => {
             comment
         }
 
-        const product = await Product.findById(productid)
+        const product = await Product.findById(productid);
 
         const reviewExists = product.reviews.find((ifExists) => ifExists.userid !== undefined ? ifExists.userid.toString() === review.userid.toString() : "")
-
 
         if (reviewExists) {
             product.reviews.forEach(element => {
@@ -81,18 +100,18 @@ const createReviews = async (req, res) => {
             product.reviews.push(review)
         }
 
+
+        const data = await product.save({ validateBeforeSave: false });
+
         let avg = 0
         product.reviews.forEach((element) => {
             avg += element.rating
         })
-
+        console.log(avg);
         let getRate = avg / product.reviews.length;
 
+        await Product.findByIdAndUpdate(productid, { avgrate: getRate.toFixed(1) })
         console.log(getRate);
-
-        const data = await product.save({ validateBeforeSave: false });
-
-
 
         return res.json({
             status: true,
@@ -108,10 +127,6 @@ const createReviews = async (req, res) => {
 const getComments = async (req, res, next) => {
     try {
         const product = await Product.findById(req.params.id)
-        // const reviewsRate = product.reviews.find((ele) => { return ele.rating })
-
-
-
         return res.json({
             status: true,
             product: product.reviews,

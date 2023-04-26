@@ -1,6 +1,10 @@
 const User = require("../Model/UserModal");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+var populate = require('mongoose-populator');
+const productModal = require("../Model/ProductModal");
+
+
 
 const generateToken = (id) => {
   const token = jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -157,5 +161,77 @@ const deleteUser = async (req, res) => {
   }
 }
 
+const AddToCart = async (req, res) => {
+  try {
+    const { qty, productid } = req.body;
+    const product = { productid, qty }
+    const user = await User.findOne({ _id: req.user.id._id })
+    const productExists = user.cartProduct.find((item) =>
+      item.productid.toString() !== undefined ? item.productid.toString() === product.productid : "",
+    )
 
-module.exports = { RegisterUser, LoginUser, googleUser, getAllUser, deleteUser };
+    if (productExists) {
+      user.cartProduct.forEach(item => {
+        if (item.productid.toString() !== undefined) {
+          if (item.productid.toString() === product.productid) {
+            item.qty += product.qty
+          }
+        }
+      });
+
+    } else {
+      user.cartProduct.push(product)
+    }
+
+    await user.save({ validateBeforeSave: false })
+
+    return res.json({
+      msg: "Product added to cart",
+      data: product,
+      status: true
+    })
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const removeCart = async (req, res) => {
+  try {
+    const { id } = req.body
+    const data = await User.findByIdAndUpdate({ _id: req.user.id._id })
+    const product = data.cartProduct.filter((item) => {
+      return item.productid != id
+    }
+    )
+    data.cartProduct = product;
+
+    await data.save()
+
+    return res.json({
+      status: true,
+      product,
+      msg: "Product removed from cart"
+    })
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const getCart = async (req, res) => {
+  try {
+    const { _id } = req.user.id;
+    const user = await User.findOne({ _id }).populate("cartProduct.productid", "name  price img stock")
+    return res.json({
+      status: true,
+      cartProduct: user.cartProduct
+    })
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+module.exports = { RegisterUser, LoginUser, googleUser, getAllUser, deleteUser, AddToCart, removeCart, getCart };

@@ -7,21 +7,22 @@ import {
   Rating,
   Box,
 } from "@mui/material";
-import boat from "../../img/boat.jpg";
-import sofa from "../../img/sofa.png";
-import jacket from "../../img/jakets.jpg";
-import shoe from "../../img/shoes red.jpg";
-import laptop from "../../img/hp laptop.jpg";
-import bjackets from "../../img/bjackets.jpg";
-import hat from "../../img/hats.jpg";
-import jeans from "../../img/jeans.jpg";
+import boat from "../../../img/boat.jpg";
+import sofa from "../../../img/sofa.png";
+import jacket from "../../../img/jakets.jpg";
+import shoe from "../../../img/shoes red.jpg";
+import laptop from "../../../img/hp laptop.jpg";
+import bjackets from "../../../img/bjackets.jpg";
+import hat from "../../../img/hats.jpg";
+import jeans from "../../../img/jeans.jpg";
 import { Stack } from "@mui/system";
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import Carousel from "react-material-ui-carousel";
 import ProductCard from "./ProductCard";
+import StateContext from "../../../Context/hooks/StateContext";
 
 const Trends = (props) => {
   const scrollnow = () => {
@@ -33,56 +34,8 @@ const Trends = (props) => {
   };
   const ref = useRef(null);
 
-  const product = [
-    {
-      img: [boat, laptop, jacket],
-
-      name: "Boat headphone",
-      price: "1090",
-    },
-    {
-      img: [sofa, hat, jeans],
-
-      name: "Sofaset",
-      price: "9900",
-    },
-    {
-      img: [jacket, hat, shoe],
-
-      name: "Exclusive Red jackets for men",
-      price: "2900",
-    },
-    {
-      img: [shoe, boat, laptop],
-
-      name: "Red and white sneaker for men",
-      price: "500",
-    },
-    {
-      img: [laptop, hat, jeans],
-
-      name: "Hp pavallion 250",
-      price: "35000",
-    },
-    {
-      img: [hat, jeans, laptop],
-
-      name: "hats for men",
-      price: "0002",
-    },
-
-    {
-      img: [jeans, laptop, hat],
-
-      name: "jeans for men",
-      price: "1000",
-    },
-    {
-      img: [bjackets, boat, hat],
-      name: "Exclusive black jackets for men",
-      price: "2500",
-    },
-  ];
+  const { allProducts } = useContext(StateContext);
+  const data = allProducts.slice(0, 10);
 
   return (
     <>
@@ -119,7 +72,7 @@ const Trends = (props) => {
         className="trend"
       >
         <Stack direction={"row"} alignItems={"center"} mx="40px">
-          <ProductCard product={product} />
+          <ProductCard product={data} />
         </Stack>
       </Stack>
     </>

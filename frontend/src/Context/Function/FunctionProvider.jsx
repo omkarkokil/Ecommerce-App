@@ -20,6 +20,8 @@ const FunctionProvider = ({ children }) => {
     setIsLoading,
     product,
     setProduct,
+    setQty,
+    qty,
   } = useContext(StateContext);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -60,7 +62,6 @@ const FunctionProvider = ({ children }) => {
 
     for (let u = 0; u < pic.length; u++) {
       const data = new FormData();
-      setIsLoading(true);
       data.append("file", pic[u]);
       data.append("upload_preset", "collage-app");
       data.append("cloud_name", "dfxyr6c40");
@@ -122,6 +123,22 @@ const FunctionProvider = ({ children }) => {
 
   // comment model hanlders
 
+  //? cart
+
+  const IncreaseQty = () => {
+    if (qty < 10) {
+      setQty(qty + 1);
+    }
+  };
+
+  const decreaseQty = () => {
+    if (qty > 1) {
+      setQty(qty - 1);
+    }
+  };
+
+  //! cart
+
   return (
     <>
       <FunctionContext.Provider
@@ -143,6 +160,11 @@ const FunctionProvider = ({ children }) => {
           handleCloseModal,
           handleOpenModal,
           // comment
+
+          // ?cart
+          decreaseQty,
+          IncreaseQty,
+          // !cart
         }}
       >
         {children}

@@ -7,9 +7,9 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Stack } from "@mui/system";
 
-import StateContext from "../../Context/hooks/StateContext";
+import StateContext from "../../../Context/hooks/StateContext";
 import CheckLevels from "./CheckLevels";
-import Navbar from "../../utils/Navbar";
+import Navbar from "../../../utils/Navbar";
 
 const steps = [
   "Select delivery address",

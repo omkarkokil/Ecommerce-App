@@ -11,8 +11,8 @@ import {
 } from "@mui/material";
 import React, { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import ApiContext from "../../Context/Api/ApiContext";
-import StateContext from "../../Context/hooks/StateContext";
+import ApiContext from "../../../Context/Api/ApiContext";
+import StateContext from "../../../Context/hooks/StateContext";
 
 import Timestamp from "react-timestamp";
 

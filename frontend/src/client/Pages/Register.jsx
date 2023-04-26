@@ -20,11 +20,11 @@ import {
   FormHelperText,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import StateContext from "../Context/hooks/StateContext";
-import ApiContext from "../Context/Api/ApiContext";
-import FunctionContext from "../Context/Function/FunctionContext";
-import Navbar from "../utils/Navbar";
-import LoginLoader from "../utils/LoginLoader";
+import StateContext from "../../Context/hooks/StateContext";
+import ApiContext from "../../Context/Api/ApiContext";
+import FunctionContext from "../../Context/Function/FunctionContext";
+import Navbar from "../../utils/Navbar";
+import LoginLoader from "../../utils/LoginLoader";
 
 const Register = () => {
   const { user, isLoading, imageArr } = useContext(StateContext);

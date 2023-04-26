@@ -31,7 +31,7 @@ const SkeletonLoader = () => {
             {arr.map((ele) => {
               return (
                 <Box key={ele}>
-                  <Skeleton variant="rectangular" width={210} height={118} />
+                  <Skeleton variant="rectangular" width={210} height={175} />
                   <Skeleton
                     variant="rectangular"
                     sx={{ my: "10px" }}
@@ -42,9 +42,14 @@ const SkeletonLoader = () => {
                     variant="rectangular"
                     sx={{ mb: "10px" }}
                     width={210}
-                    height={30}
+                    height={20}
                   />
-                  <Skeleton variant="rectangular" width={210} height={25} />
+                  <Skeleton
+                    variant="rectangular"
+                    sx={{ mb: "10px" }}
+                    width={210}
+                    height={20}
+                  />
                 </Box>
               );
             })}

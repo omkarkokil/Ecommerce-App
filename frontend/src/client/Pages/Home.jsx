@@ -1,14 +1,17 @@
 import { Box, IconButton, Typography, Button } from "@mui/material";
 import { Stack } from "@mui/system";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import Carosoul from "../components/Home/Carosoul";
 import Trends from "../components/Home/Trends";
-
-import GridLayout from "../components/Home/GridLayout";
 import { Link } from "react-router-dom";
-import Navbar from "../utils/Navbar";
+import Navbar from "../../utils/Navbar";
+import ApiContext from "../../Context/Api/ApiContext";
 
 const Home = () => {
+  const { getProducts } = useContext(ApiContext);
+  useEffect(() => {
+    getProducts();
+  }, []);
   return (
     <>
       <Navbar />

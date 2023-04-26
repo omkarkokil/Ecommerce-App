@@ -17,7 +17,8 @@ import FunctionContext from "../Context/Function/FunctionContext";
 import ApiContext from "../Context/Api/ApiContext";
 
 const Navbar = () => {
-  const { isLogin, setIsLogin, currentUser } = useContext(StateContext);
+  const { isLogin, setIsLogin, currentUser, cartItem, cartCount } =
+    useContext(StateContext);
   const { logOut } = useContext(ApiContext);
   const [anchorEl, setAnchorEl] = React.useState(null);
   // console.log(currentUser);
@@ -107,7 +108,7 @@ const Navbar = () => {
           ) : (
             <>
               <Link to={"/addcart"} className="mx-2">
-                <Badge badgeContent={4} color="primary">
+                <Badge badgeContent={cartCount} color="primary">
                   <ShoppingCartRounded sx={{ color: "#000" }} />
                 </Badge>
               </Link>

@@ -20,7 +20,7 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import { styled } from "@mui/material/styles";
 import { Delete, Edit, Login, Store } from "@mui/icons-material";
 import { Link } from "react-router-dom";
-import Navbar from "../utils/Navbar";
+import Navbar from "../../utils/Navbar";
 
 const ClientOrders = () => {
   const color = blue["A400"];

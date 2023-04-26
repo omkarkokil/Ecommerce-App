@@ -13,12 +13,12 @@ import {
 } from "@mui/material";
 import jwt_decode from "jwt-decode";
 import { Link } from "react-router-dom";
-import StateContext from "../Context/hooks/StateContext";
-import FunctionContext from "../Context/Function/FunctionContext";
-import ApiContext from "../Context/Api/ApiContext";
-import Navbar from "../utils/Navbar";
+import StateContext from "../../Context/hooks/StateContext";
+import FunctionContext from "../../Context/Function/FunctionContext";
+import ApiContext from "../../Context/Api/ApiContext";
+import Navbar from "../../utils/Navbar";
 import { GoogleLogin } from "@react-oauth/google";
-import LoginLoader from "../utils/LoginLoader";
+import LoginLoader from "../../utils/LoginLoader";
 
 const Login = () => {
   const { user, setUser, isLoading } = useContext(StateContext);

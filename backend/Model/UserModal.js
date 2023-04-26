@@ -1,4 +1,8 @@
 const mongoose = require("mongoose");
+const Product = require("./ProductModal");
+
+var deepPopulate = require('mongoose-deep-populate')(mongoose);
+
 
 const UserSchema = mongoose.Schema({
   name: {
@@ -24,6 +28,18 @@ const UserSchema = mongoose.Schema({
     default:
       "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
   },
+  cartProduct: [{
+    productid: {
+      type: mongoose.Types.ObjectId,
+      ref: Product,
+    },
+    qty: {
+      type: Number,
+      default: 1
+    }
+  }
+  ]
+
 });
 
 const UserModal = mongoose.model("users", UserSchema);

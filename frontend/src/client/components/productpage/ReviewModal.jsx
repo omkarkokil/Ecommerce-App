@@ -5,10 +5,10 @@ import Modal from "@mui/material/Modal";
 import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import { Rating, Stack } from "@mui/material";
-import StateContext from "../../Context/hooks/StateContext";
-import FunctionContext from "../../Context/Function/FunctionContext";
+import StateContext from "../../../Context/hooks/StateContext";
+import FunctionContext from "../../../Context/Function/FunctionContext";
 import { useParams } from "react-router-dom";
-import ApiContext from "../../Context/Api/ApiContext";
+import ApiContext from "../../../Context/Api/ApiContext";
 
 const style = {
   position: "absolute",

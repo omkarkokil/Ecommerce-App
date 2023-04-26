@@ -3,10 +3,13 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import StateContext from "../../Context/hooks/StateContext";
-import FunctionContext from "../../Context/Function/FunctionContext";
+import StateContext from "../../../Context/hooks/StateContext";
+import FunctionContext from "../../../Context/Function/FunctionContext";
 import { IconButton, InputAdornment, TextField } from "@mui/material";
 import { Search, Send } from "@mui/icons-material";
+import { Link, useParams } from "react-router-dom";
+import ApiContext from "../../../Context/Api/ApiContext";
+import { useEffect } from "react";
 
 const style = {
   position: "absolute",
@@ -14,14 +17,13 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "80%",
-  //   bgcolor: "background.paper",
-  //   boxShadow: 24,
   p: 4,
 };
 
 export default function SearchModal() {
-  const { open } = React.useContext(StateContext);
+  const { open, search, setSearch } = React.useContext(StateContext);
   const { handleClose } = React.useContext(FunctionContext);
+
   return (
     <div>
       <Modal
@@ -35,13 +37,20 @@ export default function SearchModal() {
             id="search"
             sx={{ width: "100%", background: "#fff" }}
             label="Search"
+            name="search"
+            value={search}
             variant="filled"
+            onChange={(e) => {
+              setSearch(e.target.value);
+            }}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton color="secondary">
-                    <Send />
-                  </IconButton>
+                  <Link to={`/products/${search}`}>
+                    <IconButton color="secondary" onClick={handleClose}>
+                      <Send />
+                    </IconButton>
+                  </Link>
                 </InputAdornment>
               ),
             }}

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const User = require("../Model/UserModal")
+const User = require("../Model/UserModal");
 
 const ProductSchema = mongoose.Schema({
     name: {
@@ -37,7 +37,6 @@ const ProductSchema = mongoose.Schema({
         {
             userid: {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: User
             },
             name: {
                 type: String,
@@ -55,13 +54,19 @@ const ProductSchema = mongoose.Schema({
                 type: Date,
                 default: Date.now
             }
-        }
+        },
     ],
+    avgrate: {
+        type: Number,
+        default: 5
+    },
     createdAt: {
         type: Date,
         default: Date.now
     }
 })
+
+
 
 const productModal = mongoose.model("product", ProductSchema);
 
