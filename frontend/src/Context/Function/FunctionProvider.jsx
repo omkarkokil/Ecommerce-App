@@ -22,7 +22,18 @@ const FunctionProvider = ({ children }) => {
     setProduct,
     setQty,
     qty,
+
+    setSkipped,
+    skipped,
+    setActiveStep,
+    activeStep,
+
+    orderData,
+    setOrderData,
   } = useContext(StateContext);
+
+  const navigate = useNavigate();
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleCategory = (event) => {
@@ -52,6 +63,17 @@ const FunctionProvider = ({ children }) => {
     });
     console.log(product);
   };
+
+  const handleOrder = (e) => {
+    const { name, value } = e.target;
+    setOrderData(() => {
+      return {
+        ...orderData,
+        [name]: value,
+      };
+    });
+  };
+
   const postDetailes = (pic) => {
     const imageArray = [];
     setIsLoading(true);
@@ -139,6 +161,31 @@ const FunctionProvider = ({ children }) => {
 
   //! cart
 
+  /* -------------------------------------------------------------------------- */
+  /*                               CheckOut steps                               */
+  /* -------------------------------------------------------------------------- */
+
+  const isStepSkipped = (step) => {
+    return skipped.has(step);
+  };
+
+  const handleNext = () => {
+    let newSkipped = skipped;
+    if (isStepSkipped(activeStep)) {
+      newSkipped = new Set(newSkipped.values());
+      newSkipped.delete(activeStep);
+    }
+
+    if (activeStep === 2) {
+      setActiveStep(-1);
+      navigate("/ordersSuccess");
+    }
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setSkipped(newSkipped);
+  };
+
+  /* ----------------------------- CheckOut steps ----------------------------- */
+
   return (
     <>
       <FunctionContext.Provider
@@ -165,6 +212,12 @@ const FunctionProvider = ({ children }) => {
           decreaseQty,
           IncreaseQty,
           // !cart
+
+          handleNext,
+          handleOrder,
+
+          shade1,
+          color,
         }}
       >
         {children}

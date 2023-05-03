@@ -1,7 +1,6 @@
 const User = require("../Model/UserModal");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-var populate = require('mongoose-populator');
 const productModal = require("../Model/ProductModal");
 
 

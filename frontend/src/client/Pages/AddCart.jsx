@@ -5,16 +5,20 @@ import {
   Badge,
   IconButton,
   Tooltip,
+  Avatar,
 } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import React, { useContext, useEffect } from "react";
 
+import { blue } from "@mui/material/colors";
+
 import { Link } from "react-router-dom";
-import { Add, Delete, Remove } from "@mui/icons-material";
+import { Add, Delete, Remove, ShoppingCart } from "@mui/icons-material";
 import Navbar from "../../utils/Navbar";
 import ApiContext from "../../Context/Api/ApiContext";
 import StateContext from "../../Context/hooks/StateContext";
 import LoginLoader from "../../utils/LoginLoader";
+import FunctionContext from "../../Context/Function/FunctionContext";
 
 const AddCart = () => {
   const { RemoveCart } = useContext(ApiContext);
@@ -26,11 +30,38 @@ const AddCart = () => {
 
   const gst = Math.round((results * 18) / 100);
 
+  const color = blue["A400"];
+  const shade1 = blue[50];
+
   return (
     <>
       <Navbar />
       {isLoading ? (
         <LoginLoader />
+      ) : cartItem.length <= 0 ? (
+        <Stack height={"85vh"} justifyContent={"center"} alignItems={"center"}>
+          <Avatar sx={{ background: shade1, height: "5em", width: "5em" }}>
+            <ShoppingCart
+              sx={{
+                fontSize: "3em",
+                color: color,
+              }}
+            />
+          </Avatar>
+          <Typography
+            variant="h4"
+            fontSize={"2.5em"}
+            sx={{ my: "20px" }}
+            color="initial"
+          >
+            Your cart is empty view products
+          </Typography>
+          <Link to="/products">
+            <Button variant="contained" color="primary">
+              View Products
+            </Button>
+          </Link>
+        </Stack>
       ) : (
         <Stack direction={"row"}>
           <Stack my={"10vh"} width={"70%"} sx={{ alignItems: "center" }}>

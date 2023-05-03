@@ -45,27 +45,27 @@ const ClientOrders = () => {
     },
   }));
   const arr = [
-    {
-      Pid: "1234567",
-      name: "Latop",
-      qty: "1",
-      amount: "50000",
-      status: 1,
-    },
-    {
-      Pid: "451655545",
-      name: "Iphone 11 mini",
-      qty: "2",
-      amount: "60000",
-      status: 0,
-    },
-    {
-      Pid: "5452158",
-      name: "Red jacket for men",
-      qty: "3",
-      amount: "1000",
-      status: 1,
-    },
+    // {
+    //   Pid: "1234567",
+    //   name: "Latop",
+    //   qty: "1",
+    //   amount: "50000",
+    //   status: 1,
+    // },
+    // {
+    //   Pid: "451655545",
+    //   name: "Iphone 11 mini",
+    //   qty: "2",
+    //   amount: "60000",
+    //   status: 0,
+    // },
+    // {
+    //   Pid: "5452158",
+    //   name: "Red jacket for men",
+    //   qty: "3",
+    //   amount: "1000",
+    //   status: 1,
+    // },
   ];
   return (
     <div>

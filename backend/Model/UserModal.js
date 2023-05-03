@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const Product = require("./ProductModal");
 
-var deepPopulate = require('mongoose-deep-populate')(mongoose);
 
 
 const UserSchema = mongoose.Schema({

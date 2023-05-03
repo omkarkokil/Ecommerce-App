@@ -68,7 +68,7 @@ const Navbar = () => {
             </Typography>
           </Link>
 
-          <Link className="mx-2 ">
+          <Link className="mx-2 " to={"/in"}>
             <Typography fontSize={".75em"} variant="subtitle2" color="initial">
               ABOUT
             </Typography>

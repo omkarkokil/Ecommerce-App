@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import StateContext from "./StateContext";
 
 const StateProvider = ({ children }) => {
@@ -53,7 +53,7 @@ const StateProvider = ({ children }) => {
   const [allProducts, setAllProducts] = useState([]);
   const [getProduct, setGetProduct] = useState([]);
   const [productImg, setproductImg] = useState([]);
-  const [productPage, setProductPage] = useState(0);
+  const [productPage, setProductPage] = useState(2);
   const [productCount, setProductCount] = useState();
   const [hasMore, setHasMore] = useState(true);
 
@@ -80,6 +80,21 @@ const StateProvider = ({ children }) => {
   const [cartItem, setCartItem] = useState([]);
   const [cartCount, setCartCount] = useState();
   // ? Cart items
+
+  /* -------------------------------------------------------------------------- */
+  /*                               handle Orders                                */
+  /* -------------------------------------------------------------------------- */
+
+  const [orderData, setOrderData] = useState({
+    address: "",
+    mob: "",
+    pincode: "",
+    State: "",
+  });
+
+  const [productPrices, setProductPrices] = useState({});
+
+  const [orderProducts, setOrderProducts] = useState([]);
 
   return (
     <StateContext.Provider
@@ -118,7 +133,7 @@ const StateProvider = ({ children }) => {
         setUserCount,
         activePage,
         setActivePage,
-        // ! Login Register
+        // ? Login Register
 
         //? products
         product,
@@ -148,13 +163,21 @@ const StateProvider = ({ children }) => {
         setCartCount,
         // !comments
 
-        //TODO cart
+        //? cart
         qty,
         setQty,
         cartItem,
         setCartItem,
+        //! cart
 
-        //? cart
+        //? Order Data
+        orderData,
+        setOrderData,
+        orderProducts,
+        setOrderProducts,
+        productPrices,
+        setProductPrices,
+        //! Order Data
       }}
     >
       {children}

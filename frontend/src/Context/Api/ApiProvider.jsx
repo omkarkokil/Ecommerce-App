@@ -50,9 +50,16 @@ const ApiProvider = ({ children }) => {
     cartCount,
     setCartCount,
     //? cart
+
+    // orderdata
+    orderData,
+    orderProducts,
+    productPrices,
+
+    // orderdata
   } = useContext(StateContext);
 
-  const { handleCloseModal } = useContext(FunctionContext);
+  const { handleCloseModal, handleNext } = useContext(FunctionContext);
   let loc = window.location.pathname;
   const navigate = useNavigate();
 
@@ -82,18 +89,18 @@ const ApiProvider = ({ children }) => {
     }
   }, [localStorage.getItem("user")]);
 
+  const logOut = () => {
+    localStorage.clear();
+    toast.success("Log out successfully", toastoption);
+    setIsLogin(false);
+    navigate("/");
+  };
+
   useEffect(() => {
     if (loc.includes("/admin") && !localStorage.getItem("isAdmin")) {
       navigate("/");
     }
   }, []);
-
-  const logOut = () => {
-    localStorage.clear();
-    navigate("/");
-    toast.success("Log out successfully", toastoption);
-    setIsLogin(false);
-  };
 
   const RegisterHandler = async () => {
     try {
@@ -294,8 +301,10 @@ const ApiProvider = ({ children }) => {
   };
 
   const getProducts = async (id) => {
+    // setProductPage((productPage) => productPage + 1);
     try {
       setIsLoading(true);
+
       const { data } = await axios.get(
         process.env.REACT_APP_GET_ALL_PRODUCT_URL,
         {
@@ -306,12 +315,12 @@ const ApiProvider = ({ children }) => {
           },
         }
       );
-      setProductPage((productPage) => productPage + 1);
+
       if (data.total !== allProducts.length) {
         setAllProducts(data.products);
         setProductCount(data.total);
-        console.log(data.total);
       }
+
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -375,12 +384,12 @@ const ApiProvider = ({ children }) => {
     handleCloseModal();
   };
 
-  /* -------------------------------------------------------------------------- */
-  /*// ?                                 cart items                             */
-  /* -------------------------------------------------------------------------- */
-
   const AddToCart = async (id) => {
     try {
+      if (!localStorage.getItem("user")) {
+        navigate("/login");
+        return false;
+      }
       const { data } = await axios.post(
         process.env.REACT_APP_Add_TO_CART,
         {
@@ -454,9 +463,40 @@ const ApiProvider = ({ children }) => {
     }
   }, [localStorage.getItem("user")]);
 
-  /* -------------------------------------------------------------------------- */
-  /* //?                                 cart items                            */
-  /* -------------------------------------------------------------------------- */
+  //? Order data
+
+  const makeOrder = async () => {
+    try {
+      const { totalPrice, taxPrice } = productPrices;
+      const { State, address, mob, pincode } = orderData;
+      const { data } = await axios.post(
+        process.env.REACT_APP_MAKE_ORDER,
+        {
+          ShipingInfo: { State: State.name, address, mob, pincode },
+          OrderData: orderProducts,
+          totalPrice,
+          taxPrice,
+          paymentType: "cash on delivery",
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem("user"),
+          },
+        }
+      );
+
+      if (data.status) {
+        toast.success(data.msg, toastoption);
+        setCartItem([]);
+        setCartCount(0);
+        handleNext();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //? Order data
 
   return (
     <ApiContext.Provider
@@ -475,6 +515,7 @@ const ApiProvider = ({ children }) => {
         AddToCart,
         GetCart,
         RemoveCart,
+        makeOrder,
       }}
     >
       {children}

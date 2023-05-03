@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import Home from "./client/Pages/Home";
 import StateProvider from "./Context/hooks/StateProvider";
 import SearchModal from "./client/components/Navbar/SearchModal";
@@ -15,18 +15,24 @@ import ApiProvider from "./Context/Api/ApiProvider";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import FunctionProvider from "./Context/Function/FunctionProvider";
+import ScrollToTop from "./utils/ScrollToTop";
+import { useEffect } from "react";
+import OrderComplete from "./client/Pages/OrderComplete";
 
 
 function App() {
+  useEffect(() => {
+  }, [])
   return (
     <>
       <BrowserRouter>
+
         <StateProvider>
           <FunctionProvider>
             <ApiProvider>
-              {/* <Navbar /> */}
               <ToastContainer />
               <SearchModal />
+              <ScrollToTop />
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
@@ -37,6 +43,9 @@ function App() {
                 <Route path="/products" element={<Products />} />
                 <Route path="/products/:id" element={<Products />} />
                 <Route path="/orders" element={<ClientOrders />} />
+                <Route path="/ordersSuccess" element={<OrderComplete />} />
+
+
 
                 {/* Admin Panel */}
 

@@ -23,11 +23,14 @@ import FunctionContext from "../../Context/Function/FunctionContext";
 import Navbar from "../../utils/Navbar";
 const Products = () => {
   const [state, setState] = React.useState(false);
+
   const { category, setCategory, value, setValue, allProducts, productCount } =
     React.useContext(StateContext);
+
   const { handleCategory, handleValue } = React.useContext(FunctionContext);
 
   const loc = window.location.pathname;
+
   const toggleDrawer = (anchor, open) => (event) => {
     if (
       event.type === "keydown" &&
@@ -166,6 +169,7 @@ const Products = () => {
           </React.Fragment>
         ))}
       </div>
+
       <Box sx={{ my: "7%" }}>
         <Stack mx={"40px"} mb={"40px"}>
           <Typography variant="h4" fontWeight={"bold"} color="initial">
@@ -175,9 +179,6 @@ const Products = () => {
               ? `${productCount} results found`
               : "No result found"}
           </Typography>
-          {/* <Box width={"15%"}>
-            <Divider />
-          </Box> */}
         </Stack>
         <GridLayout />
       </Box>
