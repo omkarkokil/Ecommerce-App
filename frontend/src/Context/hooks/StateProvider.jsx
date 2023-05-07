@@ -96,6 +96,8 @@ const StateProvider = ({ children }) => {
 
   const [orderProducts, setOrderProducts] = useState([]);
 
+  const [myOrders, setmyOrders] = useState([]);
+
   return (
     <StateContext.Provider
       value={{
@@ -177,6 +179,8 @@ const StateProvider = ({ children }) => {
         setOrderProducts,
         productPrices,
         setProductPrices,
+        myOrders,
+        setmyOrders,
         //! Order Data
       }}
     >

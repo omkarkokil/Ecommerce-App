@@ -55,6 +55,8 @@ const ApiProvider = ({ children }) => {
     orderData,
     orderProducts,
     productPrices,
+    myOrders,
+    setmyOrders,
 
     // orderdata
   } = useContext(StateContext);
@@ -496,6 +498,66 @@ const ApiProvider = ({ children }) => {
     }
   };
 
+  const MyOrders = async () => {
+    setIsLoading(true);
+    const { data } = await axios.get(process.env.REACT_APP_MY_ORDERS, {
+      headers: {
+        Authorization: localStorage.getItem("user"),
+      },
+    });
+
+    setmyOrders(data);
+
+    setIsLoading(false);
+  };
+
+  const OnlinePayment = async () => {
+    try {
+      const {
+        data: { key },
+      } = await axios.get(process.env.REACT_APP_GET_KEY, {
+        headers: {
+          Authorization: localStorage.getItem("user"),
+        },
+      });
+
+      const { totalPrice } = productPrices;
+      const {
+        data: { order },
+      } = await axios.post(process.env.REACT_APP_ONLINE_CHECKOUT, totalPrice, {
+        headers: {
+          Authorization: localStorage.getItem("user"),
+        },
+      });
+
+      const { mob, address } = orderData.ShipingInfo;
+      const options = {
+        key,
+        amount: order.amount,
+        currency: "INR",
+        name: "NSRAVAN",
+        description: "ONESTOPSHOP",
+        image: "https://avatars.githubusercontent.com/u/25058652?v=4",
+        order_id: order.id,
+        callback_url: process.env.REACT_APP_VERIFY_PAYMENT,
+        prefill: {
+          name: currentUser.name,
+          email: currentUser.email,
+          contact: mob,
+        },
+        notes: {
+          address,
+        },
+        theme: {
+          color: "#121212",
+        },
+      };
+      const razor = new window.Razorpay(options);
+      razor.open();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   //? Order data
 
   return (
@@ -516,6 +578,8 @@ const ApiProvider = ({ children }) => {
         GetCart,
         RemoveCart,
         makeOrder,
+        MyOrders,
+        OnlinePayment,
       }}
     >
       {children}

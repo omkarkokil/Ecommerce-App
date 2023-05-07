@@ -10,7 +10,7 @@ import ApiContext from "../../../../Context/Api/ApiContext";
 
 const Check3 = () => {
   const { handleNext } = React.useContext(FunctionContext);
-  const { makeOrder } = React.useContext(ApiContext);
+  const { makeOrder, OnlinePayment } = React.useContext(ApiContext);
   return (
     <>
       <Stack sx={{ mt: "40px" }}>
@@ -80,10 +80,10 @@ const Check3 = () => {
                 fullWidth
                 variant="contained"
                 size="medium"
-                onClick={handleNext}
+                onClick={OnlinePayment}
                 color="primary"
               >
-                Pay &#8377;54000
+                Pay online &#8377;54000
               </Button>
             </FormControl>
             <Divider sx={{ my: "10px" }} />

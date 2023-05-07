@@ -1,77 +1,34 @@
-import {
-  Box,
-  Divider,
-  Stack,
-  Table,
-  TableBody,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-  IconButton,
-  Tooltip,
-  Paper,
-  Button,
-  Avatar,
-} from "@mui/material";
-import React from "react";
+import { Box, Stack, Typography, Tooltip, Button, Avatar } from "@mui/material";
+import React, { useContext, useEffect } from "react";
 import { blue } from "@mui/material/colors";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import boat from "../../img/boat.jpg";
 import { styled } from "@mui/material/styles";
-import { Delete, Edit, Login, Store } from "@mui/icons-material";
+import { Close, Delete, Edit, Login, Store } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import Navbar from "../../utils/Navbar";
+import ApiContext from "../../Context/Api/ApiContext";
+import StateContext from "../../Context/hooks/StateContext";
+import LoginLoader from "../../utils/LoginLoader";
 
 const ClientOrders = () => {
-  const color = blue["A400"];
+  const color = blue["A100"];
   const shade1 = blue[50];
-  const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-      backgroundColor: color,
-      color: theme.palette.common.white,
-    },
-    [`&.${tableCellClasses.body}`]: {
-      fontSize: 14,
-    },
-  }));
 
-  const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    "&:nth-of-type(odd)": {
-      backgroundColor: shade1,
-    },
-    // hide last border
-    "&:last-child td, &:last-child th": {
-      border: 0,
-    },
-  }));
-  const arr = [
-    // {
-    //   Pid: "1234567",
-    //   name: "Latop",
-    //   qty: "1",
-    //   amount: "50000",
-    //   status: 1,
-    // },
-    // {
-    //   Pid: "451655545",
-    //   name: "Iphone 11 mini",
-    //   qty: "2",
-    //   amount: "60000",
-    //   status: 0,
-    // },
-    // {
-    //   Pid: "5452158",
-    //   name: "Red jacket for men",
-    //   qty: "3",
-    //   amount: "1000",
-    //   status: 1,
-    // },
-  ];
+  const { myOrders, currentUser, isLoading } = useContext(StateContext);
+  const { MyOrders } = useContext(ApiContext);
+
+  useEffect(() => {
+    MyOrders();
+  }, []);
+
   return (
     <div>
       <Navbar />
-      <Stack sx={{ my: "7%" }}>
-        {arr.length <= 0 ? (
+
+      <Stack sx={{ my: "5%" }}>
+        {isLoading ? (
+          <LoginLoader />
+        ) : myOrders.length === 0 ? (
           <Stack
             height={"60vh"}
             justifyContent={"center"}
@@ -102,74 +59,181 @@ const ClientOrders = () => {
         ) : (
           <Stack>
             <Stack alignItems={"center"}>
-              <Typography variant="h6" className="obitron">
-                YOUR ORDER
-              </Typography>
-              <Box width={"20%"} my="10px">
-                <Divider />
+              <Box
+                sx={{
+                  background: "#000",
+                  color: "#fff",
+                  width: "85%",
+                  p: "10px",
+                  boxShadow: "0 0 3px #777",
+                  my: "10px",
+                }}
+              >
+                <Typography variant="h6" className="obitron">
+                  YOUR ORDER
+                </Typography>
               </Box>
             </Stack>
 
-            <Stack justifyContent={"center"} alignItems={"center"}>
-              <TableContainer component={Paper} sx={{ width: "70%" }}>
-                <Table size="small">
-                  <TableHead>
-                    <TableRow>
-                      <StyledTableCell sx={{ py: "10px" }}>
-                        Order id
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        Product name
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        Product qty
-                      </StyledTableCell>
-                      <StyledTableCell align="center">amount</StyledTableCell>
-                      <StyledTableCell align="center">Status</StyledTableCell>
-                      <StyledTableCell align="right">action</StyledTableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {arr.map((ele, id) => {
+            {myOrders.map((ele, id) => {
+              return (
+                <Stack
+                  justifyContent={"center"}
+                  my="10px"
+                  alignItems={"center"}
+                >
+                  <Stack
+                    width={"80%"}
+                    boxShadow={"1px 1px 3px #666"}
+                    borderRadius={"10px"}
+                  >
+                    <Stack
+                      direction={"row"}
+                      backgroundColor={shade1}
+                      padding="10px"
+                      justifyContent="space-between"
+                      borderRadius={"10px"}
+                    >
+                      <Stack
+                        direction={"row"}
+                        width="50%"
+                        justifyContent="space-between"
+                      >
+                        <Box>
+                          <Typography variant="h6" fontSize="17px">
+                            Order Status
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            backgroundColor={"red"}
+                            width="max-content"
+                            padding={"2px"}
+                            color="#fff"
+                            borderRadius={"3px"}
+                          >
+                            {ele.orderStatus}
+                          </Typography>
+                        </Box>
+
+                        <Box>
+                          <Typography variant="h6" fontSize="17px">
+                            Total amount
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            backgroundColor={"green"}
+                            width="max-content"
+                            color="#fff"
+                            padding={"2px"}
+                            borderRadius={"3px"}
+                          >
+                            &#8377; {ele.totalPrice}
+                          </Typography>
+                        </Box>
+
+                        <Box>
+                          <Typography variant="h6" fontSize="17px">
+                            Shipment To
+                          </Typography>
+                          <Tooltip
+                            title={`${ele.ShipingInfo.address},${ele.ShipingInfo.State} ${ele.ShipingInfo.pincode},Mobileno:${ele.ShipingInfo.mob} `}
+                          >
+                            <Typography
+                              sx={{ cursor: "pointer" }}
+                              variant="body1"
+                              color={"primary"}
+                            >
+                              {currentUser.name}
+                            </Typography>
+                          </Tooltip>
+                        </Box>
+
+                        <Box>
+                          <Typography variant="h6" fontSize="17px">
+                            Payment type
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            backgroundColor={"red"}
+                            width="max-content"
+                            color="#fff"
+                            padding={"2px"}
+                            borderRadius={"3px"}
+                          >
+                            {ele.PaymentType}
+                          </Typography>
+                        </Box>
+                      </Stack>
+                      <Box>
+                        <Typography variant="h6" fontSize="17px">
+                          Order ID
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          backgroundColor={"red"}
+                          width="max-content"
+                          padding={"2px"}
+                          color="#fff"
+                          borderRadius={"3px"}
+                        >
+                          {ele._id}
+                        </Typography>
+                      </Box>
+                    </Stack>
+
+                    {ele.OrderData.map((ele, id) => {
                       return (
-                        <StyledTableRow key={id}>
-                          <StyledTableCell component="th" scope="row">
-                            {ele.Pid}
-                          </StyledTableCell>
-                          <StyledTableCell align="center">
-                            {ele.name}
-                          </StyledTableCell>
-                          <StyledTableCell align="center">
-                            {ele.qty}
-                          </StyledTableCell>
-                          <StyledTableCell align="center">
-                            {ele.amount}
-                          </StyledTableCell>
-                          <StyledTableCell align="center">
-                            {ele.status === 1 ? (
-                              <Typography variant="body1" color="green">
-                                Delivered
-                              </Typography>
-                            ) : (
-                              <Typography variant="body1" color="error">
-                                In Process
-                              </Typography>
-                            )}
-                          </StyledTableCell>
-                          <StyledTableCell align="right">
-                            <Tooltip title="Show product">
-                              <IconButton color="primary">
-                                <Login />
-                              </IconButton>
-                            </Tooltip>
-                          </StyledTableCell>
-                        </StyledTableRow>
+                        <Stack
+                          direction={"row"}
+                          mt="20px"
+                          key={id}
+                          mb={"5px"}
+                          alignItems={"center"}
+                          justifyContent={"flex-start"}
+                        >
+                          <Stack my={"10px"} mx="20px">
+                            <img
+                              src={ele.product.img[0]}
+                              width="100px"
+                              height="100px"
+                              alt=""
+                            />
+                          </Stack>
+                          <Stack ml={"50px"} width={"70%"}>
+                            <Typography variant="body1" color={"primary"}>
+                              {ele.product.name}
+                            </Typography>
+                            <Typography variant="body2" mb={"10px"}>
+                              Estimeted Time:- 16 may
+                            </Typography>
+
+                            <Stack direction={"row"}>
+                              <Button
+                                color="error"
+                                size="small"
+                                variant="contained"
+                              >
+                                Cancal order
+                              </Button>
+                              <Link to={`/productpage/${ele.product._id}`}>
+                                <Button
+                                  color="primary"
+                                  sx={{ mx: "20px" }}
+                                  size="small"
+                                  variant="outlined"
+                                >
+                                  View Product
+                                </Button>
+                              </Link>
+                            </Stack>
+                          </Stack>
+                        </Stack>
                       );
                     })}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Stack>
+                  </Stack>
+                </Stack>
+              );
+            })}
           </Stack>
         )}
       </Stack>

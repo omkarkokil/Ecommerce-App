@@ -17,6 +17,7 @@ const FunctionProvider = ({ children }) => {
     imageArr,
     setImageArr,
     currentUser,
+    isLoading,
     setIsLoading,
     product,
     setProduct,
@@ -76,13 +77,15 @@ const FunctionProvider = ({ children }) => {
 
   const postDetailes = (pic) => {
     const imageArray = [];
-    setIsLoading(true);
     if (pic === undefined) {
       console.log("select img");
     }
-    console.log(imageArray);
 
     for (let u = 0; u < pic.length; u++) {
+      if (imageArr.length < u) {
+        setIsLoading(true);
+        console.log(u);
+      }
       const data = new FormData();
       data.append("file", pic[u]);
       data.append("upload_preset", "collage-app");
@@ -95,14 +98,15 @@ const FunctionProvider = ({ children }) => {
         .then((res) => res.json())
         .then((data) => {
           imageArray.push(data.url.toString());
+          if (imageArray.length === u) {
+            console.log("hii");
+          }
         })
         .catch((error) => {
           console.log(error);
         });
     }
-
     setImageArr(imageArray);
-    setIsLoading(false);
   };
 
   const totalPagesCalculator = (total, limit) => {
