@@ -28,7 +28,7 @@ const AddCart = () => {
     return (i = i + v.productid.price * v.qty);
   }, 0);
 
-  const gst = Math.round((results * 18) / 100);
+  // const gst = Math.round((results * 18) / 100);
 
   const color = blue["A400"];
   const shade1 = blue[50];
@@ -234,7 +234,7 @@ const AddCart = () => {
                   Gst{" "}
                 </Typography>
                 <Typography variant="body1" fontSize={"1.1em"}>
-                  {gst}
+                  {/* {gst} */} 0
                 </Typography>
               </Stack>
               <Box width={"85%"}>
@@ -251,7 +251,7 @@ const AddCart = () => {
                   Total amount{" "}
                 </Typography>
                 <Typography variant="body1" fontSize={"1.1em"}>
-                  &#8377; {results + gst}
+                  &#8377; {results}
                 </Typography>
               </Stack>
               <Box width={"85%"}>

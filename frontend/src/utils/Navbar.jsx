@@ -2,6 +2,7 @@ import { Search, ShoppingCartRounded } from "@mui/icons-material";
 import {
   AppBar,
   Avatar,
+  Box,
   IconButton,
   Menu,
   MenuItem,
@@ -153,11 +154,12 @@ const Navbar = () => {
                       Orders
                     </MenuItem>
                   </Link>
-                  <Link onClick={logOut} style={{ color: "#000" }}>
+
+                  <Box onClick={logOut} style={{ color: "#000" }}>
                     <MenuItem sx={{ px: "30px" }} onClick={handleClose}>
                       Log Out
                     </MenuItem>
-                  </Link>
+                  </Box>
                 </Menu>
               </div>
             </>

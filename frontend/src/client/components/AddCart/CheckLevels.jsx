@@ -5,12 +5,15 @@ import Check1 from "./CheckoutStpes/Check1";
 
 import Check2 from "./CheckoutStpes/Check2";
 import Check3 from "./CheckoutStpes/Check3";
+import LoginLoader from "../../../utils/LoginLoader";
 
 const CheckLevels = () => {
-  const { activeStep } = React.useContext(StateContext);
+  const { activeStep, isLoading } = React.useContext(StateContext);
   return (
     <>
-      {activeStep === 0 ? (
+      {isLoading ? (
+        <LoginLoader />
+      ) : activeStep === 0 ? (
         <Check1 />
       ) : activeStep === 1 ? (
         <Check2 />

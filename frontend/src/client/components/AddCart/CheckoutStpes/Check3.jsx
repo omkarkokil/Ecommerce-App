@@ -7,6 +7,7 @@ import { Divider, FormControl, InputAdornment, TextField } from "@mui/material";
 import { CreditCard, DateRange, Key } from "@mui/icons-material";
 import FunctionContext from "../../../../Context/Function/FunctionContext";
 import ApiContext from "../../../../Context/Api/ApiContext";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 
 const Check3 = () => {
   const { handleNext } = React.useContext(FunctionContext);
@@ -14,66 +15,32 @@ const Check3 = () => {
   return (
     <>
       <Stack sx={{ mt: "40px" }}>
-        <Typography
-          textAlign={"center"}
-          variant="h5"
-          color="initial"
-          className="obitron"
-        >
-          Enter your card details
+        <Typography variant="h5" textAlign={"center"} fontSize="1.7em">
+          Pay online by your favorite online apps
         </Typography>
+        <Stack
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          my={"25px"}
+        >
+          <img
+            src="https://www.freefx.com/img/Funding%20Icons/VisaMastercard.png"
+            alt="none"
+            style={{
+              height: "40px",
+            }}
+          />
+          <img
+            src="https://i0.wp.com/zeevector.com/wp-content/uploads/Bhim-Upi-Logo-PNG.png?resize=600%2C80&is-pending-load=1#038;ssl=1"
+            alt="none"
+            style={{
+              height: "30px",
+            }}
+          />
+        </Stack>
 
         <Stack justifyContent={"center"} alignItems="center">
-          <FormControl margin="dense">
-            <TextField
-              id=""
-              margin="dense"
-              sx={{ backgroundColor: "#fff", width: "400px" }}
-              placeholder="Enter Card number"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <CreditCard />
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </FormControl>
-
-          <FormControl margin="dense">
-            <TextField
-              id=""
-              size="medium"
-              sx={{ backgroundColor: "#fff", width: "400px" }}
-              placeholder={"Enter MM/YY"}
-              margin="dense"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <DateRange />
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </FormControl>
-
-          <FormControl margin="dense">
-            <TextField
-              id=""
-              size="medium"
-              sx={{ backgroundColor: "#fff", width: "400px" }}
-              placeholder={"Enter your CVC"}
-              margin="dense"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Key />
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </FormControl>
-
           <Box width="400px">
             <FormControl fullWidth margin="dense">
               <Button
@@ -83,10 +50,26 @@ const Check3 = () => {
                 onClick={OnlinePayment}
                 color="primary"
               >
-                Pay online &#8377;54000
+                Pay online
               </Button>
             </FormControl>
-            <Divider sx={{ my: "10px" }} />
+            {/* <Divider sx={{ my: "10px" }} /> */}
+            <Stack direction="row" justifyContent="center" alignItems="center">
+              <img
+                src="https://th.bing.com/th/id/R.d8fccff92f21dced7b8922b5787685bc?rik=9bD4937qQijWRw&riu=http%3a%2f%2fwww.unisilvertime.com%2fassets%2funisilvertime%2fimages%2fcod_1.png&ehk=By5sNlEvC9VFIH2XBUbmKu4PurQjI%2bkV%2b30HcEfjxzM%3d&risl=&pid=ImgRaw&r=0"
+                alt="none"
+                style={{
+                  height: "100px",
+                }}
+              />
+              <img
+                src="https://cdn2.iconfinder.com/data/icons/shopping-e-commerce-black-blue-version/33/express_truck_delivery-2-512.png"
+                alt="none"
+                style={{
+                  height: "100px",
+                }}
+              />
+            </Stack>
             <FormControl fullWidth margin="dense">
               <Button
                 fullWidth

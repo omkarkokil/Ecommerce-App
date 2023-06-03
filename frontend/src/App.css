@@ -1,5 +1,4 @@
 @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Playball&family=Rubik&family=Tapestry&family=Trade+Winds&family=Work+Sans&display=swap");
-
 :root {
   --body-bg-color: #e3e3e3;
   --scroll-color: rgba(0, 0, 0, 0.296);
@@ -12,6 +11,10 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.treands {
+  font-family: "Trade Winds", cursive !important;
 }
 
 /* Firefox */

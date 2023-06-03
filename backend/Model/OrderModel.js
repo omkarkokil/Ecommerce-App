@@ -33,15 +33,20 @@ const OrderSchema = mongoose.Schema({
     User: {
         type: mongoose.Schema.Types.ObjectId,
         ref: UserModal,
-        required: true,
+        // required: true,
     },
     paymentInfo: {
-        id: {
+        razorpay_order_id: {
             type: String,
+            // required: true,
         },
-        status: {
+        razorpay_payment_id: {
             type: String,
-
+            // required: true,
+        },
+        razorpay_signature: {
+            type: String,
+            // required: true,
         },
     },
     paidAt: {
@@ -69,8 +74,7 @@ const OrderSchema = mongoose.Schema({
     },
     PaymentType: {
         type: String,
-        enum: ["cash on delivery", "card"],
-        default: "cash on delivery"
+        enum: ["cash on delivery", "Paid"],
     },
     orderStatus: {
         type: String,

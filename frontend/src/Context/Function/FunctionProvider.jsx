@@ -24,6 +24,14 @@ const FunctionProvider = ({ children }) => {
     setQty,
     qty,
 
+    category,
+    value,
+    filterRating,
+    allProducts,
+    FilterData,
+    setFilterData,
+    setAllProducts,
+
     setSkipped,
     skipped,
     setActiveStep,
@@ -77,16 +85,14 @@ const FunctionProvider = ({ children }) => {
 
   const postDetailes = (pic) => {
     const imageArray = [];
+    setIsLoading(true);
     if (pic === undefined) {
       console.log("select img");
     }
 
     for (let u = 0; u < pic.length; u++) {
-      if (imageArr.length < u) {
-        setIsLoading(true);
-        console.log(u);
-      }
       const data = new FormData();
+
       data.append("file", pic[u]);
       data.append("upload_preset", "collage-app");
       data.append("cloud_name", "dfxyr6c40");
@@ -98,15 +104,21 @@ const FunctionProvider = ({ children }) => {
         .then((res) => res.json())
         .then((data) => {
           imageArray.push(data.url.toString());
-          if (imageArray.length === u) {
-            console.log("hii");
+          if (imageArray.length - 1 === u) {
+            setIsLoading(false);
+            console.log("done");
           }
+
+          console.log(u, "count");
+          console.log(imageArray, "imgArray");
         })
         .catch((error) => {
           console.log(error);
         });
     }
+
     setImageArr(imageArray);
+    // setIsLoading(false);
   };
 
   const totalPagesCalculator = (total, limit) => {

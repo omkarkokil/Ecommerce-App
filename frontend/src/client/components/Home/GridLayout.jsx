@@ -27,6 +27,7 @@ const GridLayout = () => {
   } = useContext(StateContext);
 
   const { getProducts } = useContext(ApiContext);
+  const { handleFilter } = useContext(FunctionContext);
   const { id } = useParams();
 
   useEffect(() => {
@@ -50,6 +51,7 @@ const GridLayout = () => {
         );
 
         setAllProducts((allProducts) => [...allProducts, ...data.products]);
+        // handleFilter(allProducts);
         setProductPage((productPage) => productPage + 1);
         if (data.products.length === 0) {
           setHasMore(false);

@@ -1,13 +1,18 @@
 import { Done, ShoppingCart } from "@mui/icons-material";
 import { Avatar, Button, Stack, Typography } from "@mui/material";
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { green } from "@mui/material/colors";
 import Navbar from "../../utils/Navbar";
+import axios from "axios";
+import ApiContext from "../../Context/Api/ApiContext";
 
 const OrderComplete = () => {
   const color = green["A400"];
   const shade1 = green[50];
+  const searchQuery = useSearchParams()[0];
+
+  const referenceNum = searchQuery.get("reference");
   return (
     <>
       <Navbar />
@@ -26,7 +31,7 @@ const OrderComplete = () => {
           sx={{ my: "20px" }}
           color="initial"
         >
-          Your order has been placed successfully
+          Your order has been placed successfully : {referenceNum}
         </Typography>
         <Link to="/products">
           <Button variant="contained" color="success">

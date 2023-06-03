@@ -195,6 +195,9 @@ const AddToCart = async (req, res) => {
   }
 }
 
+
+
+
 const removeCart = async (req, res) => {
   try {
     const { id } = req.body

@@ -104,11 +104,9 @@ const ClientOrders = () => {
                             Order Status
                           </Typography>
                           <Typography
-                            variant="body2"
-                            backgroundColor={"red"}
+                            variant="body1"
                             width="max-content"
-                            padding={"2px"}
-                            color="#fff"
+                            color="error"
                             borderRadius={"3px"}
                           >
                             {ele.orderStatus}
@@ -120,11 +118,9 @@ const ClientOrders = () => {
                             Total amount
                           </Typography>
                           <Typography
-                            variant="body2"
-                            backgroundColor={"green"}
+                            variant="body1"
                             width="max-content"
-                            color="#fff"
-                            padding={"2px"}
+                            color="green"
                             borderRadius={"3px"}
                           >
                             &#8377; {ele.totalPrice}
@@ -154,7 +150,9 @@ const ClientOrders = () => {
                           </Typography>
                           <Typography
                             variant="body2"
-                            backgroundColor={"red"}
+                            backgroundColor={
+                              ele.PaymentType === "Paid" ? "green" : "red"
+                            }
                             width="max-content"
                             color="#fff"
                             padding={"2px"}
@@ -170,11 +168,8 @@ const ClientOrders = () => {
                         </Typography>
                         <Typography
                           variant="body2"
-                          backgroundColor={"red"}
                           width="max-content"
-                          padding={"2px"}
-                          color="#fff"
-                          borderRadius={"3px"}
+                          color={"red"}
                         >
                           {ele._id}
                         </Typography>

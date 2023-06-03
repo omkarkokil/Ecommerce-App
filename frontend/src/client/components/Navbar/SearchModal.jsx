@@ -7,7 +7,7 @@ import StateContext from "../../../Context/hooks/StateContext";
 import FunctionContext from "../../../Context/Function/FunctionContext";
 import { IconButton, InputAdornment, TextField } from "@mui/material";
 import { Search, Send } from "@mui/icons-material";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import ApiContext from "../../../Context/Api/ApiContext";
 import { useEffect } from "react";
 
@@ -23,6 +23,7 @@ const style = {
 export default function SearchModal() {
   const { open, search, setSearch } = React.useContext(StateContext);
   const { handleClose } = React.useContext(FunctionContext);
+  const Navigate = useNavigate("");
 
   return (
     <div>
@@ -46,11 +47,18 @@ export default function SearchModal() {
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <Link to={`/products/${search}`}>
-                    <IconButton color="secondary" onClick={handleClose}>
-                      <Send />
-                    </IconButton>
-                  </Link>
+                  {/* <Link to={`/products/${search}`}> */}
+                  <IconButton
+                    color="secondary"
+                    onClick={() => {
+                      setSearch("");
+                      Navigate(`/products/${search}`);
+                      handleClose();
+                    }}
+                  >
+                    <Send />
+                  </IconButton>
+                  {/* </Link> */}
                 </InputAdornment>
               ),
             }}

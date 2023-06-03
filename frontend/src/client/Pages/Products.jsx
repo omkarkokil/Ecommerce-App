@@ -24,9 +24,19 @@ import Navbar from "../../utils/Navbar";
 const Products = () => {
   const [state, setState] = React.useState(false);
 
-  const { category, setCategory, value, setValue, allProducts, productCount } =
-    React.useContext(StateContext);
+  const {
+    category,
+    setCategory,
+    value,
+    setValue,
+    allProducts,
+    productCount,
+    filterRating,
+    setFilterRating,
+    isLoading,
+  } = React.useContext(StateContext);
 
+  // console.log(filterRating);
   const { handleCategory, handleValue } = React.useContext(FunctionContext);
 
   const loc = window.location.pathname;
@@ -83,7 +93,7 @@ const Products = () => {
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={category}
-                label="Age"
+                label="Category"
                 onChange={handleCategory}
               >
                 {Items.map((ele, id) => {
@@ -100,7 +110,14 @@ const Products = () => {
             <Typography variant="body1" color="initial">
               Choose by Ratings:
             </Typography>
-            <Rating size="large" precision={0.5} />
+            <Rating
+              size="large"
+              value={filterRating}
+              onChange={(event, newValue) => {
+                setFilterRating(newValue);
+              }}
+              precision={0.5}
+            />
           </Stack>
           <Box sx={{ width: 200, my: "20px" }}>
             <Typography variant="body1" color="initial">
@@ -111,7 +128,7 @@ const Products = () => {
               value={value}
               onChange={handleValue}
               valueLabelDisplay="auto"
-              max={100000}
+              max={500000}
             />
           </Box>
           <Stack
@@ -122,16 +139,14 @@ const Products = () => {
             <Button
               variant="text"
               color="error"
-              sx={{ mb: "20px", width: "100px" }}
+              onClick={() => {
+                setCategory("");
+                setFilterRating();
+                setValue([0, 500000]);
+              }}
+              sx={{ mb: "20px" }}
             >
-              Remove
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              sx={{ mb: "20px", ml: "10px", width: "100px" }}
-            >
-              Apply
+              Remove Fillters
             </Button>
           </Stack>
         </Stack>
@@ -143,7 +158,7 @@ const Products = () => {
       <Navbar />
 
       <div>
-        {["top"].map((anchor) => (
+        {["bottom"].map((anchor) => (
           <React.Fragment key={anchor}>
             <Fab
               variant="extended"
@@ -173,7 +188,9 @@ const Products = () => {
       <Box sx={{ my: "7%" }}>
         <Stack mx={"40px"} mb={"40px"}>
           <Typography variant="h4" fontWeight={"bold"} color="initial">
-            {loc === "/products"
+            {isLoading
+              ? " "
+              : loc === "/products"
               ? ""
               : allProducts.length !== 0
               ? `${productCount} results found`

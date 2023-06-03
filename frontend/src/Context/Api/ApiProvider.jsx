@@ -478,7 +478,7 @@ const ApiProvider = ({ children }) => {
           OrderData: orderProducts,
           totalPrice,
           taxPrice,
-          paymentType: "cash on delivery",
+          PaymentType: "cash on delivery",
         },
         {
           headers: {
@@ -515,31 +515,71 @@ const ApiProvider = ({ children }) => {
     try {
       const {
         data: { key },
-      } = await axios.get(process.env.REACT_APP_GET_KEY, {
-        headers: {
-          Authorization: localStorage.getItem("user"),
-        },
-      });
+      } = await axios.get(process.env.REACT_APP_GET_KEY);
 
       const { totalPrice } = productPrices;
+      console.log(totalPrice);
+
       const {
         data: { order },
-      } = await axios.post(process.env.REACT_APP_ONLINE_CHECKOUT, totalPrice, {
-        headers: {
-          Authorization: localStorage.getItem("user"),
+      } = await axios.post(
+        process.env.REACT_APP_ONLINE_CHECKOUT,
+        {
+          amount: totalPrice,
         },
-      });
+        {
+          headers: {
+            Authorization: localStorage.getItem("user"),
+          },
+        }
+      );
 
-      const { mob, address } = orderData.ShipingInfo;
+      const { mob, address, pincode, State } = orderData;
+
       const options = {
         key,
         amount: order.amount,
         currency: "INR",
         name: "NSRAVAN",
         description: "ONESTOPSHOP",
-        image: "https://avatars.githubusercontent.com/u/25058652?v=4",
+        image:
+          "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
         order_id: order.id,
-        callback_url: process.env.REACT_APP_VERIFY_PAYMENT,
+        handler: async function (res) {
+          setIsLoading(true);
+          const { totalPrice, taxPrice } = productPrices;
+          const { State, address, mob, pincode } = orderData;
+          const { data } = await axios.post(
+            process.env.REACT_APP_VERIFY_PAYMENT,
+            {
+              ShipingInfo: { State: State.name, address, mob, pincode },
+              OrderData: orderProducts,
+              totalPrice,
+              taxPrice,
+              PaymentType: "Paid",
+              razorpay_order_id: res.razorpay_order_id,
+              razorpay_payment_id: res.razorpay_payment_id,
+              razorpay_signature: res.razorpay_signature,
+            },
+            {
+              headers: {
+                Authorization: localStorage.getItem("user"),
+              },
+            }
+          );
+
+          if (data.success) {
+            toast.success(data.msg, toastoption);
+            setCartItem([]);
+            setCartCount(0);
+            handleNext();
+            navigate("/ordersSuccess");
+            setIsLoading(false);
+          } else {
+            toast.msg("Some error occured", toastoption);
+            setIsLoading(false);
+          }
+        },
         prefill: {
           name: currentUser.name,
           email: currentUser.email,
@@ -549,7 +589,7 @@ const ApiProvider = ({ children }) => {
           address,
         },
         theme: {
-          color: "#121212",
+          color: "#1976d2",
         },
       };
       const razor = new window.Razorpay(options);

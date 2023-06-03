@@ -6,8 +6,10 @@ const StateProvider = ({ children }) => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
   const [category, setCategory] = React.useState("");
-  const [value, setValue] = React.useState([0, 100000]);
+  const [value, setValue] = React.useState([0, 500000]);
+  const [filterRating, setFilterRating] = useState();
   const [search, setSearch] = useState("");
+  const [FilterData, setFilterData] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -113,7 +115,11 @@ const StateProvider = ({ children }) => {
         setValue,
         search,
         setSearch,
+        FilterData,
+        setFilterData,
 
+        filterRating,
+        setFilterRating,
         // ?Login Register
         isLogin,
         setIsLogin,
@@ -181,6 +187,7 @@ const StateProvider = ({ children }) => {
         setProductPrices,
         myOrders,
         setmyOrders,
+
         //! Order Data
       }}
     >
