@@ -10,11 +10,24 @@ import { Stack } from "@mui/system";
 import StateContext from "../../../Context/hooks/StateContext";
 import CheckLevels from "./CheckLevels";
 import Navbar from "../../../utils/Navbar";
+import Check1 from "./CheckoutStpes/Check1";
+import Check2 from "./CheckoutStpes/Check2";
+import Check3 from "./CheckoutStpes/Check3";
+import { StepContent } from "@mui/material";
 
 const steps = [
-  "Select delivery address",
-  "Confirm your order",
-  "Select payment method",
+  {
+    label: "Select delivery address",
+    content: <Check1 />,
+  },
+  {
+    label: "Confirm your order",
+    content: <Check2 />,
+  },
+  {
+    label: "Select payment method",
+    content: <Check3 />,
+  },
 ];
 
 export default function HorizontalLinearStepper() {
@@ -25,35 +38,32 @@ export default function HorizontalLinearStepper() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
-  };
+  // const handleReset = () => {
+  //   setActiveStep(0);
+  // };
 
   return (
     <>
       <Navbar />
       <Stack
         width={"100%"}
-        mt="5%"
+        mt={{ md: "5%", xs: "100px" }}
         justifyContent="center"
         alignItems={"center"}
       >
-        <Box sx={{ width: "80%" }}>
-          <Stepper activeStep={activeStep}>
-            {steps.map((label, index) => {
-              const stepProps = {};
-              const labelProps = {};
-
+        <Box width={{ md: "80%", xs: "90%" }}>
+          <Stepper activeStep={activeStep} orientation="vertical">
+            {steps.map((steps, index) => {
               return (
-                <Step key={label} {...stepProps}>
-                  <StepLabel {...labelProps}>{label}</StepLabel>
+                <Step key={index}>
+                  <StepLabel>{steps.label}</StepLabel>
+                  <StepContent>{steps.content}</StepContent>
                 </Step>
               );
             })}
           </Stepper>
 
           <React.Fragment>
-            <CheckLevels />
             <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
               <Button
                 color="inherit"

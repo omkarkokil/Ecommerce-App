@@ -6,32 +6,53 @@ import { green } from "@mui/material/colors";
 import Navbar from "../../utils/Navbar";
 import axios from "axios";
 import ApiContext from "../../Context/Api/ApiContext";
+import StateContext from "../../Context/hooks/StateContext";
 
 const OrderComplete = () => {
   const color = green["A400"];
   const shade1 = green[50];
-  const searchQuery = useSearchParams()[0];
 
-  const referenceNum = searchQuery.get("reference");
+  const { theme } = useContext(StateContext);
+
   return (
     <>
       <Navbar />
       <Stack height={"85vh"} justifyContent={"center"} alignItems={"center"}>
-        <Avatar sx={{ background: shade1, height: "4.5em", width: "4.5em" }}>
+        <Avatar
+          sx={{
+            background: shade1,
+            [theme.breakpoints.up("xs")]: {
+              height: "3.5em",
+              width: "3.5em",
+            },
+
+            [theme.breakpoints.up("md")]: {
+              height: "5em",
+              width: "5em",
+            },
+          }}
+        >
           <Done
             sx={{
-              fontSize: "3em",
+              [theme.breakpoints.up("xs")]: {
+                fontSize: "2em",
+              },
+
+              [theme.breakpoints.up("md")]: {
+                fontSize: "3em",
+              },
               color: color,
             }}
           />
         </Avatar>
         <Typography
           variant="h4"
-          fontSize={"2.5em"}
+          fontSize={{ md: "2.5em", xs: "1.7em" }}
           sx={{ my: "20px" }}
           color="initial"
+          textAlign={"center"}
         >
-          Your order has been placed successfully : {referenceNum}
+          Your order has been placed successfully
         </Typography>
         <Link to="/products">
           <Button variant="contained" color="success">

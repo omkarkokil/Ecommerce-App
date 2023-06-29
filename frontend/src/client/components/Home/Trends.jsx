@@ -6,6 +6,7 @@ import {
   IconButton,
   Rating,
   Box,
+  Skeleton,
 } from "@mui/material";
 import boat from "../../../img/boat.jpg";
 import sofa from "../../../img/sofa.png";
@@ -16,13 +17,17 @@ import bjackets from "../../../img/bjackets.jpg";
 import hat from "../../../img/hats.jpg";
 import jeans from "../../../img/jeans.jpg";
 import { Stack } from "@mui/system";
-import React, { useContext, useRef } from "react";
+import React, { Suspense, useContext, useEffect, useRef } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import Carousel from "react-material-ui-carousel";
-import ProductCard from "./ProductCard";
+// import ProductCard from "./ProductCard";
 import StateContext from "../../../Context/hooks/StateContext";
+import SkeletonLoader from "../../../utils/SkeletonLoader";
+import ApiContext from "../../../Context/Api/ApiContext";
+
+const ProductCard = React.lazy(() => import("./ProductCard"));
 
 const Trends = (props) => {
   const scrollnow = () => {
@@ -34,7 +39,8 @@ const Trends = (props) => {
   };
   const ref = useRef(null);
 
-  const { allProducts } = useContext(StateContext);
+  const { allProducts, isLoading, topPurchaseProduct, theme } =
+    useContext(StateContext);
   const data = allProducts.slice(0, 10);
 
   return (
@@ -44,11 +50,17 @@ const Trends = (props) => {
         sx={{
           justifyContent: "space-between",
           alignItems: "center",
-          top: "50%",
+          top: "25%",
           height: "100%",
           width: "99%",
           mx: "5px",
-          translate: "0 25vh",
+          [theme.breakpoints.up("xs")]: {
+            translate: "0 18vh",
+          },
+
+          [theme.breakpoints.up("md")]: {
+            translate: "0 25vh",
+          },
           zIndex: 10,
         }}
       >
@@ -65,14 +77,32 @@ const Trends = (props) => {
         direction="row"
         overflow="auto"
         left="0"
-        right="0"
+        right="10"
         height={"max-content"}
         zIndex={1}
         ref={ref}
         className="trend"
       >
-        <Stack direction={"row"} alignItems={"center"} mx="40px">
-          <ProductCard product={data} />
+        <Stack
+          direction={"row"}
+          alignItems={"center"}
+          sx={{
+            [theme.breakpoints.up("xs")]: {
+              mx: "15px",
+            },
+
+            [theme.breakpoints.up("md")]: {
+              mx: "40px",
+            },
+          }}
+        >
+          {data.map((items, id) => {
+            return (
+              <Suspense key={id} fallback={<SkeletonLoader />}>
+                <ProductCard items={items} key={id} />
+              </Suspense>
+            );
+          })}
         </Stack>
       </Stack>
     </>

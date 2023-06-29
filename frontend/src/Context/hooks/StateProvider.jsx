@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import StateContext from "./StateContext";
+import { useTheme } from "@mui/material";
 
 const StateProvider = ({ children }) => {
   const [open, setOpen] = React.useState(false);
@@ -16,7 +17,6 @@ const StateProvider = ({ children }) => {
   // * Login & Register
 
   const [isLogin, setIsLogin] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [user, setUser] = useState({
     name: "",
     password: "",
@@ -29,7 +29,7 @@ const StateProvider = ({ children }) => {
     email: "",
     id: "",
     userpic: "",
-    isAdmin: 0,
+    isAdmin: "",
   });
 
   // ! Login & Register
@@ -43,50 +43,43 @@ const StateProvider = ({ children }) => {
 
   // ! all users
 
-  /* -------------------------------------------------------------------------- */
-  /*                                // ? products                               */
-  /* -------------------------------------------------------------------------- */
+  // ? products
   const [product, setProduct] = useState({
     name: "",
-    desc: "",
     price: "",
     stock: "",
   });
+
+  const [makeProductImage, setmakeProductImage] = useState([]);
+
+  const [productDesc, setProductDesc] = useState("");
   const [allProducts, setAllProducts] = useState([]);
   const [getProduct, setGetProduct] = useState([]);
   const [productImg, setproductImg] = useState([]);
   const [productPage, setProductPage] = useState(2);
   const [productCount, setProductCount] = useState();
+  const [isAdmin, setisAdmin] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
-  /* -------------------------------------------------------------------------- */
-  /*                                // ! products                               */
-  /* -------------------------------------------------------------------------- */
+  const [Inventory, setInventory] = useState(0);
 
-  /* -------------------------------------------------------------------------- */
-  /*                                // ? comments                               */
-  /* -------------------------------------------------------------------------- */
+  // ! products
+
+  // ? comments
 
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(5);
   const [comments, setComments] = useState([]);
 
-  /* -------------------------------------------------------------------------- */
-  /*                                // ! comments                               */
-  /* -------------------------------------------------------------------------- */
+  // ! comments
 
-  /* -------------------------------------------------------------------------- */
-  /*                              //TODO Cart items                             */
-  /* -------------------------------------------------------------------------- */
+  //? Cart items
   const [qty, setQty] = useState(1);
   const [cartItem, setCartItem] = useState([]);
   const [cartCount, setCartCount] = useState();
-  // ? Cart items
+  //! Cart items
 
-  /* -------------------------------------------------------------------------- */
-  /*                               handle Orders                                */
-  /* -------------------------------------------------------------------------- */
-
+  //? handle Orders
   const [orderData, setOrderData] = useState({
     address: "",
     mob: "",
@@ -98,7 +91,24 @@ const StateProvider = ({ children }) => {
 
   const [orderProducts, setOrderProducts] = useState([]);
 
+  const [allOrders, setAllOrders] = useState([]);
+  const [allOrdersCount, setAllOrdersCount] = useState();
+
+  const [earnings, setEarnings] = useState(0);
+
+  const [totalCategoryBuy, setTotalCategoryBuy] = useState([]);
+
   const [myOrders, setmyOrders] = useState([]);
+
+  const [topPurchaseProduct, setTopPurchaseProduct] = useState([]);
+
+  const [UserImages, setUserImages] = useState([]);
+
+  const [Order, setOrder] = useState(null);
+
+  const theme = useTheme();
+
+  //! handle Orders
 
   return (
     <StateContext.Provider
@@ -123,8 +133,6 @@ const StateProvider = ({ children }) => {
         // ?Login Register
         isLogin,
         setIsLogin,
-        isAdmin,
-        setIsAdmin,
         user,
         setUser,
         imageArr,
@@ -141,6 +149,10 @@ const StateProvider = ({ children }) => {
         setUserCount,
         activePage,
         setActivePage,
+        isAdmin,
+        setisAdmin,
+        UserImages,
+        setUserImages,
         // ? Login Register
 
         //? products
@@ -148,6 +160,8 @@ const StateProvider = ({ children }) => {
         setProduct,
         allProducts,
         setAllProducts,
+        productDesc,
+        setProductDesc,
         getProduct,
         productImg,
         setproductImg,
@@ -158,6 +172,8 @@ const StateProvider = ({ children }) => {
         setProductCount,
         hasMore,
         setHasMore,
+        makeProductImage,
+        setmakeProductImage,
         //! products
 
         // ?comments
@@ -187,7 +203,21 @@ const StateProvider = ({ children }) => {
         setProductPrices,
         myOrders,
         setmyOrders,
-
+        allOrders,
+        setAllOrders,
+        allOrdersCount,
+        setAllOrdersCount,
+        earnings,
+        setEarnings,
+        totalCategoryBuy,
+        setTotalCategoryBuy,
+        Inventory,
+        setInventory,
+        topPurchaseProduct,
+        setTopPurchaseProduct,
+        theme,
+        Order,
+        setOrder,
         //! Order Data
       }}
     >

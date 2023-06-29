@@ -6,6 +6,7 @@ import {
   IconButton,
   Tooltip,
   Avatar,
+  Paper,
 } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import React, { useContext, useEffect } from "react";
@@ -19,11 +20,19 @@ import ApiContext from "../../Context/Api/ApiContext";
 import StateContext from "../../Context/hooks/StateContext";
 import LoginLoader from "../../utils/LoginLoader";
 import FunctionContext from "../../Context/Function/FunctionContext";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const AddCart = () => {
-  const { RemoveCart } = useContext(ApiContext);
-  const { cartItem, isLoading } = useContext(StateContext);
+  const { RemoveCart, GetCart, toastoption, navigate } = useContext(ApiContext);
+  const { cartItem, isLoading, isLogin, theme, currentUser } =
+    useContext(StateContext);
 
+  useEffect(() => {
+    if (!localStorage.getItem("user")) {
+      navigate("/login");
+    }
+  }, [window.location.pathname, currentUser]);
   const results = cartItem.reduce((i, v) => {
     return (i = i + v.productid.price * v.qty);
   }, 0);
@@ -33,24 +42,71 @@ const AddCart = () => {
   const color = blue["A400"];
   const shade1 = blue[50];
 
+  const updateCartQuantity = async (productid, qty) => {
+    try {
+      if (qty === 0) {
+        RemoveCart(productid);
+      } else {
+        const { data } = await axios.put(
+          "/api/auth/updatecart",
+          { productid, qty },
+          {
+            headers: {
+              Authorization: localStorage.getItem("user"),
+            },
+          }
+        );
+
+        if (!data.status) {
+          toast.success(data.msg, toastoption);
+        }
+
+        if (data.status) {
+          toast.success(data.msg, toastoption);
+          GetCart();
+        }
+      }
+    } catch (error) {
+      console.log("Error updating cart quantity:", error);
+    }
+  };
+
   return (
     <>
       <Navbar />
-      {isLoading ? (
-        <LoginLoader />
-      ) : cartItem.length <= 0 ? (
+      {isLoading ? <LoginLoader /> : ""}{" "}
+      {cartItem.length <= 0 ? (
         <Stack height={"85vh"} justifyContent={"center"} alignItems={"center"}>
-          <Avatar sx={{ background: shade1, height: "5em", width: "5em" }}>
+          <Avatar
+            sx={{
+              background: shade1,
+              [theme.breakpoints.up("xs")]: {
+                height: "3.5em",
+                width: "3.5em",
+              },
+
+              [theme.breakpoints.up("md")]: {
+                height: "5em",
+                width: "5em",
+              },
+            }}
+          >
             <ShoppingCart
               sx={{
-                fontSize: "3em",
+                [theme.breakpoints.up("xs")]: {
+                  fontSize: "2em",
+                },
+
+                [theme.breakpoints.up("md")]: {
+                  fontSize: "3em",
+                },
                 color: color,
               }}
             />
           </Avatar>
           <Typography
             variant="h4"
-            fontSize={"2.5em"}
+            fontSize={{ md: "2.5em", xs: "1.7em" }}
             sx={{ my: "20px" }}
             color="initial"
           >
@@ -63,16 +119,46 @@ const AddCart = () => {
           </Link>
         </Stack>
       ) : (
-        <Stack direction={"row"}>
-          <Stack my={"10vh"} width={"70%"} sx={{ alignItems: "center" }}>
+        <Stack
+          direction={{ md: "row", xs: "column-reverse" }}
+          sx={{
+            [theme.breakpoints.up("xs")]: {
+              alignItems: "center",
+            },
+
+            [theme.breakpoints.up("md")]: {
+              alignItems: "flex-start",
+            },
+          }}
+        >
+          <Stack
+            sx={{
+              [theme.breakpoints.up("xs")]: {
+                width: "90%",
+              },
+              alignItems: "center",
+
+              [theme.breakpoints.up("md")]: {
+                width: "70%",
+                mt: "100px",
+              },
+            }}
+          >
             <Box
               sx={{
-                background: "#000",
-                color: "#fff",
                 width: "85%",
                 p: "10px",
-                boxShadow: "0 0 3px #777",
                 my: "10px",
+                [theme.breakpoints.up("md")]: {
+                  background: "#000",
+                  boxShadow: "0 0 3px #777",
+                  color: "#fff",
+                },
+                [theme.breakpoints.up("xs")]: {
+                  background: "#fff",
+                  boxShadow: "none",
+                  color: "#000",
+                },
               }}
             >
               <Typography variant="h6" className="obitron">
@@ -89,10 +175,14 @@ const AddCart = () => {
                       justifyContent="center"
                       width={"40%"}
                     >
-                      <img
+                      <Paper
+                        component={"img"}
+                        elevation={0}
                         src={ele.productid.img[0]}
-                        style={{ width: "100px" }}
-                        alt=""
+                        sx={{
+                          width: "100px",
+                        }}
+                        alt="none"
                       />
                     </Stack>
                     <Stack
@@ -100,21 +190,39 @@ const AddCart = () => {
                       ml={"10px"}
                       mt="10px"
                     >
-                      <Stack direction={"row"} justifyContent="space-between">
+                      <Stack
+                        direction={{ md: "row", xs: "column" }}
+                        justifyContent="space-between"
+                      >
                         <Typography
                           variant="h6"
-                          width={"80%"}
-                          fontSize={"1.1em"}
+                          sx={{
+                            [theme.breakpoints.up("xs")]: {
+                              fontSize: "1em",
+                              width: "95%",
+                            },
+                            [theme.breakpoints.up("md")]: {
+                              fontSize: "1.1em",
+                              width: "80%",
+                            },
+                          }}
                         >
                           {ele.productid.name}
                         </Typography>
-                        <Typography variant="h6">
+                        <Typography
+                          variant="h6"
+                          fontSize={{ sm: "1.25rem", xs: "1.1em" }}
+                        >
                           {" "}
-                          &#8377; {ele.productid.price * ele.qty}
+                          &#8377; {ele.productid.price}
                         </Typography>
                       </Stack>
                       <Stack my={"5px"}>
-                        <Typography variant="body2" color="initial">
+                        <Typography
+                          variant="body2"
+                          fontSize={{ sm: "0.875rem", xs: ".8em" }}
+                          color="initial"
+                        >
                           Available in stock
                         </Typography>
                       </Stack>
@@ -125,7 +233,15 @@ const AddCart = () => {
                           alignItems={"center"}
                         >
                           <Stack direction="row" alignItems={"center"}>
-                            <IconButton color="success">
+                            <IconButton
+                              color="success"
+                              onClick={() =>
+                                updateCartQuantity(
+                                  ele.productid._id,
+                                  ele.qty + 1
+                                )
+                              }
+                            >
                               <Add />
                             </IconButton>
                             <Typography
@@ -136,7 +252,15 @@ const AddCart = () => {
                               {" "}
                               {ele.qty}
                             </Typography>
-                            <IconButton color="error">
+                            <IconButton
+                              color="error"
+                              onClick={() =>
+                                updateCartQuantity(
+                                  ele.productid._id,
+                                  ele.qty - 1
+                                )
+                              }
+                            >
                               <Remove />
                             </IconButton>
                           </Stack>
@@ -161,25 +285,47 @@ const AddCart = () => {
               );
             })}
           </Stack>
-          <Stack width={"40%"}>
+          <Stack
+            sx={{
+              [theme.breakpoints.up("xs")]: {
+                width: "90%",
+              },
+              [theme.breakpoints.up("md")]: {
+                width: "40%",
+              },
+            }}
+          >
             <Stack
-              my={"10vh"}
-              width={"70%"}
+              mt={"100px"}
+              // width={"70%"}
               sx={{
                 alignItems: "center",
                 position: "sticky",
                 top: " 10%",
                 right: "0",
+                [theme.breakpoints.up("xs")]: {
+                  // boxShadow: "0 0 3px #999",
+                },
+                [theme.breakpoints.up("md")]: {
+                  width: "70%",
+                },
               }}
             >
               <Box
                 sx={{
-                  background: "#000",
-                  color: "#fff",
                   width: "85%",
                   p: "10px",
-                  boxShadow: "0 0 3px #777",
-                  mt: "10px",
+                  my: "10px",
+                  [theme.breakpoints.up("md")]: {
+                    background: "#000",
+                    boxShadow: "0 0 3px #777",
+                    color: "#fff",
+                  },
+                  [theme.breakpoints.up("xs")]: {
+                    background: "#fff",
+                    boxShadow: "none",
+                    color: "#000",
+                  },
                 }}
               >
                 <Typography variant="h6" className="obitron">

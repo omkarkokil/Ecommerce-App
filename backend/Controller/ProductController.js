@@ -24,6 +24,25 @@ const createProduct = async (req, res) => {
     }
 }
 
+
+const countStockByCategory = async () => {
+    try {
+        const result = await Product.aggregate([
+            {
+                $group: {
+                    _id: '$category',
+                    totalProducts: { $sum: 1 }
+                }
+            }
+        ]);
+        return result;
+    } catch (error) {
+        console.error("Error counting orders by category:", error);
+        throw error;
+    }
+};
+
+
 const getAllProducts = async (req, res) => {
     try {
         const search = req.query.search ? req.query.search : ""
@@ -31,7 +50,7 @@ const getAllProducts = async (req, res) => {
         const size = req.query.size ? parseInt(req.query.size) : 15;
 
         const skip = (page - 1) * size;
-        const products = await Product.find().sort({ createdAt: -1 }).skip(skip).limit(15)
+        const products = await Product.find().sort({ createdAt: -1 }).skip(skip).limit(size)
 
         const searchproduct = products.filter((item) => {
             return item.name.toLowerCase().includes(search) || item.category.toLowerCase().includes(search)
@@ -44,10 +63,13 @@ const getAllProducts = async (req, res) => {
             }
         })
 
+        const Inventory = await countStockByCategory()
+
+
         if (!search || search !== null) {
-            return res.json({ products: searchproduct, page, size, total: searchTotal.length })
+            return res.json({ products: searchproduct, page, size, total: searchTotal.length, Inventory })
         } else {
-            return res.json({ products, page, size, total: total.length })
+            return res.json({ products, page, size, total: total.length, Inventory })
         }
 
     } catch (error) {
@@ -72,8 +94,6 @@ const getProduct = async (req, res) => {
 const createReviews = async (req, res) => {
     try {
         const { comment, rating, productid } = req.body;
-
-
         const review =
         {
             userid: req.user.id._id,
@@ -81,7 +101,6 @@ const createReviews = async (req, res) => {
             rating,
             comment
         }
-
         const product = await Product.findById(productid);
 
         const reviewExists = product.reviews.find((ifExists) => ifExists.userid !== undefined ? ifExists.userid.toString() === review.userid.toString() : "")
@@ -107,11 +126,9 @@ const createReviews = async (req, res) => {
         product.reviews.forEach((element) => {
             avg += element.rating
         })
-        console.log(avg);
         let getRate = avg / product.reviews.length;
 
         await Product.findByIdAndUpdate(productid, { avgrate: getRate.toFixed(1) })
-        console.log(getRate);
 
         return res.json({
             status: true,
@@ -137,4 +154,50 @@ const getComments = async (req, res, next) => {
     }
 }
 
-module.exports = { createProduct, getAllProducts, getProduct, createReviews, getComments };
+
+const editProduct = async (req, res) => {
+    try {
+        const { id } = req.params
+        const { name, price, img, stock, desc, category } = req.body
+
+        await Product.findByIdAndUpdate({ _id: id }, { name, price, img, stock, desc, category });
+
+        return res.json({
+            success: true,
+            msg: "Product updated successfully"
+        })
+
+    } catch (error) {
+        if (error) {
+            console.log(error);
+            return res.json({
+                success: false,
+                msg: "Server error please try again"
+            })
+        }
+    }
+}
+
+
+
+const deleteProduct = async (req, res) => {
+    try {
+        const { id } = req.query
+        await Product.findByIdAndDelete({ _id: id })
+
+        return res.json({
+            msg: "Product deleted successfully",
+            status: true
+        })
+
+
+    } catch (error) {
+        console.log(error);
+        return res.json({
+            msg: "Server has an error please try later",
+            status: false
+        })
+    }
+}
+
+module.exports = { createProduct, getAllProducts, getProduct, createReviews, getComments, deleteProduct, editProduct };

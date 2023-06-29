@@ -79,6 +79,8 @@ const LoginUser = async (req, res) => {
       });
     }
 
+    // console.log(isAuth);
+
     return res.status(202).json({
       msg: "login successful",
       status: true,
@@ -127,7 +129,7 @@ const googleUser = async (req, res) => {
 const getAllUser = async (req, res) => {
   try {
     const page = req.query.page ? parseInt(req.query.page) : 1;
-    const size = req.query.size ? parseInt(req.query.size) : 5;
+    const size = 10;
 
     const skip = (page - 1) * size;
 
@@ -160,6 +162,21 @@ const deleteUser = async (req, res) => {
   }
 }
 
+const UpdateUserRole = async (req, res) => {
+  try {
+    const { id, isAdmin } = req.body;
+    const data = await User.findByIdAndUpdate({ _id: id }, { isAdmin }, { new: true })
+
+    return res.json({
+      data,
+      success: true,
+      msg: "User Updated successfully",
+    })
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 const AddToCart = async (req, res) => {
   try {
     const { qty, productid } = req.body;
@@ -174,6 +191,7 @@ const AddToCart = async (req, res) => {
         if (item.productid.toString() !== undefined) {
           if (item.productid.toString() === product.productid) {
             item.qty += product.qty
+            // addCart(item)
           }
         }
       });
@@ -194,6 +212,49 @@ const AddToCart = async (req, res) => {
     console.log(error);
   }
 }
+
+const updateCartQuantity = async (req, res) => {
+  try {
+    const { productid, qty } = req.body;
+    const user = await User.findOne({ _id: req.user.id._id });
+
+
+    // Method 1
+    const existingProductIndex = user.cartProduct.findIndex(
+      (item) => item.productid.toString() === productid
+    );
+
+    if (existingProductIndex !== -1) {
+      user.cartProduct[existingProductIndex].qty = qty;
+      await user.save();
+      return res.json({
+        msg: "Cart quantity updated",
+        status: true,
+      });
+
+    }
+
+    // Method 2 
+    // user.cartProduct.forEach((item) => {
+    //   if (item.productid.toString() !== undefined) {
+    //     if (item.productid.toString() === productid) {
+    //       item.qty = qty;
+    //     }
+    //   }
+    // }
+    // );
+
+    // await user.save({ validateBeforeSave: false });
+
+    return res.status(404).json({
+      msg: "Product not found in cart",
+      status: false,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "Internal server error", status: false });
+  }
+};
 
 
 
@@ -236,4 +297,4 @@ const getCart = async (req, res) => {
 }
 
 
-module.exports = { RegisterUser, LoginUser, googleUser, getAllUser, deleteUser, AddToCart, removeCart, getCart };
+module.exports = { RegisterUser, LoginUser, googleUser, getAllUser, deleteUser, AddToCart, removeCart, getCart, updateCartQuantity, UpdateUserRole };

@@ -1,7 +1,13 @@
 import { Box, Stack } from "@mui/system";
 import React, { useContext } from "react";
 import TextField from "@mui/material/TextField";
-import { Facebook, Google, Key, Person } from "@mui/icons-material";
+import {
+  Facebook,
+  Google,
+  Key,
+  LoginOutlined,
+  Person,
+} from "@mui/icons-material";
 import {
   InputAdornment,
   FormControl,
@@ -81,10 +87,31 @@ const Login = () => {
             <Button
               variant="contained"
               size="medium"
+              startIcon={<LoginOutlined />}
               onClick={loginhandler}
               color="info"
             >
               Login
+            </Button>
+          </FormControl>
+
+          <FormControl width="50%" margin="dense">
+            <Button
+              variant="contained"
+              size="medium"
+              startIcon={<Person />}
+              onClick={() => {
+                setUser((pre) => {
+                  return {
+                    ...pre,
+                    email: "admin@gmail.com",
+                    password: "123",
+                  };
+                });
+              }}
+              color="success"
+            >
+              Demo Login
             </Button>
           </FormControl>
 

@@ -1,29 +1,45 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
-import { Button, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import DataCard from "../Components/DataCard";
 import PaymentChart from "../Components/PaymentChart";
 import ApiContext from "../../Context/Api/ApiContext";
+import FunctionContext from "../../Context/Function/FunctionContext";
+import TopPurchaseTable from "../Components/TopPurchaseTable";
 
 const DashBoard = () => {
-  const { logOut } = useContext(ApiContext);
+  const { logOut, getProducts } = useContext(ApiContext);
+
+  const { shade1, color } = useContext(FunctionContext);
+
+  useEffect(() => {
+    getProducts();
+  }, []);
+
   return (
     <>
       <Stack
-        my={"30px"}
-        direction={"row"}
-        justifyContent={"space-between"}
-        alignItems={"center"}
+        ml={{ md: "50px" }}
+        alignItems={{ xs: "center", md: "flex-start" }}
+        mt={"20px"}
       >
-        <Stack mx={"10%"}>
-          <Typography variant="h4" fontWeight={"bold"} color="initial">
-            DashBoard
-          </Typography>
-          <Typography variant="h6" color="initial">
-            Welcome admin
-          </Typography>
-        </Stack>
-        <Stack mx={"10%"}>
+        <Stack
+          width={{ xs: "90%", md: "95%" }}
+          my={{ sm: "30px", xs: "0" }}
+          mt={{ xs: "80px" }}
+          mb={{ xs: "10px" }}
+          direction={"row"}
+          justifyContent={"space-between"}
+          alignItems={"center"}
+        >
+          <Box>
+            <Typography variant="h4" fontWeight={"bold"} color={color}>
+              DashBoard
+            </Typography>
+            <Typography variant="h6" color="initial">
+              Welcome admin
+            </Typography>
+          </Box>
           <Button variant="contained" color="error" onClick={logOut}>
             Log Out
           </Button>
@@ -31,6 +47,7 @@ const DashBoard = () => {
       </Stack>
       <DataCard />
       <PaymentChart />
+      <TopPurchaseTable />
     </>
   );
 };

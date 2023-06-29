@@ -156,7 +156,6 @@ const Products = () => {
   return (
     <>
       <Navbar />
-
       <div>
         {["bottom"].map((anchor) => (
           <React.Fragment key={anchor}>

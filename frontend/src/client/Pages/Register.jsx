@@ -27,9 +27,10 @@ import Navbar from "../../utils/Navbar";
 import LoginLoader from "../../utils/LoginLoader";
 
 const Register = () => {
-  const { user, isLoading, imageArr } = useContext(StateContext);
-  const { handleUser, postDetailes } = useContext(FunctionContext);
-  const { RegisterHandler } = useContext(ApiContext);
+  const { user, isLoading, UserImages, setUserImages } =
+    useContext(StateContext);
+  const { handleUser } = useContext(FunctionContext);
+  const { RegisterHandler, postDetailes } = useContext(ApiContext);
 
   return (
     <>
@@ -126,7 +127,9 @@ const Register = () => {
               id="imageArr"
               type="file"
               accept="image/*"
-              onChange={(e) => postDetailes(e.target.files)}
+              onChange={(e) => {
+                setUserImages(e.target.files);
+              }}
               size="medium"
               sx={{ backgroundColor: "#fff", width: "400px", mr: "20px" }}
               margin="dense"
@@ -142,11 +145,6 @@ const Register = () => {
               * Not Required
             </FormHelperText>
           </FormControl>
-          {/* <Box width={"200px"} marginY={"10px"}>
-            <Button variant="text" fullWidth>
-              Upload Profile Image
-            </Button>
-          </Box> */}
 
           <Typography variant="body2" my={"10px"}>
             Don't have an account? <Link to={"/login"}>Login</Link>
@@ -154,7 +152,7 @@ const Register = () => {
           <Button
             variant="contained"
             size="medium"
-            onClick={RegisterHandler}
+            onClick={() => RegisterHandler(() => postDetailes(UserImages))}
             sx={{ width: "40%" }}
             color="primary"
           >

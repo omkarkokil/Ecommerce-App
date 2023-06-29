@@ -23,8 +23,15 @@ const style = {
 export default function ReviewModal() {
   const { id } = useParams("");
 
-  const { comment, setComment, rating, setRating } =
-    React.useContext(StateContext);
+  const {
+    comment,
+    comments,
+    setComment,
+    rating,
+    setRating,
+    currentUser,
+    theme,
+  } = React.useContext(StateContext);
   const { handleCloseModal, handleOpenModal, openModal } =
     React.useContext(FunctionContext);
   const { makeComment } = React.useContext(ApiContext);
@@ -34,7 +41,19 @@ export default function ReviewModal() {
         variant="contained"
         fullWidth
         color="primary"
-        onClick={handleOpenModal}
+        sx={{
+          mt: "10px",
+          width: "40%",
+        }}
+        onClick={() => {
+          comments.filter((item) => {
+            if (item.userid === currentUser.id) {
+              setComment(item.comment);
+              setRating(item.rating);
+            }
+          });
+          handleOpenModal();
+        }}
       >
         Submit Review
       </Button>

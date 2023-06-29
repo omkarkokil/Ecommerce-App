@@ -1,57 +1,145 @@
-import { Box, IconButton, Typography, Button } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  Typography,
+  Button,
+  Divider,
+  Skeleton,
+} from "@mui/material";
 import { Stack } from "@mui/system";
-import React, { useContext, useEffect } from "react";
-import Carosoul from "../components/Home/Carosoul";
+import React, { Suspense, useContext, useEffect } from "react";
 import Trends from "../components/Home/Trends";
 import { Link } from "react-router-dom";
 import Navbar from "../../utils/Navbar";
 import ApiContext from "../../Context/Api/ApiContext";
 import SkeletonLoader from "../../utils/SkeletonLoader";
 import StateContext from "../../Context/hooks/StateContext";
+import GridLayout from "../../client/components/Home/GridLayout";
+import LoginLoader from "../../utils/LoginLoader";
+
+const Carosoul = React.lazy(() => import("../components/Home/Carosoul"));
 
 const Home = () => {
   const { getProducts } = useContext(ApiContext);
-  const { isLoading } = useContext(StateContext);
+  const { isLoading, allProducts, theme } = useContext(StateContext);
   useEffect(() => {
     getProducts();
   }, []);
   return (
     <>
       <Navbar />
-      <Carosoul />
-      <Box margin={"20px"}>
-        <Typography variant="h4" fontWeight={"bold"} color="initial">
-          Trending Products
-        </Typography>
-      </Box>
-      {isLoading ? (
-        <SkeletonLoader />
+      {allProducts.length <= 0 ? (
+        <LoginLoader />
       ) : (
-        <Stack
-          position={"relative"}
-          background={"#f1f1f1"}
-          height="max-content"
-          mb={"20px"}
-        >
-          <Trends />
-        </Stack>
-      )}
+        <>
+          <Stack
+            sx={{
+              [theme.breakpoints.up("xs")]: {
+                height: "40vh",
+              },
+              [theme.breakpoints.up("sm")]: {
+                height: "50vh",
+              },
+              [theme.breakpoints.up("md")]: {
+                height: "65vh",
+              },
+            }}
+          >
+            <Suspense
+              fallback={<Skeleton variant="rect" width="100%" height="100%" />}
+            >
+              <Carosoul />
+            </Suspense>
+          </Stack>
+          <Stack justifyContent={"center"} alignItems={"center"} mt={"20px"}>
+            <Typography
+              variant="body1"
+              sx={{
+                [theme.breakpoints.up("xs")]: {
+                  fontSize: ".95rem",
+                },
 
-      {/* <Box margin={"20px"} mt={"50px"}>
-        <Typography variant="h4" fontWeight={"bold"} color="initial">
-          Featured Products
-        </Typography>
-      </Box> */}
-      {/* <Stack my="20">
-        <GridLayout />
-      </Stack> */}
-      <Stack my={2} justifyContent={"center"} alignItems={"center"}>
-        <Link to={"/products"}>
-          <Button variant="contained" color="primary">
-            See All products
-          </Button>
-        </Link>
-      </Stack>
+                [theme.breakpoints.up("md")]: {
+                  fontSize: "1rem",
+                },
+              }}
+              fontWeight={"bold"}
+              color="primary"
+            >
+              Recommended
+            </Typography>
+            <Typography
+              variant="h4"
+              sx={{
+                [theme.breakpoints.up("xs")]: {
+                  fontSize: "1.8em",
+                },
+
+                [theme.breakpoints.up("md")]: {
+                  fontSize: "2.125rem",
+                },
+              }}
+              fontWeight={"bold"}
+              color="initial"
+            >
+              Trending products
+            </Typography>
+            <Box width={"20%"} mt={"5px"}>
+              <Divider />
+            </Box>
+          </Stack>
+
+          <Stack
+            position={"relative"}
+            background={"#f1f1f1"}
+            height="max-content"
+            mb={"20px"}
+          >
+            <Trends />
+          </Stack>
+
+          <Stack justifyContent={"center"} alignItems={"center"} my={"20px"}>
+            <Typography
+              variant="body1"
+              sx={{
+                [theme.breakpoints.up("xs")]: {
+                  fontSize: ".95rem",
+                },
+
+                [theme.breakpoints.up("md")]: {
+                  fontSize: "1rem",
+                },
+              }}
+              fontWeight={"bold"}
+              color="primary"
+            >
+              Checkout
+            </Typography>
+            <Typography
+              variant="h4"
+              sx={{
+                [theme.breakpoints.up("xs")]: {
+                  fontSize: "1.8em",
+                },
+
+                [theme.breakpoints.up("md")]: {
+                  fontSize: "2.125rem",
+                },
+              }}
+              fontWeight={"bold"}
+              color="initial"
+            >
+              Products
+            </Typography>
+            <Box width={"10%"} mt={"5px"}>
+              <Divider />
+            </Box>
+          </Stack>
+          <Stack my="20">
+            <GridLayout />
+          </Stack>
+        </>
+      )}
     </>
   );
 };

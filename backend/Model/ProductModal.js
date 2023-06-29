@@ -36,7 +36,7 @@ const ProductSchema = mongoose.Schema({
     reviews: [
         {
             userid: {
-                type: mongoose.Schema.Types.ObjectId,
+                type: mongoose.Types.ObjectId,
             },
             name: {
                 type: String,
@@ -49,6 +49,10 @@ const ProductSchema = mongoose.Schema({
             comment: {
                 type: String,
                 required: true
+            },
+            pic: {
+                type: String,
+
             },
             createdAt: {
                 type: Date,

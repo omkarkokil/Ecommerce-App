@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useCallback, useContext, useEffect, useMemo } from "react";
 import ApiContext from "./ApiContext";
 import StateContext from "../hooks/StateContext";
 import axios from "axios";
@@ -10,6 +10,7 @@ import FunctionContext from "../Function/FunctionContext";
 import { Try } from "@mui/icons-material";
 
 const ApiProvider = ({ children }) => {
+  const img = [];
   const {
     user,
     imageArr,
@@ -23,19 +24,18 @@ const ApiProvider = ({ children }) => {
     activePage,
     setActivePage,
     product,
+    setProduct,
     category,
     setAllProducts,
     setProductCount,
-    search,
-    setSearch,
-    getProduct,
-    productImg,
-    productPage,
     setproductImg,
     setGetProduct,
-    setProductPage,
+    setCategory,
     allProducts,
     isLogin,
+    productImg,
+    productDesc,
+
     // comment
     comment,
     rating,
@@ -45,6 +45,7 @@ const ApiProvider = ({ children }) => {
 
     //TODO cart
     qty,
+    setQty,
     cartItem,
     setCartItem,
     cartCount,
@@ -57,7 +58,20 @@ const ApiProvider = ({ children }) => {
     productPrices,
     myOrders,
     setmyOrders,
-
+    isAdmin,
+    setisAdmin,
+    setOrder,
+    makeProductImage,
+    setProductDesc,
+    setImageArr,
+    allOrders,
+    setAllOrders,
+    allOrdersCount,
+    setAllOrdersCount,
+    setEarnings,
+    setTotalCategoryBuy,
+    setInventory,
+    setTopPurchaseProduct,
     // orderdata
   } = useContext(StateContext);
 
@@ -89,23 +103,40 @@ const ApiProvider = ({ children }) => {
 
       setIsLogin(true);
     }
-  }, [localStorage.getItem("user")]);
+  }, [isLogin]);
+
+  useEffect(() => {
+    let tokenId;
+    if (localStorage.getItem("isAdmin")) {
+      const token = localStorage.getItem("isAdmin");
+      const decode = jwt_decode(token);
+      const { id } = decode;
+      tokenId = id;
+    }
+
+    if (tokenId === 1) {
+      setisAdmin(true);
+      setIsLogin(true);
+    }
+    if (loc.includes("/admin") && tokenId !== 1) {
+      navigate("/");
+    }
+  }, [loc, setIsLogin]);
 
   const logOut = () => {
     localStorage.clear();
     toast.success("Log out successfully", toastoption);
     setIsLogin(false);
+    setisAdmin(false);
     navigate("/");
   };
 
-  useEffect(() => {
-    if (loc.includes("/admin") && !localStorage.getItem("isAdmin")) {
-      navigate("/");
-    }
-  }, []);
-
-  const RegisterHandler = async () => {
+  const RegisterHandler = async (CallBack) => {
+    await CallBack();
     try {
+      const string = img.toString();
+      console.log(string);
+
       setIsLoading(true);
       const { name, email, password, Cpassword } = user;
 
@@ -127,7 +158,7 @@ const ApiProvider = ({ children }) => {
 
       const { data } = await axios.post(
         "/api/auth/registeruser",
-        { name, email, password, userPic: imageArr[0] },
+        { name, email, password, userPic: string },
         config
       );
 
@@ -140,6 +171,7 @@ const ApiProvider = ({ children }) => {
         setIsLoading(false);
         toast.success(data.msg, toastoption);
         localStorage.setItem("user", data.token);
+        setIsLogin(true);
         navigate("/");
       }
     } catch (error) {
@@ -175,7 +207,7 @@ const ApiProvider = ({ children }) => {
 
         if (data.isAdminStatus) {
           localStorage.setItem("isAdmin", data.isAuth);
-          navigate("/admin/dashboard");
+          navigate("/");
         }
 
         if (!data.isAdminStatus) {
@@ -209,6 +241,7 @@ const ApiProvider = ({ children }) => {
             if (data.status) {
               toast.success(data.msg, toastoption);
               localStorage.setItem("user", data.token);
+              setIsLogin(true);
               setIsLoading(false);
 
               if (data.isAdminStatus) {
@@ -241,7 +274,6 @@ const ApiProvider = ({ children }) => {
           },
           params: {
             page: activePage,
-            size: process.env.REACT_APP_LIMIT,
           },
         }
       );
@@ -278,56 +310,129 @@ const ApiProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (loc === "/admin/users") {
+    if (loc === "/admin/users" || loc === "/admin/dashboard") {
       AllUsersData();
     }
   }, [activePage, loc]);
 
-  const CreateProduct = async () => {
+  const postDetailes = async (pics) => {
+    const pic = Array.from(pics);
+    console.log(pic);
+
+    if (pic === undefined) {
+      console.log("select img");
+    }
+
     try {
-      const { name, desc, stock, price } = product;
+      const uploadPromises = pic.map(async (image) => {
+        const formData = new FormData();
+        formData.append("file", image);
+        formData.append("upload_preset", "collage-app");
+        formData.append("cloud_name", "dfxyr6c40");
+        const response = await axios.post(
+          "https://api.cloudinary.com/v1_1/dfxyr6c40/image/upload",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        img.push(response.data.url);
+        console.log(img);
+      });
+      await Promise.all(uploadPromises);
+      setImageArr((CopyAll) => [...CopyAll, ...img]);
+    } catch (error) {
+      console.error("Error occurred during upload:", error);
+    }
+  };
+
+  const CreateProduct = async (Callback) => {
+    setIsLoading(true);
+    await Callback();
+    try {
+      const { name, stock, price } = product;
 
       const { data } = await axios.post(
         process.env.REACT_APP_CREATE_PRODUCT_URL,
-        { name, desc, stock, price, img: imageArr, category }
+        { name, desc: productDesc, stock, price, img, category }
       );
 
       if (data.status) {
         toast.success(data.msg, toastoption);
+        setIsLoading(false);
+        img = [];
+        setAllProducts((pre) => [...data.product, ...pre]);
       }
-
-      console.log(data);
     } catch (error) {
+      setIsLoading(false);
       console.log(error);
     }
+    setCategory("");
   };
 
-  const getProducts = async (id) => {
-    // setProductPage((productPage) => productPage + 1);
+  const editProduct = async (id, Callback) => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
+      await Callback();
+      const { name, stock, price } = product;
 
-      const { data } = await axios.get(
-        process.env.REACT_APP_GET_ALL_PRODUCT_URL,
+      const { data } = await axios.put(
+        `${process.env.REACT_APP_UPDATE_PRODUCT_URL}/${id}`,
         {
-          params: {
-            page: 1,
-            size: process.env.REACT_APP_PRODUCT_LIMIT,
-            search: id,
-          },
+          name,
+          desc: productDesc,
+          stock,
+          price,
+          img: makeProductImage.length <= 0 ? productImg : img,
+          category,
         }
       );
 
-      if (data.total !== allProducts.length) {
-        setAllProducts(data.products);
-        setProductCount(data.total);
+      if (!data.success) {
+        toast.error(data.msg, toastoption);
+        setIsLoading(false);
       }
-
-      setIsLoading(false);
+      if (data.success) {
+        toast.success(data.msg, toastoption);
+        setIsLoading(false);
+        navigate("/admin/products");
+      }
     } catch (error) {
+      setIsLoading(false);
       console.log(error);
     }
+    setCategory("");
   };
+
+  const getProducts = useCallback(
+    async (id) => {
+      try {
+        setIsLoading(true);
+
+        const { data } = await axios.get(
+          process.env.REACT_APP_GET_ALL_PRODUCT_URL,
+          {
+            params: {
+              page: loc.includes("/admin/products") ? activePage : 1,
+              size: loc.includes("/admin/products") ? 10 : 15,
+              search: id,
+            },
+          }
+        );
+
+        setAllProducts(data.products);
+        setProductCount(data.total);
+        setInventory(data.Inventory);
+
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [allProducts, activePage]
+  );
 
   const GetProduct = async (id) => {
     try {
@@ -337,8 +442,43 @@ const ApiProvider = ({ children }) => {
       );
       setGetProduct(data);
       setproductImg(data.img);
+
+      if (loc.includes("/admin/editProduct")) {
+        setProduct({
+          name: data.name,
+          desc: data.desc,
+          stock: data.stock,
+          price: data.price,
+        });
+        setProductDesc(data.desc);
+        setCategory(data.category);
+      }
       setIsLoading(false);
     } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const DeleteProduct = async (id) => {
+    try {
+      const { data } = await axios.delete(
+        process.env.REACT_APP_Delete_Product,
+        {
+          params: {
+            id,
+          },
+        }
+      );
+
+      if (data.status === false) {
+        toast.success(data.msg, toastoption);
+      }
+      if (data.status === true) {
+        toast.success(data.msg, toastoption);
+        getProducts();
+      }
+    } catch (error) {
+      toast.error("404 server error", toastoption);
       console.log(error);
     }
   };
@@ -357,7 +497,7 @@ const ApiProvider = ({ children }) => {
 
   const makeComment = async (id) => {
     try {
-      if (!localStorage.getItem("user")) {
+      if (!isLogin) {
         navigate("/login");
         return false;
       }
@@ -388,7 +528,7 @@ const ApiProvider = ({ children }) => {
 
   const AddToCart = async (id) => {
     try {
-      if (!localStorage.getItem("user")) {
+      if (!isLogin) {
         navigate("/login");
         return false;
       }
@@ -413,9 +553,10 @@ const ApiProvider = ({ children }) => {
     } catch (error) {
       console.log(error);
     }
+    setQty(1);
   };
 
-  const GetCart = async () => {
+  const GetCart = useCallback(async () => {
     try {
       setIsLoading(true);
       const { data } = await axios.get(process.env.REACT_APP_GET_CART, {
@@ -431,7 +572,7 @@ const ApiProvider = ({ children }) => {
     } catch (error) {
       console.log(error);
     }
-  };
+  }, [cartItem]);
 
   const RemoveCart = async (id) => {
     try {
@@ -463,7 +604,7 @@ const ApiProvider = ({ children }) => {
     if (localStorage.getItem("user")) {
       GetCart();
     }
-  }, [localStorage.getItem("user")]);
+  }, [currentUser]);
 
   //? Order data
 
@@ -478,7 +619,7 @@ const ApiProvider = ({ children }) => {
           OrderData: orderProducts,
           totalPrice,
           taxPrice,
-          PaymentType: "cash on delivery",
+          PaymentType: "Not Paid",
         },
         {
           headers: {
@@ -511,6 +652,48 @@ const ApiProvider = ({ children }) => {
     setIsLoading(false);
   };
 
+  const GetOrders = async () => {
+    setIsLoading(true);
+    try {
+      const { data } = await axios.get(process.env.REACT_APP_GET_ALL_ORDER, {
+        headers: {
+          Authorization: localStorage.getItem("user"),
+        },
+        params: {
+          page: activePage,
+          size: 0,
+        },
+      });
+      setAllOrders(data.orders);
+      setEarnings(data.totalEarnings);
+      setTotalCategoryBuy(data.totalCategoryBuy);
+      setAllOrdersCount(data.count);
+      setTopPurchaseProduct(data.topPurchases);
+    } catch (error) {
+      console.log(error);
+    }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    if (loc === "/admin/orders" || loc === "/admin/dashboard") {
+      GetOrders();
+    }
+  }, [activePage, loc]);
+
+  const GetOrder = async (id) => {
+    try {
+      setIsLoading(true);
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_GET_ORDER}/${id}`
+      );
+      setOrder(data);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const OnlinePayment = async () => {
     try {
       const {
@@ -518,7 +701,6 @@ const ApiProvider = ({ children }) => {
       } = await axios.get(process.env.REACT_APP_GET_KEY);
 
       const { totalPrice } = productPrices;
-      console.log(totalPrice);
 
       const {
         data: { order },
@@ -620,6 +802,13 @@ const ApiProvider = ({ children }) => {
         makeOrder,
         MyOrders,
         OnlinePayment,
+        toastoption,
+        DeleteProduct,
+        postDetailes,
+        editProduct,
+        navigate,
+        GetOrders,
+        GetOrder,
       }}
     >
       {children}

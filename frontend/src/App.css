@@ -40,6 +40,12 @@ input::-webkit-inner-spin-button {
   );
 } */
 
+@media (max-width: 600px) {
+  .caro-img {
+    height: 40vh !important;
+  }
+}
+
 .obitron {
   font-family: "Orbitron", sans-serif !important;
   font-weight: bolder;

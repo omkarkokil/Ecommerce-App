@@ -50,6 +50,7 @@ export default function SearchModal() {
                   {/* <Link to={`/products/${search}`}> */}
                   <IconButton
                     color="secondary"
+                    disabled={search === "" ? true : ""}
                     onClick={() => {
                       setSearch("");
                       Navigate(`/products/${search}`);

@@ -6,9 +6,13 @@ import { styled } from "@mui/material/styles";
 import { blue } from "@mui/material/colors";
 import { TableRow } from "@mui/material";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import axios from "axios";
+import { CopyAll } from "@mui/icons-material";
+import { toast } from "react-toastify";
 
 const FunctionProvider = ({ children }) => {
   const {
+    isLogin,
     setOpen,
     setCategory,
     setValue,
@@ -22,7 +26,10 @@ const FunctionProvider = ({ children }) => {
     product,
     setProduct,
     setQty,
+    setRating,
+    setComment,
     qty,
+    setUserImages,
 
     category,
     value,
@@ -31,6 +38,8 @@ const FunctionProvider = ({ children }) => {
     FilterData,
     setFilterData,
     setAllProducts,
+    makeProductImage,
+    setmakeProductImage,
 
     setSkipped,
     skipped,
@@ -70,7 +79,6 @@ const FunctionProvider = ({ children }) => {
         [name]: value,
       };
     });
-    console.log(product);
   };
 
   const handleOrder = (e) => {
@@ -83,47 +91,28 @@ const FunctionProvider = ({ children }) => {
     });
   };
 
-  const postDetailes = (pic) => {
-    const imageArray = [];
-    setIsLoading(true);
-    if (pic === undefined) {
-      console.log("select img");
+  const handleProductImage = (event) => {
+    const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
+    const file = event.target.files;
+    const pic = Array.from(file);
+    // pic.forEach((image) => {
+    //   if (allowedTypes.includes(image.type)) {
+    //     setmakeProductImage(event.target.files);
+    //   }
+    // });
+    if (event.target.files.length > 5) {
+      toast.warning("You can choose only 5 images");
+      return;
     }
-
-    for (let u = 0; u < pic.length; u++) {
-      const data = new FormData();
-
-      data.append("file", pic[u]);
-      data.append("upload_preset", "collage-app");
-      data.append("cloud_name", "dfxyr6c40");
-
-      fetch("https://api.cloudinary.com/v1_1/dfxyr6c40/image/upload", {
-        method: "post",
-        body: data,
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          imageArray.push(data.url.toString());
-          if (imageArray.length - 1 === u) {
-            setIsLoading(false);
-            console.log("done");
-          }
-
-          console.log(u, "count");
-          console.log(imageArray, "imgArray");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-
-    setImageArr(imageArray);
-    // setIsLoading(false);
+    setmakeProductImage(event.target.files);
   };
 
   const totalPagesCalculator = (total, limit) => {
     const pages = [];
-    for (let x = 0; x < (parseInt(total) - 1) / limit; x++) {
+    const condition = window.location.pathname.includes("/admin/users")
+      ? parseInt(total) - 1
+      : total;
+    for (let x = 0; x < condition / limit; x++) {
       pages.push(x);
     }
 
@@ -156,16 +145,26 @@ const FunctionProvider = ({ children }) => {
   // comment model hanlders
 
   const [openModal, setOpenModal] = React.useState(false);
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
+  const handleOpenModal = () => {
+    if (!isLogin) {
+      navigate("/login");
+      return false;
+    }
+    setOpenModal(true);
+  };
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setComment("");
+    setRating(0);
+  };
 
   // comment model hanlders
 
   //? cart
 
-  const IncreaseQty = () => {
+  const IncreaseQty = (stock) => {
     if (qty < 10) {
-      setQty(qty + 1);
+      if (qty < stock) setQty(qty + 1);
     }
   };
 
@@ -212,11 +211,10 @@ const FunctionProvider = ({ children }) => {
           handleValue,
           handleUser,
           handleProducts,
-          postDetailes,
           totalPagesCalculator,
           StyledTableCell,
           StyledTableRow,
-
+          handleProductImage,
           // comment
           openModal,
           setOpenModal,
@@ -231,7 +229,6 @@ const FunctionProvider = ({ children }) => {
 
           handleNext,
           handleOrder,
-
           shade1,
           color,
         }}

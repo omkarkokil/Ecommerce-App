@@ -19,11 +19,11 @@ import FunctionContext from "../Context/Function/FunctionContext";
 const DataTable = (props) => {
   const { activePage, setActivePage } = useContext(StateContext);
   const { StyledTableCell } = useContext(FunctionContext);
-
+  console.log(activePage);
   return (
     <>
       <Stack justifyContent={"center"} alignItems={"center"}>
-        <TableContainer component={Paper} sx={{ width: "70%" }}>
+        <TableContainer component={Paper}>
           <Table size="small">
             <TableHead>
               <TableRow>

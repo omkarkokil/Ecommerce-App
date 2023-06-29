@@ -18,6 +18,9 @@ import FunctionProvider from "./Context/Function/FunctionProvider";
 import ScrollToTop from "./utils/ScrollToTop";
 import { useEffect } from "react";
 import OrderComplete from "./client/Pages/OrderComplete";
+import EditProduct from "./Admin/pages/EditProduct";
+import Navbar from "./utils/Navbar";
+import MobileOrder from "./client/Pages/MobileOrder";
 
 
 function App() {
@@ -44,6 +47,7 @@ function App() {
                 <Route path="/products/:id" element={<Products />} />
                 <Route path="/orders" element={<ClientOrders />} />
                 <Route path="/ordersSuccess" element={<OrderComplete />} />
+                <Route path="/orderReport/:id" element={<MobileOrder />} />
 
 
 
@@ -54,7 +58,8 @@ function App() {
                 <Route path="/admin/products" element={<AdminNav />} />
                 <Route path="/admin/orders" element={<AdminNav />} />
                 <Route path="/admin/users" element={<AdminNav />} />
-                <Route path="/admin/reviews" element={<AdminNav />} />
+                <Route path="/admin/editProduct/:id" element={<AdminNav />} />
+                <Route path="/admin/getOrder/:id" element={<AdminNav />} />
                 {/* Admin Panel */}
               </Routes>
             </ApiProvider>

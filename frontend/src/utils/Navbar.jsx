@@ -1,9 +1,18 @@
-import { Search, ShoppingCartRounded } from "@mui/icons-material";
+import {
+  Dashboard,
+  Logout,
+  Person,
+  Search,
+  ShoppingBag,
+  ShoppingCartRounded,
+} from "@mui/icons-material";
 import {
   AppBar,
   Avatar,
   Box,
+  Divider,
   IconButton,
+  ListItemIcon,
   Menu,
   MenuItem,
   Stack,
@@ -18,11 +27,11 @@ import FunctionContext from "../Context/Function/FunctionContext";
 import ApiContext from "../Context/Api/ApiContext";
 
 const Navbar = () => {
-  const { isLogin, setIsLogin, currentUser, cartItem, cartCount } =
+  const { isLogin, currentUser, cartCount, isAdmin, theme } =
     useContext(StateContext);
   const { logOut } = useContext(ApiContext);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  // console.log(currentUser);
+  const open = Boolean(anchorEl);
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -40,7 +49,7 @@ const Navbar = () => {
         sx={{
           alignItems: "center",
           justifyContent: "space-between",
-          height: "8vh",
+
           background: "#fff",
           position: "fixed",
           top: 0,
@@ -48,10 +57,18 @@ const Navbar = () => {
           right: 0,
           zIndex: "100",
           boxShadow: "0 0 2px #111",
+          [theme.breakpoints.up("xs")]: {
+            height: "6vh",
+          },
+          [theme.breakpoints.up("sm")]: {},
+          [theme.breakpoints.up("md")]: {
+            height: "8vh",
+          },
+          [theme.breakpoints.up("lg")]: {},
         }}
         className="Nav-main"
       >
-        <Stack
+        {/* <Stack
           direction={"row"}
           sx={{ alignItems: "center" }}
           className="rubik "
@@ -74,16 +91,15 @@ const Navbar = () => {
               ABOUT
             </Typography>
           </Link>
-        </Stack>
+        </Stack> */}
 
-        <Stack width={"34%"} alignItems="center">
+        <Stack alignItems="center" ml={"20px"}>
           <Typography fontSize={"1.10em"} className="obitron">
             ONESTOPSHOP
           </Typography>
         </Stack>
 
         <Stack
-          width={"33%"}
           direction="row"
           sx={{ alignItems: "center", justifyContent: "flex-end" }}
         >
@@ -132,31 +148,71 @@ const Navbar = () => {
                 />
 
                 <Menu
-                  id="menu-appbar"
                   anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
+                  id="account-menu"
+                  open={open}
+                  PaperProps={{
+                    elevation: 0,
+                    sx: {
+                      overflow: "visible",
+                      filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                      mt: 1.5,
+                      "& .MuiAvatar-root": {
+                        width: 32,
+                        height: 32,
+                        ml: -0.5,
+                        mr: 1,
+                      },
+                      "&:before": {
+                        content: '""',
+                        display: "block",
+                        position: "absolute",
+                        top: 0,
+                        right: 14,
+                        width: 10,
+                        height: 10,
+                        bgcolor: "background.paper",
+                        transform: "translateY(-50%) rotate(45deg)",
+                        zIndex: 0,
+                      },
+                    },
                   }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={Boolean(anchorEl)}
+                  transformOrigin={{ horizontal: "right", vertical: "top" }}
+                  anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
                   onClose={handleClose}
                 >
                   <MenuItem sx={{ px: "30px" }} onClick={handleClose}>
-                    Profile
+                    <Avatar /> My Account
                   </MenuItem>
+
+                  <Divider />
+                  {isAdmin ? (
+                    <Link to={"/admin/dashboard"} style={{ color: "#000" }}>
+                      <MenuItem sx={{ px: "30px" }} onClick={handleClose}>
+                        <ListItemIcon>
+                          <Dashboard fontSize="small" />
+                        </ListItemIcon>
+                        DashBoard
+                      </MenuItem>
+                    </Link>
+                  ) : (
+                    ""
+                  )}
+
                   <Link to={"/orders"} style={{ color: "#000" }}>
                     <MenuItem sx={{ px: "30px" }} onClick={handleClose}>
+                      <ListItemIcon>
+                        <ShoppingBag fontSize="small" />
+                      </ListItemIcon>
                       Orders
                     </MenuItem>
                   </Link>
 
                   <Box onClick={logOut} style={{ color: "#000" }}>
                     <MenuItem sx={{ px: "30px" }} onClick={handleClose}>
+                      <ListItemIcon>
+                        <Logout fontSize="small" />
+                      </ListItemIcon>
                       Log Out
                     </MenuItem>
                   </Box>

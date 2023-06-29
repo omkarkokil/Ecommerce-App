@@ -1,8 +1,10 @@
-import { Paper, Typography, Button } from "@mui/material";
-import React from "react";
+import { Paper, Typography, Button, Skeleton, Stack } from "@mui/material";
+import React, { useContext } from "react";
 import Carousel from "react-material-ui-carousel";
+import StateContext from "../../../Context/hooks/StateContext";
 
 const Carosoul = () => {
+  const { theme } = useContext(StateContext);
   var items = [
     {
       name: "25% off on home appiliances",
@@ -27,6 +29,7 @@ const Carosoul = () => {
       bg: "https://images.unsplash.com/photo-1624705002806-5d72df19c3ad?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1332&q=80",
     },
   ];
+
   return (
     <>
       <Carousel interval={3000} navButtonsAlwaysInvisible indicators={false}>
@@ -34,29 +37,59 @@ const Carosoul = () => {
           return (
             <Paper
               key={id}
+              className="caro-img"
+              alt={ele.bg}
               elevation={3}
+              width="100%"
               sx={{
+                [theme.breakpoints.up("xs")]: {
+                  height: "40vh",
+                },
+                [theme.breakpoints.up("sm")]: {
+                  height: "50vh",
+                },
+                [theme.breakpoints.up("md")]: {
+                  height: "65vh",
+                },
                 width: "100%",
-                height: "65vh",
-                background: `linear-gradient(#00000081 , #00000089) , url(${ele.bg})`,
+                background: `linear-gradient(#00000087 , #000000bf) , url(${ele.bg})`,
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
                 display: "flex",
+                textAlign: "center",
                 alignItems: "center",
                 justifyContent: "center",
                 flexDirection: "column",
+                userSelect: "none",
+                objectFit: "cover",
               }}
             >
-              <Typography variant="h3" color="#fff">
+              <Typography
+                variant="h3"
+                sx={{
+                  [theme.breakpoints.up("xs")]: {
+                    fontSize: "1.7em",
+                  },
+                  [theme.breakpoints.up("sm")]: {
+                    fontSize: "2.3rem",
+                  },
+                  [theme.breakpoints.up("md")]: {
+                    fontSize: "3rem",
+                  },
+                }}
+                color="#fff"
+              >
                 {ele.name}
               </Typography>
-              <Typography variant="body2" color="#fff">
+              <Typography
+                variant="body2"
+                color="#fff"
+                textAlign={"center"}
+                px={"30px"}
+              >
                 {ele.description}
               </Typography>
-              <Button variant="contained" color="primary" sx={{ my: "10px" }}>
-                Get Now
-              </Button>
             </Paper>
           );
         })}
