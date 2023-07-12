@@ -79,6 +79,8 @@ const DataCard = () => {
                 return (
                   <Card
                     sx={{
+                      transition: ".2s all",
+                      "&:hover": { scale: "1.04" },
                       [theme.breakpoints.up("md")]: {
                         width: "21%",
                         mb: "0px",

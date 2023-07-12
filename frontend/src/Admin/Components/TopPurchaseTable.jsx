@@ -15,6 +15,8 @@ import StateContext from "../../Context/hooks/StateContext";
 const TopPurchaseTable = () => {
   const { topPurchaseProduct } = useContext(StateContext);
 
+  console.log(topPurchaseProduct);
+
   const Purchases = topPurchaseProduct.map((ele, id) => {
     return (
       <TableRow

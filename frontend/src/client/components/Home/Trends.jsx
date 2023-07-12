@@ -39,9 +39,12 @@ const Trends = (props) => {
   };
   const ref = useRef(null);
 
-  const { allProducts, isLoading, topPurchaseProduct, theme } =
-    useContext(StateContext);
-  const data = allProducts.slice(0, 10);
+  const { topPurchaseProduct, theme } = useContext(StateContext);
+
+  // const { GetOrders } = useContext(ApiContext);
+  // useEffect(() => {
+  //   GetOrders();
+  // }, []);
 
   return (
     <>
@@ -96,13 +99,14 @@ const Trends = (props) => {
             },
           }}
         >
-          {data.map((items, id) => {
-            return (
-              <Suspense key={id} fallback={<SkeletonLoader />}>
-                <ProductCard items={items} key={id} />
-              </Suspense>
-            );
-          })}
+          {topPurchaseProduct &&
+            topPurchaseProduct?.map((items, id) => {
+              return (
+                <Suspense key={id} fallback={<SkeletonLoader />}>
+                  <ProductCard items={items.productInfo} key={id} />
+                </Suspense>
+              );
+            })}
         </Stack>
       </Stack>
     </>

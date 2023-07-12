@@ -39,6 +39,7 @@ const RegisterUser = async (req, res) => {
     delete User.password;
 
     const Jsontoken = await User.findOne({ email }).select(["-password"]);
+    console.log(Jsontoken);
 
     res.status(202).json({
       user,
@@ -67,6 +68,7 @@ const LoginUser = async (req, res) => {
     }
 
     const afterAuth = await User.findOne({ email }).select("-password");
+    console.log(afterAuth);
 
     if (user.isAdmin === 1) {
       return res.status(202).json({

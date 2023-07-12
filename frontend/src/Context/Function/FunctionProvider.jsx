@@ -9,6 +9,7 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import axios from "axios";
 import { CopyAll } from "@mui/icons-material";
 import { toast } from "react-toastify";
+import ApiContext from "../Api/ApiContext";
 
 const FunctionProvider = ({ children }) => {
   const {
@@ -18,27 +19,14 @@ const FunctionProvider = ({ children }) => {
     setValue,
     user,
     setUser,
-    imageArr,
-    setImageArr,
-    currentUser,
-    isLoading,
-    setIsLoading,
+
     product,
     setProduct,
     setQty,
     setRating,
     setComment,
     qty,
-    setUserImages,
 
-    category,
-    value,
-    filterRating,
-    allProducts,
-    FilterData,
-    setFilterData,
-    setAllProducts,
-    makeProductImage,
     setmakeProductImage,
 
     setSkipped,
@@ -92,19 +80,23 @@ const FunctionProvider = ({ children }) => {
   };
 
   const handleProductImage = (event) => {
-    const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
-    const file = event.target.files;
-    const pic = Array.from(file);
-    // pic.forEach((image) => {
-    //   if (allowedTypes.includes(image.type)) {
-    //     setmakeProductImage(event.target.files);
-    //   }
-    // });
+    const files = event.target.files;
+    const pic = Array.from(files);
+
     if (event.target.files.length > 5) {
       toast.warning("You can choose only 5 images");
       return;
     }
-    setmakeProductImage(event.target.files);
+
+    pic.forEach((file) => {
+      if (file && file.type === "image/*") {
+        setmakeProductImage(files);
+      } else {
+        toast.error("file format must be an image");
+        setmakeProductImage("");
+        return;
+      }
+    });
   };
 
   const totalPagesCalculator = (total, limit) => {

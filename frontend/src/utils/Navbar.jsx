@@ -68,31 +68,6 @@ const Navbar = () => {
         }}
         className="Nav-main"
       >
-        {/* <Stack
-          direction={"row"}
-          sx={{ alignItems: "center" }}
-          className="rubik "
-          width={"33%"}
-        >
-          <Link to={"/"} className="mx-2">
-            <Typography fontSize={".75em"} variant="subtitle2" color="initial">
-              HOME
-            </Typography>
-          </Link>
-
-          <Link className="mx-2 " to={"/products"}>
-            <Typography fontSize={".75em"} variant="subtitle2" color="initial">
-              ALL PRODUCTS
-            </Typography>
-          </Link>
-
-          <Link className="mx-2 " to={"/in"}>
-            <Typography fontSize={".75em"} variant="subtitle2" color="initial">
-              ABOUT
-            </Typography>
-          </Link>
-        </Stack> */}
-
         <Stack alignItems="center" ml={"20px"}>
           <Typography fontSize={"1.10em"} className="obitron">
             ONESTOPSHOP
@@ -181,9 +156,15 @@ const Navbar = () => {
                   anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
                   onClose={handleClose}
                 >
-                  <MenuItem sx={{ px: "30px" }} onClick={handleClose}>
-                    <Avatar /> My Account
-                  </MenuItem>
+                  <Link to={"/profile"} style={{ color: "#000" }}>
+                    <MenuItem
+                      sx={{ px: "30px", py: "10px" }}
+                      onClick={handleClose}
+                    >
+                      <Avatar />
+                      My Account
+                    </MenuItem>
+                  </Link>
 
                   <Divider />
                   {isAdmin ? (

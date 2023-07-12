@@ -65,7 +65,7 @@ const ViewProducts = () => {
         <StyledTableCell align="center">{ele.stock}</StyledTableCell>
 
         <StyledTableCell align="right">
-          <Stack direction={"row"}>
+          <Stack direction={"row"} justifyContent={"flex-end"}>
             <Tooltip title="Edit Product">
               <Link to={`/admin/editProduct/${ele._id}`}>
                 <IconButton color="success">

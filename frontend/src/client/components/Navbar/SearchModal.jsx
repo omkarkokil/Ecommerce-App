@@ -36,7 +36,10 @@ export default function SearchModal() {
         <Box sx={style}>
           <TextField
             id="search"
-            sx={{ width: "100%", background: "#fff" }}
+            sx={{
+              width: "100%",
+              background: "#fff",
+            }}
             label="Search"
             name="search"
             value={search}
@@ -51,6 +54,7 @@ export default function SearchModal() {
                   <IconButton
                     color="secondary"
                     disabled={search === "" ? true : ""}
+                    style={{ display: search === "" ? "none" : "block" }}
                     onClick={() => {
                       setSearch("");
                       Navigate(`/products/${search}`);

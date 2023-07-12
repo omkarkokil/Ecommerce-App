@@ -43,7 +43,8 @@ export default function ReviewModal() {
         color="primary"
         sx={{
           mt: "10px",
-          width: "40%",
+          width: "max-content",
+          px: "50px",
         }}
         onClick={() => {
           comments.filter((item) => {

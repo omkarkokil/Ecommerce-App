@@ -12,7 +12,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import StateContext from "../../Context/hooks/StateContext";
 import FunctionContext from "../../Context/Function/FunctionContext";
 import ReactQuill from "react-quill";
@@ -51,6 +51,8 @@ const EditProduct = () => {
   } = useContext(StateContext);
   const { handleProducts, handleProductImage } = useContext(FunctionContext);
   const { postDetailes, editProduct } = useContext(ApiContext);
+
+  const ref = useRef("");
 
   const pics = Array.from(makeProductImage);
 
@@ -232,7 +234,7 @@ const EditProduct = () => {
                 size="medium"
                 id="imageArr"
                 type="file"
-                accept="image/jpeg, image/png"
+               
                 onChange={handleProductImage}
                 sx={{
                   backgroundColor: "#fff",
@@ -251,6 +253,7 @@ const EditProduct = () => {
                 margin="dense"
                 inputProps={{
                   multiple: true,
+                  accept: "image/jpeg, image/png",
                 }}
                 InputProps={{
                   startAdornment: (
@@ -268,7 +271,8 @@ const EditProduct = () => {
 
           <Stack direction={"row"}>
             {makeProductImage.length <= 0
-              ? productImg.map((ele, i) => {
+              ? productImg &&
+                productImg?.map((ele, i) => {
                   return (
                     <img
                       src={ele}

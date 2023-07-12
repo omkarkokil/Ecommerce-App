@@ -157,7 +157,7 @@ const Users = () => {
         </StyledTableCell>
 
         <StyledTableCell align="right">
-          <Stack direction={"row"}>
+          <Stack justifyContent={"flex-end"} direction={"row"}>
             <Tooltip title="Confirm Role">
               <IconButton
                 color="success"

@@ -99,6 +99,7 @@ const ApiProvider = ({ children }) => {
         userpic: id.userPic,
         id: id._id,
         isAdmin: id.isAdmin,
+        createdAt: id.createdAt,
       });
 
       setIsLogin(true);
@@ -409,8 +410,6 @@ const ApiProvider = ({ children }) => {
   const getProducts = useCallback(
     async (id) => {
       try {
-        setIsLoading(true);
-
         const { data } = await axios.get(
           process.env.REACT_APP_GET_ALL_PRODUCT_URL,
           {
@@ -425,8 +424,6 @@ const ApiProvider = ({ children }) => {
         setAllProducts(data.products);
         setProductCount(data.total);
         setInventory(data.Inventory);
-
-        setIsLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -435,14 +432,14 @@ const ApiProvider = ({ children }) => {
   );
 
   const GetProduct = async (id) => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
       const { data } = await axios.get(
         `${process.env.REACT_APP_GET_PRODUCT_URL}/${id}`
       );
       setGetProduct(data);
-      setproductImg(data.img);
 
+      setIsLoading(false);
       if (loc.includes("/admin/editProduct")) {
         setProduct({
           name: data.name,
@@ -450,11 +447,12 @@ const ApiProvider = ({ children }) => {
           stock: data.stock,
           price: data.price,
         });
+        setproductImg(data.img);
         setProductDesc(data.desc);
         setCategory(data.category);
       }
-      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       console.log(error);
     }
   };
@@ -656,9 +654,6 @@ const ApiProvider = ({ children }) => {
     setIsLoading(true);
     try {
       const { data } = await axios.get(process.env.REACT_APP_GET_ALL_ORDER, {
-        headers: {
-          Authorization: localStorage.getItem("user"),
-        },
         params: {
           page: activePage,
           size: 0,
@@ -676,7 +671,7 @@ const ApiProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (loc === "/admin/orders" || loc === "/admin/dashboard") {
+    if (loc === "/" || loc === "/admin/orders" || loc === "/admin/dashboard") {
       GetOrders();
     }
   }, [activePage, loc]);

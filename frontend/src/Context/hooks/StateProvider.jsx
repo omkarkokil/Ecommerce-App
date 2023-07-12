@@ -30,6 +30,7 @@ const StateProvider = ({ children }) => {
     id: "",
     userpic: "",
     isAdmin: "",
+    createdAt: "",
   });
 
   // ! Login & Register

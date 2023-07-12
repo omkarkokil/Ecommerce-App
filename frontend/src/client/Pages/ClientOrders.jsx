@@ -252,7 +252,6 @@ const ClientOrders = () => {
                     return (
                       <Stack
                         direction={"row"}
-                        mt={{ md: "30px", xs: "0" }}
                         key={id}
                         mb={"5px"}
                         alignItems={"center"}
@@ -267,10 +266,6 @@ const ClientOrders = () => {
                               [theme.breakpoints.up("xs")]: {
                                 width: "60px",
                                 height: "60px",
-                              },
-                              [theme.breakpoints.up("md")]: {
-                                width: "100px",
-                                height: "100px",
                               },
                             }}
                             alt="none"

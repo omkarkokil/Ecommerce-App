@@ -28,118 +28,118 @@ const Home = () => {
   return (
     <>
       <Navbar />
-      {allProducts.length <= 0 ? (
+      {/* {allProducts.length <= 0 ? (
         <LoginLoader />
-      ) : (
-        <>
-          <Stack
+      ) : ( */}
+      <>
+        <Stack
+          sx={{
+            [theme.breakpoints.up("xs")]: {
+              height: "40vh",
+            },
+            [theme.breakpoints.up("sm")]: {
+              height: "50vh",
+            },
+            [theme.breakpoints.up("md")]: {
+              height: "65vh",
+            },
+          }}
+        >
+          <Suspense
+            fallback={<Skeleton variant="rect" width="100%" height="100%" />}
+          >
+            <Carosoul />
+          </Suspense>
+        </Stack>
+        <Stack justifyContent={"center"} alignItems={"center"} mt={"20px"}>
+          <Typography
+            variant="body1"
             sx={{
               [theme.breakpoints.up("xs")]: {
-                height: "40vh",
+                fontSize: ".95rem",
               },
-              [theme.breakpoints.up("sm")]: {
-                height: "50vh",
-              },
+
               [theme.breakpoints.up("md")]: {
-                height: "65vh",
+                fontSize: "1rem",
               },
             }}
+            fontWeight={"bold"}
+            color="primary"
           >
-            <Suspense
-              fallback={<Skeleton variant="rect" width="100%" height="100%" />}
-            >
-              <Carosoul />
-            </Suspense>
-          </Stack>
-          <Stack justifyContent={"center"} alignItems={"center"} mt={"20px"}>
-            <Typography
-              variant="body1"
-              sx={{
-                [theme.breakpoints.up("xs")]: {
-                  fontSize: ".95rem",
-                },
+            Recommended
+          </Typography>
+          <Typography
+            variant="h4"
+            sx={{
+              [theme.breakpoints.up("xs")]: {
+                fontSize: "1.8em",
+              },
 
-                [theme.breakpoints.up("md")]: {
-                  fontSize: "1rem",
-                },
-              }}
-              fontWeight={"bold"}
-              color="primary"
-            >
-              Recommended
-            </Typography>
-            <Typography
-              variant="h4"
-              sx={{
-                [theme.breakpoints.up("xs")]: {
-                  fontSize: "1.8em",
-                },
-
-                [theme.breakpoints.up("md")]: {
-                  fontSize: "2.125rem",
-                },
-              }}
-              fontWeight={"bold"}
-              color="initial"
-            >
-              Trending products
-            </Typography>
-            <Box width={"20%"} mt={"5px"}>
-              <Divider />
-            </Box>
-          </Stack>
-
-          <Stack
-            position={"relative"}
-            background={"#f1f1f1"}
-            height="max-content"
-            mb={"20px"}
+              [theme.breakpoints.up("md")]: {
+                fontSize: "2.125rem",
+              },
+            }}
+            fontWeight={"bold"}
+            color="initial"
           >
-            <Trends />
-          </Stack>
+            Trending products
+          </Typography>
+          <Box width={"20%"} mt={"5px"}>
+            <Divider />
+          </Box>
+        </Stack>
 
-          <Stack justifyContent={"center"} alignItems={"center"} my={"20px"}>
-            <Typography
-              variant="body1"
-              sx={{
-                [theme.breakpoints.up("xs")]: {
-                  fontSize: ".95rem",
-                },
+        <Stack
+          position={"relative"}
+          background={"#f1f1f1"}
+          height="max-content"
+          mb={"20px"}
+        >
+          <Trends />
+        </Stack>
 
-                [theme.breakpoints.up("md")]: {
-                  fontSize: "1rem",
-                },
-              }}
-              fontWeight={"bold"}
-              color="primary"
-            >
-              Checkout
-            </Typography>
-            <Typography
-              variant="h4"
-              sx={{
-                [theme.breakpoints.up("xs")]: {
-                  fontSize: "1.8em",
-                },
+        <Stack justifyContent={"center"} alignItems={"center"} my={"20px"}>
+          <Typography
+            variant="body1"
+            sx={{
+              [theme.breakpoints.up("xs")]: {
+                fontSize: ".95rem",
+              },
 
-                [theme.breakpoints.up("md")]: {
-                  fontSize: "2.125rem",
-                },
-              }}
-              fontWeight={"bold"}
-              color="initial"
-            >
-              Products
-            </Typography>
-            <Box width={"10%"} mt={"5px"}>
-              <Divider />
-            </Box>
-          </Stack>
-          <Stack my="20">
-            <GridLayout />
-          </Stack>
-        </>
-      )}
+              [theme.breakpoints.up("md")]: {
+                fontSize: "1rem",
+              },
+            }}
+            fontWeight={"bold"}
+            color="primary"
+          >
+            Latest
+          </Typography>
+          <Typography
+            variant="h4"
+            sx={{
+              [theme.breakpoints.up("xs")]: {
+                fontSize: "1.8em",
+              },
+
+              [theme.breakpoints.up("md")]: {
+                fontSize: "2.125rem",
+              },
+            }}
+            fontWeight={"bold"}
+            color="initial"
+          >
+            Products
+          </Typography>
+          <Box width={"10%"} mt={"5px"}>
+            <Divider />
+          </Box>
+        </Stack>
+        <Stack my="20">
+          <GridLayout />
+        </Stack>
+      </>
+      {/* )} */}
     </>
   );
 };

@@ -9,7 +9,7 @@ router.post("/makeOrder", Auth, makeOrder);
 router.get("/myOrders", Auth, myOrders);
 router.post("/checkout", CheckOut)
 router.post("/verifyPayment", Auth, verifyPayment)
-router.get("/getAllOrders", Auth, getAllOrders)
+router.get("/getAllOrders", getAllOrders)
 router.get("/getOrder/:id", getOrder)
 router.put("/UpdateOrder/:id", UpdateOrder)
 

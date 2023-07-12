@@ -1,4 +1,4 @@
-import { Box, Grid, Paper, Skeleton } from "@mui/material";
+import { Box, CardMedia, Grid, Paper, Skeleton } from "@mui/material";
 import { Card, CardContent, Typography, Rating } from "@mui/material";
 import Carousel from "react-material-ui-carousel";
 
@@ -20,7 +20,7 @@ const ProductCard = ({ items }) => {
   return (
     <>
       {items && (
-        <Link style={{ margin: "20px" }} to={`/productpage/${items._id}`}>
+        <Link style={{ margin: "20px" }} to={`/productpage/${items?._id}`}>
           <Card
             sx={{
               transition: ".4s all",
@@ -41,6 +41,7 @@ const ProductCard = ({ items }) => {
             <Stack
               sx={{
                 width: "100%",
+                backgroundColor: "ghostwhite",
                 [theme.breakpoints.up("xs")]: {
                   height: "150px",
                 },
@@ -58,7 +59,7 @@ const ProductCard = ({ items }) => {
                 navButtonsAlwaysInvisible
                 indicators={false}
               >
-                {items.img.map((element, id) => {
+                {items?.img.map((element, id) => {
                   return (
                     <Stack
                       key={id}
@@ -66,14 +67,19 @@ const ProductCard = ({ items }) => {
                       height="200px"
                       justifyContent={"center"}
                     >
-                      <LazyLoadImage
-                        src={element}
+                      <CardMedia
+                        children={null}
+                        // sx={{ height: 200 }}
+                        image={element !== null ? element : ""}
+                        // component={"div"}
+                        src={element !== null ? element : ""}
                         alt="none"
+                        elevation={0}
                         loading="lazy"
-                        effect="blur"
+                        component={"img"}
                         style={{
-                          width: "100%",
-                          height: "100%",
+                          backgroundColor: "GrayText",
+                          height: "200px",
                         }}
                       />
                     </Stack>
@@ -84,16 +90,16 @@ const ProductCard = ({ items }) => {
 
             <CardContent>
               <Typography variant="body1" color="#666">
-                {items.name.slice(0, 15)}...
+                {items?.name.slice(0, 15)}...
               </Typography>
               <Rating
                 size="small"
                 sx={{ mt: "10px" }}
                 readOnly
-                value={items.avgrate}
+                value={items?.avgrate}
               />
               <Typography variant="body1" color={"error"}>
-                &#8377;{items.price}
+                &#8377;{items?.price}
               </Typography>
             </CardContent>
           </Card>

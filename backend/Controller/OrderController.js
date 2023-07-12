@@ -157,6 +157,8 @@ const getTopPurchasedProducts = async () => {
                     "productInfo.price": 1,
                     "productInfo.stock": 1,
                     "productInfo.desc": 1,
+                    "productInfo._id": 1,
+                    "productInfo.avgrate": 1,
                 }
             }
         ]);
@@ -166,6 +168,52 @@ const getTopPurchasedProducts = async () => {
         throw error;
     }
 };
+
+
+const getOverallOrdersLastFiveMonths = async () => {
+    try {
+        // Calculate the date 5 months ago
+        const currentDate = new Date();
+        currentDate.setHours(0, 0, 0, 0);
+        const monthsData = [];
+
+        // Loop through each month up to the last 5 months
+        for (let i = 0; i < 5; i++) {
+            const currentMonth = currentDate.getMonth();
+
+            const currentYear = currentDate.getFullYear();
+            const startOfMonth = new Date(currentYear, currentMonth, 1);
+            const endOfMonth = new Date(currentYear, currentMonth + 1);
+
+            console.log(startOfMonth, endOfMonth, "hii");
+
+            // Aggregate and count orders for the current month
+            const orderCount = await Order.countDocuments({
+                createdAt: { $gte: startOfMonth, $lte: endOfMonth },
+            });
+
+            // Store the month and its corresponding order count
+            const monthData = {
+                month: currentMonth,
+                year: currentYear,
+                orderCount: orderCount,
+            };
+            monthsData.push(monthData);
+
+            // Move to the previous month
+            currentDate.setMonth(currentMonth - 1);
+        }
+
+        return monthsData;
+    } catch (error) {
+        // Handle error
+        console.error('Error fetching overall product purchases:', error);
+        throw error;
+    }
+}
+
+
+
 
 
 const getAllOrders = async (req, res) => {
@@ -178,6 +226,10 @@ const getAllOrders = async (req, res) => {
         const totalEarnings = await countTotalPriceFromPaidOrders()
         const totalCategoryBuy = await countOrdersByCategory()
         const topPurchases = await getTopPurchasedProducts()
+
+        // const data = await getOverallOrdersLastFiveMonths();
+
+        // console.log(data);
 
         return res.json({ orders: allOrders, count: count, totalEarnings, totalCategoryBuy, topPurchases })
     } catch (error) {

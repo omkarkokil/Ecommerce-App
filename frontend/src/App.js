@@ -21,6 +21,7 @@ import OrderComplete from "./client/Pages/OrderComplete";
 import EditProduct from "./Admin/pages/EditProduct";
 import Navbar from "./utils/Navbar";
 import MobileOrder from "./client/Pages/MobileOrder";
+import Profile from "./client/Pages/Profile";
 
 
 function App() {
@@ -48,6 +49,7 @@ function App() {
                 <Route path="/orders" element={<ClientOrders />} />
                 <Route path="/ordersSuccess" element={<OrderComplete />} />
                 <Route path="/orderReport/:id" element={<MobileOrder />} />
+                <Route path="/profile" element={<Profile />} />
 
 
 

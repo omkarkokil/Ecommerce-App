@@ -37,8 +37,11 @@ const UserSchema = mongoose.Schema({
       default: 1
     }
   }
-  ]
-
+  ],
+  createdAt: {
+    type: Date,
+    default: Date.now()
+  }
 });
 
 const UserModal = mongoose.model("users", UserSchema);
