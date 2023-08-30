@@ -89,7 +89,8 @@ const FunctionProvider = ({ children }) => {
     }
 
     pic.forEach((file) => {
-      if (file && file.type === "image/*") {
+      const type = ["jpg", "png", "jpeg"];
+      if (file && file.type.includes("image/", type)) {
         setmakeProductImage(files);
       } else {
         toast.error("file format must be an image");

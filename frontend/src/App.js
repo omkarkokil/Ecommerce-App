@@ -1,27 +1,26 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
-import Home from "./client/Pages/Home";
 import StateProvider from "./Context/hooks/StateProvider";
-import SearchModal from "./client/components/Navbar/SearchModal";
-import Login from "./client/Pages/Login";
-import Register from "./client/Pages/Register";
-import AddCart from "./client/Pages/AddCart";
-import Checkout from "./client/components/AddCart/Checkout";
-import ProductPage from "./client/Pages/ProductPage";
-import Products from "./client/Pages/Products";
-import ClientOrders from "./client/Pages/ClientOrders";
-import AdminNav from "./Admin/AdminNav";
+import SearchModal from "./utils/Navbar/SearchModel/SearchModal";
+import Login from "./Pages/client/Auth/Login/Login";
+import Register from "./Pages/client/Auth/Register/Register";
+import AddCart from "./Pages/client/Cart/AddCart";
+import Checkout from "./Pages/client/Cart/CheckOut/Checkout/Checkout";
+import ProductPage from "./Pages/client/Products/Product/ProductPage";
+import Products from "./Pages/client/Products/AllProducts/Products";
+import ClientOrders from "./Pages/client/Orders/ClientOrders";
 import ApiProvider from "./Context/Api/ApiProvider";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import FunctionProvider from "./Context/Function/FunctionProvider";
 import ScrollToTop from "./utils/ScrollToTop";
 import { useEffect } from "react";
-import OrderComplete from "./client/Pages/OrderComplete";
-import EditProduct from "./Admin/pages/EditProduct";
-import Navbar from "./utils/Navbar";
-import MobileOrder from "./client/Pages/MobileOrder";
-import Profile from "./client/Pages/Profile";
+import OrderComplete from "./Pages/client/Orders/OrderComplete/OrderComplete";
+import Navbar from "./utils/Navbar/Navbar";
+import MobileOrder from "./Pages/client/Orders/Mobile/MobileOrder";
+import Profile from "./Pages/client/Profile/Profile";
+import AdminNav from "./Pages/Admin/AdminNav";
+import Home from "./Pages/client/Home/Home";
 
 
 function App() {

@@ -53,12 +53,12 @@ const getAllProducts = async (req, res) => {
         const products = await Product.find().sort({ createdAt: -1 }).skip(skip).limit(size)
 
         const searchproduct = products.filter((item) => {
-            return item.name.toLowerCase().includes(search) || item.category.toLowerCase().includes(search)
+            return item.name.toLowerCase().includes(search)
         })
 
         const total = await Product.find();
         const searchTotal = total.filter((item) => {
-            if (item.name.toLowerCase().includes(search) || item.category.toLowerCase().includes(search)) {
+            if (item.name.toLowerCase().includes(search)) {
                 return item
             }
         })

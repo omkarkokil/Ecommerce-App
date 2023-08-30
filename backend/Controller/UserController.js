@@ -22,6 +22,7 @@ const RegisterUser = async (req, res) => {
       return res.json({ msg: "User already exists", status: false });
     }
 
+
     if ((!name, !password, !email)) {
       return res.json({ msg: "Name , email & password are mandatory", status: false });
     }
@@ -57,7 +58,11 @@ const LoginUser = async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
 
-    if (!user) {
+
+    if (user.google_id === "" || user.google_id === null) {
+      console.log("not allowed");
+    }
+    if (!user || user.google_id) {
       return res.json({ msg: "Invalid credentails", status: false });
     }
 

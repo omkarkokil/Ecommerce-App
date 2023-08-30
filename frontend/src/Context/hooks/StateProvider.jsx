@@ -13,6 +13,7 @@ const StateProvider = ({ children }) => {
   const [FilterData, setFilterData] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [componantLoading, setComponantLoading] = useState(false);
 
   // * Login & Register
 
@@ -128,6 +129,9 @@ const StateProvider = ({ children }) => {
         setSearch,
         FilterData,
         setFilterData,
+
+        componantLoading,
+        setComponantLoading,
 
         filterRating,
         setFilterRating,
